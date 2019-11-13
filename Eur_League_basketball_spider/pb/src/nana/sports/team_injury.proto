@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package nana.sports;
+
+message TeamInjury {
+    message Player {
+        int32 player_id = 1; //球员id
+        string comp_id = 2; //赛事id
+        int32 team_id = 3; //球队id
+        int32 type = 4; //1-受伤 2-停赛
+        string reson_en = 5; //原因
+        int32 start_time = 6; //开始时间
+        int32 end_time = 7; //结束时间
+        int32 missed_matches = 8; //错失场次
+    }
+    repeated Player players = 2; //伤停球员
+}

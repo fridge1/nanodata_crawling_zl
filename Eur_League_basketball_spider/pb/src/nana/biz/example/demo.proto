@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package nana.biz.example;
+
+enum DemoSvrID {
+	SID_DEMO_UNKNOW = 0x000;
+	SID_DEMO_TIME_REQ = 0x001; //时间请求
+	SID_DEMO_TIME_RES = 0x002; //时间资源
+
+	SID_DEMO_HEARTBEAT_REQ = 0x901; //心跳检测
+	SID_DEMO_HEARTBEAT_RES = 0x902; //心跳检测
+	SID_DEMO_RESTART_REQ = 0x903; //重启服务
+	SID_DEMO_RESTART_RES = 0x94; //重启服务
+}
+
+message DemoTimeReq {
+	int64 time = 1;
+}
+
+message DemoTimeRes {
+	int64 time = 1;
+	int32 cnt = 2;
+}
+
+message DemoCheckReq {
+}
+
+message DemoCheckRes {
+
+}
+
+message DemoRestartReq {
+}
+
+message DemoRestartRes {
+
+}
+
+message Request {
+	int32 code = 1;
+	bytes data = 2;
+}
+
+message Result {
+	int32 code = 1;
+	bytes data = 2;
+}
+

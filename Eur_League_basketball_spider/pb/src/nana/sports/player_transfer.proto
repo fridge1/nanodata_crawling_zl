@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package nana.sports;
+
+import "nana/sports/player.proto";
+import "nana/sports/team.proto";
+
+message PlayerTransfer {
+    Player player = 1; //球员
+    Team from_team = 2; //转出球队
+    Team to_team = 3; //转入球队
+
+    int32 transfer_time = 4; //转会时间
+    int32 transfer_fee = 5; //转会费
+    int32 transfer_desc = 6; //转会描述
+    int32 transfer_type = 7; //转会类型 1租借 2租借结束 3转会 4 退役 5选秀 6已解约 7已签约 8未知
+
+    int32 market_value = 8; //球员市值
+}

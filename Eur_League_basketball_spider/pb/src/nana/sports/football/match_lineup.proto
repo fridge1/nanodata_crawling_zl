@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package nana.sports.football;
+
+//比赛阵容信息
+message MatchLineupInfo {
+    int32 id = 1; //id
+    int32 sport_id = 2; //球类id
+    int32 match_id = 3; //比赛id
+    int32 home_team_id = 4; //主队球队id
+    int32 away_team_id = 5; //客队球队id
+    int32 home_manager_id = 6; //主队教练id
+    int32 away_manager_id = 7; //客队教练id
+
+    int32 confirmed = 8; //阵容是否已经确认
+    string home_formation = 9; //主队阵型
+    string away_formation = 10; //客队阵型
+    int32 home_team_rating = 11; //主队评分
+    int32 away_team_rating = 12; //客队评分
+}
+
+//比赛阵容详情
+message MatchLineupDetail {
+    int32 id = 1; //id
+    int32 sport_id = 2; //球类id
+    int32 match_id = 3; //比赛id
+    int32 team_id = 4; //球队id
+    int32 player_id = 5; //球员id
+
+    int32 status = 6; //球员状态 0,首发 1,替补 2,伤停 3,禁赛
+    string season = 7; //伤停或禁赛原因
+
+    int32 rating = 8; //评分
+    int32 captain = 9; //是否队长
+    string player_name_zh = 10; //球员中文名称
+    string player_name_zht = 11; //球员繁体名称
+    string player_name_en = 12; //球员英文名称
+    int32 shirt_number = 13; //球衣号
+    string position = 14; //位置
+    int32 location_x = 15; //x坐标
+    int32 location_y = 16; //y坐标
+    int32 position_num = 17; //序号
+}
+
+//比赛阵容
+message MatchLineup {
+    MatchLineupInfo info = 1;
+    repeated MatchLineupDetail detail = 2;
+}

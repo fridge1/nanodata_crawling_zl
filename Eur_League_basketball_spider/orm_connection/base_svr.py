@@ -1,0 +1,2 @@
+class BaseSvr(object):
+    pass

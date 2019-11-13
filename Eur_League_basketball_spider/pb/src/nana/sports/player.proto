@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//球员
+message Player {
+    int32 id = 1; //id
+    uint32 sport_id = 2; //球类id
+    uint32 team_id = 3; //球队id
+    uint32 manager_id = 4; //教练id
+
+    string name_en = 6; //英文名称
+    string name_zh = 7; //中文名称
+    string name_zht = 8; //繁体名称
+    string short_name_en = 9; //英文简称
+    string short_name_zh = 10; //中文简称
+    string short_name_zht = 11; //繁体简称
+
+    string logo = 12; //logo
+    int32 age = 13; //年龄
+    int32 birthday = 14; //生日
+    int32 weight = 16; //体重
+    int32 height = 17; //身高
+    int32 preferred_foot = 18; //惯用脚 0-未知 1-左 2-右 3-左右脚
+    string nationality = 19; //国籍
+    string position = 20; //位置 F前锋 M中场 D后卫 G守门员
+
+    string market_value_currency = 21; //货币单位
+    uint64 market_value = 22; //市值
+    int32 contract_until = 23; //合同到期时间
+    string ability_data = 24; //能力值
+    string characteristics_data = 25; //特点
+
+    string detailed_positions = 26; //详细位置
+
+    bytes extra = 15; //额外数据
+}

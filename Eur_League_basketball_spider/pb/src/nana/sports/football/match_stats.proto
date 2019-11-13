@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+package nana.sports.football;
+
+//足球比赛球员技术统计
+message FootballPlayerStat {
+    int32 id = 1; //id
+    int32 sport_id = 2; //球类id
+    //int32 season_id              = 3; //赛季id
+    int32 match_id = 4; //比赛id
+    int32 team_id = 5; //球队id
+    int32 player_id = 6; //球员id
+
+    //主要统计
+    int32 first = 7; //首发
+    int32 penalty = 8; //点球
+    int32 corner_kicks = 9; //角球
+    int32 yellow_cards = 10; //黄牌
+    int32 red_cards = 11; //红牌
+    int32 yellow2red_cards = 12; //两黄变一红
+    int32 steals = 13; //抢断
+    int32 offsides = 14; //越位
+
+    //进攻
+    int32 period = 16; //比赛阶段
+    int32 shots = 17; //射门
+    int32 shots_on_target = 18; //射正
+    int32 dribble = 19; //盘带
+    int32 dribble_succ = 20; //盘带成功
+    int32 goals = 21; //进球数
+    int32 assists = 22; //助攻数
+    int32 attack_notes = 23; //附注
+
+    // 防守
+    int32 clearances = 24; //解围
+    int32 blocked_shots = 25; //封堵射门
+    int32 interceptions = 26; //断球
+    int32 tackles = 27; //铲球
+    int32 defence_notes = 28; //附注
+
+    // 传球
+    int32 passes = 29; //传球数
+    int32 passes_accuracy = 30; //传球准确率
+    int32 key_passes = 31; //形成射门的传球
+    int32 crosses = 32; //传中数
+    int32 crosses_accuracy = 33; //传中准确率
+    int32 long_balls = 34; //长传
+    int32 long_balls_accuracy = 35; //长传准确率
+    int32 passing_notes = 36; //附注
+
+    // 对抗
+    int32 duels = 37; //1对1数
+    int32 duels_won = 38; //1对1成功
+    int32 dispossessed = 39; //丢球
+    int32 was_fouled = 40; //被犯规
+    int32 fouls = 41; //犯规
+
+    // 守门员
+    int32 saves = 42; //扑救
+    int32 punches = 43; //击球
+    int32 runs_out = 44; //出击
+    int32 runs_out_succ = 45; //出击成功
+    int32 good_high_claim = 46; //高球拦截
+    int32 goalkeeper_notes = 47; //犯规
+
+    // 总结
+    int32 total_pass = 48; //总传球
+    int32 minutes_played = 49; //出场分钟
+    string position = 50; //位置
+    int32 rating = 51; //评分
+
+    bytes extra = 15; //额外数据
+}
+
+//足球比赛球员技术统计列表
+message FootballPlayerStats {
+    repeated FootballPlayerStat stats = 1;
+}
+
+//足球球队技术统计
+message FootballTeamStat {
+    int32 id = 1; //id
+    int32 sport_id = 2; //球类id
+    int32 match_id = 3; //比赛id
+    int32 team_id = 4; //球队id
+
+    int32 period = 5; //比赛阶段
+    int32 corner_kicks = 6; //角球
+    int32 yellow_cards = 7; //黄牌
+    int32 red_cards = 8; //红牌
+    int32 shots_off_goal = 9; //射偏
+    int32 passes = 10; //传球
+    int32 goal_kicks = 11; //球门球
+    int32 shots_on_goal = 12; //射正
+    int32 throw_ins = 13; //界外球
+    int32 free_kicks = 14; //任意球
+    int32 total_shots_on_goal = 46; //总射正
+    int32 ball_possession = 16; //控球率
+    int32 duel_lost = 17; //对抗失败
+    int32 blocked_scoring_attempt = 18; //封堵射门
+    int32 accurate_cross = 19; //精确传中
+    int32 accurate_passes = 20; //精确传球
+    int32 attoutbox_goal = 21; //禁区外进球
+    int32 goalkeeper_saves = 22; //守门员扑救
+    int32 attoutsidebox_target = 23; //禁区外射正
+    int32 big_chance_created = 24; //创造机会
+    int32 attinsidebox_target = 25; //禁区内射正
+    int32 aerial_won = 26; //空中成功对抗
+    int32 attinbox_goal = 27; //禁区内进球
+    int32 duel_won = 28; //成功对抗
+    int32 attoutbox_blocked = 29; //禁区外封堵
+    int32 attinsidebox_miss = 30; //禁区内射偏
+    int32 attinbox_blocked = 31; //禁区内封堵
+    int32 aerial_lost = 32; //空中对抗失败
+    int32 hit_woodwork = 33; //命中门柱
+    int32 attoutsidebox_miss = 34; //禁区外射偏
+    int32 sixyard_block = 35; //小禁区内封堵
+    int32 keeper_sweeper = 36; //门将解围
+    int32 total_shots_insidebox = 37; //禁区内射门
+    int32 total_shots_outsidebox = 38; //禁区外射门
+    string accurate_passes_percent = 39; //传球成功率
+    string duelwon_percent = 40; //对抗成功率
+    string aerialwon_percent = 41; //空中争顶成功率
+    string attinbox_post = 42; //
+    int32 offsides = 43; //越位
+    int32 fouls = 44; //犯规
+    int32 fast_breaks = 45; //
+    int32 assists = 47; //助攻
+
+    bytes extra = 15; //额外数据
+}
+
+//足球球队技术统计列表
+message FootballTeamStats {
+    repeated FootballTeamStat stats = 1;
+}

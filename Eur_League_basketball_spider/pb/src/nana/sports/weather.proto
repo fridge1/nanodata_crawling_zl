@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//天气
+message Weather {
+    string temperature = 1; //温度 10°C
+    string wind = 2; //风速 1.0m/s
+    string pressure = 3; //空气压力 100mmHg
+    string humidity = 4; //湿度 10%
+}

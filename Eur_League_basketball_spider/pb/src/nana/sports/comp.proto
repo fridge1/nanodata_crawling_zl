@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//赛事
+message Comp {
+    uint32 id = 1; //id
+    uint32 sport_id = 2; //球类id
+
+    int32 type = 16; //1,联赛 2,杯赛
+    string name_en = 6; //英文名称
+    string name_zh = 7; //中文名称
+    string name_zht = 8; //繁体名称
+    string short_name_en = 9; //英文简称
+    string short_name_zh = 10; //中文简称
+    string short_name_zht = 11; //繁体简称
+
+    string logo = 12; //logo
+    uint32 level = 13; //等级
+
+    string cur_season = 17; //当前赛季
+    int32 cur_stage_id = 18; //当前阶段id
+    int32 cur_round = 19; //当前轮次
+    int32 round_count = 20; //总轮次
+
+    bytes extra = 15; //额外数据
+}

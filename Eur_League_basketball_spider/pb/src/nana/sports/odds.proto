@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//指数
+message Odds {
+	message Item {
+		int32 type = 1; //指数类型
+		int32 num = 2; //盘口
+		int32 in_play = 3; //类型 0-即时盘,1-滚球盘
+		string data = 4; //数据
+		string ext_data = 5; //额外数据
+
+		string time = 6; //时间
+		int32 second = 7; //秒钟数
+		int32 status_id = 8; //比赛状态
+		string scores = 9; //比分 eg:1-1
+		string uptime = 10; //更新时间
+
+		bool is_first = 11; //是否首条数据,用于清空旧数据
+	}
+
+	int32 sport_id = 1; //球类id
+	int32 match_id = 2; //比赛id
+	repeated Item items = 3; //详细指数
+}

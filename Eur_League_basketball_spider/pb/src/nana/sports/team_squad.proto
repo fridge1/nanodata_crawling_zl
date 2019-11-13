@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package nana.sports;
+
+import "nana/sports/season.proto";
+import "nana/sports/team.proto";
+import "nana/sports/player.proto";
+
+//球队阵容
+message TeamSquad {
+    // 足球:F前锋 M中场 D后卫 G守门员 篮球:C中锋 CF中锋-前锋 F前锋 FC前锋-中锋 G后卫 GF前锋-后卫
+    message TeamPlayer {
+        Player player = 1; //球员
+        string position = 2; //位置
+        string detail_position = 3; //详细位置
+        string shirt_number = 4; //球衣号
+        int32 is_captain = 5; //是否队长
+    }
+
+    Season season = 1; //赛季
+    Team team = 2; //球队
+    repeated Player players = 3; //球队阵容
+}

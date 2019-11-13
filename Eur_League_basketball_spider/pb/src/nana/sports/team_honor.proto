@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package nana.sports;
+
+import "nana/sports/season.proto";
+import "nana/sports/comp.proto";
+import "nana/sports/honor.proto";
+import "nana/sports/team.proto";
+
+message TeamHonor {
+    message Honor {
+        Honor honor = 1; //荣誉
+        Comp comp = 2; //赛事
+        Season season = 3; //赛季
+        Title title = 4;
+    }
+
+    Team team = 1; //球队
+    repeated Honor honors = 2; //球队荣誉
+}

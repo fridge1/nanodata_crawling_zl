@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package nana.esports;
+
+//时间
+message Timer {
+	int32 ticking = 1; //是否走表
+	int32 countdown = 2; //是否倒计时
+	int32 uptime = 3; //记录时刻的时间
+	int32 second = 4; //记录时刻的秒数
+	int32 add_time = 5; //加时秒钟数
+}

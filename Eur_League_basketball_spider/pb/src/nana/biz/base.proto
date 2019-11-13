@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package nana.biz;
+
+message Request {
+	int32 code = 1;
+	bytes data = 2;
+}
+
+message Result {
+	int32 code = 1;
+	bytes data = 2;
+}

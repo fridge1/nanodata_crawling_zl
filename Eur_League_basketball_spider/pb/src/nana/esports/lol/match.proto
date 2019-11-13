@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package nana.esports.lol;
+
+//import "nana/esports/base.proto";
+
+message LolMatch {
+	int32 id = 1; //id
+	int32 match_id = 2; //比赛id
+	int32 status_id = 3; //状态id
+	int32 box_num = 4; //第几局
+
+	LolMatchSingle lol_match = 5; //单场数据统计
+}
+
+message LolMatchSingle {
+	int32 id = 1; //比赛id
+	int32 status_id = 2; //状态id
+	int32 box_num = 3; //第几局
+	int32 red_team_id = 4; //红队
+	int32 blue_team_id = 5; //蓝队
+
+	string economy = 6; //经济
+	string experience = 7; //经验
+
+	Timer timer = 8; //时间
+	LolMatchStats match_stats = 9; //技术统计
+	LolMatchIncident match_incidents = 10; //击杀事件
+	LolMatchEyes match_eyes = 11; //眼位统计
+	LolMatchDragons match_dragons = 12; //大小龙统计
+	LolMatchPlayerStats player_stats = 13; //球员技术统计
+
+}
+
+message LolMatchStats {
+	message Item {
+		string home = 1;
+		string away = 2;
+	}
+
+	map<string, Item> items = 1;
+}
+
+message LolMatchPlayerStats {
+	message Item {
+		int32 id = 1; //球员id
+		int32 team_id = 2; //球队id
+		int32 position_id = 3; //位置id
+
+		int32 hero_id = 4; //英雄id
+		int32 kill = 5; //击杀人数
+		int32 die = 6; // 死亡
+		int32 assists = 7; // 助攻
+		int32 soldiers = 8; // 小兵
+		int32 money = 9; // 金钱
+		int32 hero_level = 10; // 等级
+		string hero_equipment = 11; // 最终初装
+		string hero_rune = 12; // 天赋
+		string hero_spells = 13; // 召唤师技能
+	}
+	repeated Item items = 1;
+}
+
+
+message LolMatchIncident {
+	message Item {
+		int32 id = 1; //比赛id
+		int32 team_id = 2; //击杀英雄id
+		int32 killer_id = 3; //击杀英雄id
+		int32 dead_id = 4; //被杀英雄id
+		int32 game_time = 5; //击杀时间
+		int32 axis_x = 6; //X轴
+		int32 axis_y = 7; //Y轴
+		int32 type = 8; //类型
+		string assists = 9; //助攻者
+	}
+	repeated Item items = 1;
+}
+
+message LolMatchEyes {
+	message Item {
+		int32 id = 1; //比赛id
+		int32 team_id = 2; //球队id
+		int32 hero_id = 3; //英雄id
+		int32 killer_id = 4; //消除眼位英雄id
+		int32 eye_type = 5; //眼位类型
+		int32 dead_type = 6; //眼位死亡类型
+		int32 axis_x = 7; //X轴
+		int32 axis_y = 8; //Y轴
+		int32 start_time = 9; //开始时间
+		int32 end_time = 10; //结束时间
+	}
+	repeated Item items = 1;
+}
+
+message LolMatchDragons {
+	message Item {
+		int32 id = 1; //比赛id
+		int32 team_id = 2; //球队id
+		int32 dragon_type = 3; //龙类型
+		int32 game_time = 4; //比赛时间
+	}
+	repeated Item items = 1;
+}
+
+
+message Timer {
+	int32 ticking = 1; //是否走表
+	int32 countdown = 2; //是否倒计时
+	int32 uptime = 3; //记录时刻的时间
+	int32 second = 4; //记录时刻的秒数
+	int32 add_time = 5; //加时秒钟数
+}

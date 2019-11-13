@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package nana.sports;
+
+enum FeedMsgType {
+    FEED_UNKNOW = 0;
+
+    MATCH_INFO_RESTART = 0x1001; //比赛信息服务需重启
+    MATCH_LIVE_RESTART = 0x1002; //比赛实时服务需重启
+    MATCH_INPLAY_REQ = 0x1003; //获取进行中比赛信息
+    MATCH_INFO_REQ = 0x1004; //获取指定比赛信息数据
+}
+
+message FeedReq {
+    FeedMsgType type = 1;
+    bytes data = 3;
+}
+
+message FeedRsp {
+    enum ErrorCode {
+        SUCESS = 0;
+        Internal = 1;
+        Block = 2;
+    }
+    ErrorCode code = 1;
+    bytes data = 3;
+}
+
+message MatchInfoReq {
+    repeated int32 match_ids = 1;
+    bool need_resend = 2;
+    bool need_restart = 3;
+}
+
+message MatchInfoRsp {
+
+}
+
+message MatchInplayReq {
+    bool need_resend = 2;
+    bool need_restart = 3;
+}
+
+message MatchInplayRsp {
+
+}

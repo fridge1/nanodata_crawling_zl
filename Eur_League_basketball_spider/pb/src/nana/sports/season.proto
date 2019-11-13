@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package nana.sports;
+
+message Season {
+    int32 id = 1; //赛季id
+    int32 sport_id = 2; //球类id
+    int32 season_id = 3; //联赛id
+
+    string season = 6; //年份
+    string name_en = 7; //英文名称
+    string name_zh = 8; //中文名称
+    string name_zht = 9; //繁体名称
+
+    bytes extra = 15; //额外数据
+}

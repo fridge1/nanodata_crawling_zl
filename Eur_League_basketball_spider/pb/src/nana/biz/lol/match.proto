@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package nana.biz.lol;
+
+import "nana/esports/lol/match.proto";
+
+enum LolMatchSvrID {
+	SID_LOL_MATCH_UNKNOW = 0x000;
+
+	SID_LOL_MATCH_HEARTBEAT_REQ = 0x901; //心跳检测
+	SID_LOL_MATCH_HEARTBEAT_RES = 0x902; //心跳检测
+	SID_LOL_MATCH_RESTART_REQ = 0x903; //重启服务
+	SID_LOL_MATCH_RESTART_RES = 0x94; //重启服务
+
+	SID_LOL_MATCH_REQ = 0x008; //lol实时数据req
+	SID_LOL_MATCH_RES = 0x009; //lol实时数据res
+}
+
+message LolMatchReq {
+	int64 time = 8;
+	esports.lol.LolMatch match = 2;
+}
+
+message LolMatchRes {
+    int32 code = 8;
+	esports.lol.LolMatch match = 2;
+}
+
+
+message Request {
+	int32 code = 1;
+	bytes data = 2;
+}
+
+message Result {
+	int32 code = 1;
+	bytes data = 2;
+}

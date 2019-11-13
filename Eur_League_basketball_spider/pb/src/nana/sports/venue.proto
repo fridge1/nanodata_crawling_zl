@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//场馆
+message Venue {
+    int32 id = 1; //id
+
+    string name_en = 6; //英文名称
+    string name_zh = 7; //中文名称
+    string name_zht = 8; //繁体名称
+    int32 capacity = 9; //容量
+
+    bytes extra = 15; //额外数据
+}

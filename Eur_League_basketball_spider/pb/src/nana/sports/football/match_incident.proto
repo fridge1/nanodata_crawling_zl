@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package nana.sports.football;
+
+//比赛事件
+message MatchIncident {
+	message Item {
+		int32 id = 1; //id
+		int32 sport_id = 2; //球类id
+		int32 match_id = 3; //比赛id
+		int32 team_id = 4; //球队id
+		int32 type = 5; //事件类型
+		int32 second = 6; //时间，秒钟数
+		string text = 7; //描述
+		string time = 8; //显示时间
+		int32 addtime = 9; //伤停补时
+		int32 belong = 10; //主客队 0,中立 1,主 2,客
+
+		int32 player_id = 11; //相关球员id
+		string player_name = 12; //相关球员名称
+		int32 home_score = 13; //主队分数
+		int32 away_score = 14; //客队分数
+
+		int32 assist1_id = 15; //助攻球员1id
+		string assist1_name = 16; //助攻球员1名称
+		int32 assist2_id = 17; //助攻球员2id
+		string assist2_name = 18; //助攻球员2名称
+
+		string reason = 19; //得牌原因
+		int32 in_player_id = 20; //换上球员id
+		string in_player_name = 21; //换上球员名称
+		int32 out_player_id = 22; //换下球员id
+		string out_player_name = 23; //换下球员名称
+		int32 is_injury = 24; //是否受伤换人
+	}
+
+	repeated Item items = 1;
+}

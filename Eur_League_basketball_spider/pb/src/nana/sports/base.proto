@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//轮次
+message Round {
+    int32 group_num    = 1;//分组号,大于0,表示分组赛,同时可能有轮次 eg:C组第2轮
+    int32 round_num    = 2;//轮次,大于0并且不是分组赛,表示轮次赛
+    int32 stage_id     = 3;//阶段id
+}
+
+//时间
+message Timer {
+    int32 ticking = 1; //是否走表
+    int32 countdown = 2; //是否倒计时
+    int32 uptime = 3; //记录时刻的时间
+    int32 second = 4; //记录时刻的秒数
+    int32 add_time = 5; //加时秒钟数
+}
+
+//比分
+message Score {
+    Timer tmr = 1; //时间
+    int32 status_id = 2; //比赛状态
+    repeated int32 home_scores = 3; //主队比分
+    repeated int32 away_scores = 4; //客队比分
+
+    //网球相关
+    int32 serve = 5; //发球方
+    repeated string points = 6; //局分
+}
+
+//技术统计
+message Stats {
+    message Item {
+        int32 home = 1;
+        int32 away = 2;
+        string home_s = 3;
+        string away_s = 4;
+    }
+    map<int32, Item> items = 1;
+}
+
+//动画
+message Mlive {
+    string vc = 1; //动作
+    string pg = 2; //额外数据
+    string xy = 3; //坐标 eg:2,3
+}

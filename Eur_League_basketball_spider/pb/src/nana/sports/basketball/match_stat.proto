@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package nana.sports.basketball;
+
+message BkMatchTeamStats {
+    message Item {
+
+        int32 belong = 1; //主队-1,客队-2
+        int32 team_id = 2; //球对ID
+        string team_name = 3; //球对名
+        int32 goals = 5; //总命中数
+        int32 field = 6; //总出手数
+        int32 two_points_goals = 7; //2分命中数
+        int32 two_points_total = 8; //2分命中数
+        int32 three_point_goals = 9; //3分命中数
+        int32 three_point_field = 10; //3分出手数
+        int32 free_throw_goals = 11; //罚球命中数
+        int32 free_throw_field = 12; //罚球出手数
+        int32 offensive_rebounds = 13; //前篮板
+        int32 defensive_rebounds = 14; //后篮板
+        int32 rebounds = 15; //篮板总数
+        int32 assists = 16; //助攻
+        int32 steals = 17; //抢断
+        int32 blocks = 18; //盖帽
+        int32 turnovers = 19; //失误
+        int32 personal_fouls = 20; //犯规
+        int32 point = 21; //得分
+        int32 score_difference = 22; //+/-
+        // int32 eff = 23; //出场效率
+    }
+    repeated Item items = 2;
+}
+
+message BkMatchPlayerStats {
+    message Item {
+        int32 belong = 1; //主队-1,客队-2
+        int32 player_id = 2; //球员ID  player_id为0 是队伍的篮板等一些统计
+        string player_name = 3; //球员姓名
+        int32 minutes = 4; //球员上场时间
+        int32 goals = 5; //总命中数
+        int32 field = 6; //总出手数
+        int32 two_points_goals = 7; //2分命中数
+        int32 two_points_total = 8; //2分命中数
+        int32 three_point_goals = 9; //3分命中数
+        int32 three_point_field = 10; //3分出手数
+        int32 free_throw_goals = 11; //罚球命中数
+        int32 free_throw_field = 12; //罚球出手数
+        int32 offensive_rebounds = 13; //前篮板
+        int32 defensive_rebounds = 14; //后篮板
+        int32 rebounds = 15; //篮板总数
+        int32 assists = 16; //助攻
+        int32 steals = 17; //抢断
+        int32 blocks = 18; //盖帽
+        int32 turnovers = 19; //失误
+        int32 personal_fouls = 20; //个人犯规
+        int32 score_difference = 21; //+/-
+        int32 point = 22; //得分
+        // int32 eff = 23; //出场效率
+        int32 first_publish = 24; //是否首发,1-是,0-否
+        int32 enter_ground = 25; //是否上场,1-是,0-否
+        int32 on_ground = 26; //是否在场上,1-是,0-否
+        int32 shirt_number = 27; //球衣号
+    }
+    repeated Item items = 2;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//球队
+message Country {
+    uint32 id = 1; //球队id
+    uint32 sport_id = 2; //球类id
+    string name_zh = 3; //中文
+    string name_zht = 4; //粤语
+    string name_en = 5; //英文
+}

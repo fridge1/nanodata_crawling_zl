@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package nana.sports.football;
+
+//比赛趋势
+message MatchTrend {
+    message ItemValue {
+        string minute = 1; //时间(分钟)
+        float value = 2; //值
+    }
+
+    message PeriodItem {
+        repeated ItemValue values = 1; //阶段趋势列表
+    }
+
+    int32 period = 1; //阶段数
+    repeated PeriodItem items = 2; //多阶段趋势列表
+}

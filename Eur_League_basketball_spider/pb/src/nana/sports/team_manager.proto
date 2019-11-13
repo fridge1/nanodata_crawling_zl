@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package nana.sports;
+
+import "nana/sports/team.proto";
+
+//球队教练
+message TeamManager {
+    message Manager {
+        Manager manager = 1; //教练
+        int32 appointed_time = 2; //执教开始时间
+        int32 dismissal_time = 3; //执教结束时间
+        int32 matches = 4; //场次
+        string ppg = 5; //ppg
+    }
+
+    Team team = 1; //球队
+    repeated Manager managers = 2; //历史教练
+}

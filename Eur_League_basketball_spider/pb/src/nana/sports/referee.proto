@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//裁判
+message Referee {
+    int32 id = 1; //id
+    string name = 2; //名称
+    float yellow_cards_per_game = 3; //场均黄牌
+    float red_cards_per_game = 4; //场均红牌
+
+    bytes extra = 15; //额外数据
+}

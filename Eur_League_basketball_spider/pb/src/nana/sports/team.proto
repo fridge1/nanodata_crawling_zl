@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//球队
+message Team {
+    uint32 id = 1; //球队id
+    uint32 sport_id = 2; //球类id
+    uint32 venue_id = 3; //场馆id
+    uint32 manager_id = 4; //教练id
+    uint32 competition_id = 5; //赛事id
+    repeated Team sub_teams = 20; //子球队
+
+    string name_en = 6; //英文名称
+    string name_zh = 7; //中文名称
+    string name_zht = 8; //繁体名称
+    string short_name_en = 9; //英文简称
+    string short_name_zh = 10; //中文简称
+    string short_name_zht = 11; //繁体简称
+
+    string logo = 12; //球队logo
+    int32 gender = 13; //性别:0,未知 1,男 2,女
+    string country = 14; //国家
+    int32 foundation_time = 16; //成立时间
+    int32 total_players = 17; //球员总人数
+    int32 foreign_players = 18; //外援人数
+    int32 national_players = 19; //本土人数
+
+    string rating = 15; //球队评分
+    bytes extra = 21; //额外数据
+}

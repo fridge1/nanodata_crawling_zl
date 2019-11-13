@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//教练
+message Manager {
+    int32 id = 1; //id
+    uint32 sport_id = 2; //球类id
+    uint32 team_id = 3; //球队id
+    uint32 player_id = 4; //球员id
+
+    string name_en = 6; //英文名称
+    string name_zh = 7; //中文名称
+    string name_zht = 8; //繁体名称
+    string short_name_en = 9; //英文简称
+    string short_name_zh = 10; //中文简称
+    string short_name_zht = 11; //繁体简称
+
+    string logo = 12; //logo
+    int32 age = 13; //年龄
+    int32 birthday = 14; //生日
+    string nationality = 16; //国籍
+    string trainer_licence = 17; //教练执照
+    string preferred_formation = 18; //习惯的阵型
+
+    bytes extra = 15; //额外数据
+}

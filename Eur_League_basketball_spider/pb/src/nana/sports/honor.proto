@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package nana.sports;
+
+//荣誉
+message Honor {
+    uint32 id = 1; //id
+    uint32 sport_id = 2; //球类id
+    string title_en = 3; //title
+    string title_zh = 4; //title
+    string title_zht = 5; //title
+
+    bytes extra = 15; //额外数据
+}
+
+message Title {
+    uint32 id = 1; //id
+    uint32 sport_id = 2; //球类id
+    string title_en = 3; //title
+    string title_zh = 4; //title
+    string title_zht = 5; //title
+
+    bytes extra = 15; //额外数据
+}

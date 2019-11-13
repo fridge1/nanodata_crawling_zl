@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package nana.sports;
+
+import "nana/sports/base.proto";
+import "nana/sports/odds.proto";
+import "nana/sports/season.proto";
+import "nana/sports/comp.proto";
+import "nana/sports/team.proto";
+import "nana/sports/venue.proto";
+import "nana/sports/referee.proto";
+import "nana/sports/football/match_lineup.proto";
+import "nana/sports/football/match_incident.proto";
+import "nana/sports/football/match_stats.proto";
+import "nana/sports/football/match_trend.proto";
+import "nana/sports/basketball/match_incident.proto";
+import "nana/sports/basketball/match_stat.proto";
+
+enum MatchBit {
+  UNKNOW = 0;
+  INFO = 1; //信息
+  SCORE = 2; //比分
+  STAT = 3; //技统
+  MLIVE = 4; //动画
+  ODDS = 5; //指数
+  ODDS_HIS = 6; //指数历史
+  LINEUP = 7; //阵容
+  INCIDENT = 8; //事件
+  TREND = 9; //趋势
+  TEAM_STAT = 10; //球队技统
+  PLAYER_STAT = 11; //球员技统
+}
+
+message MatchInfo {
+  Comp comp = 1; //联赛
+  Season season = 2; //赛季
+  Team home_team = 3; //主队
+  Team away_team = 4; //客队
+  Venue venue = 5; //场馆
+  Referee referee = 6; //裁判
+
+  int32 status_id = 7; //比赛状态
+  int32 match_time = 8; //比赛时间
+  Round round = 9; //轮次信息
+  int32 neutral = 10; //是否中立场
+  bytes extra = 15; //额外数据
+}
+
+//比赛
+message Match {
+  message FootballItems {
+    football.MatchLineup lineup = 1; //阵容
+    football.MatchIncident incident = 2; //球队比赛事件
+    football.FootballTeamStats team_stat = 3; //球队技术统计
+    football.FootballPlayerStats player_stat = 5; //球员技术统计
+    football.MatchTrend trend = 6; //比赛趋势
+  }
+
+  message BasketballItems {
+    basketball.BkMatchIncident incident = 1; //文字直播
+    basketball.BkMatchPlayerStats player_stat = 2; //球队技术统计
+    basketball.BkMatchTeamStats team_stat = 3; //球员技术统计
+  }
+
+  int32 id = 10;
+  int32 bit = 1; //位开关
+  MatchInfo info = 2; //信息
+  Score score = 3; //比分
+  Mlive mlive = 4; //动画
+  Stats stat = 5; //技统
+  repeated Odds odds = 6; //指数
+
+  FootballItems football_items = 8;
+  BasketballItems basketball_items = 9;
+
+  bytes extra = 15; //额外数据
+}
