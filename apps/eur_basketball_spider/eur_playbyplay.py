@@ -7,6 +7,7 @@ import queue
 from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_live')
 
+
 class EurLeagueSpider_playbyplay(object):
     def __init__(self):
         self.data_queue = queue.Queue()
