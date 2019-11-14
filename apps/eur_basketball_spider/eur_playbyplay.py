@@ -1,11 +1,11 @@
 import requests
+import traceback
 import json
 from apps.eur_basketball_spider.tools import translate_text, translate_player_name,get_player_id_upsert,key_id
 import time
 import queue
-
-
-
+from common.libs.log import LogMgr
+logger = LogMgr.get('eur_basketball_live')
 
 class EurLeagueSpider_playbyplay(object):
     def __init__(self):
@@ -24,10 +24,10 @@ class EurLeagueSpider_playbyplay(object):
                 localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(match_id)
                 localtion_json_res = requests.get(localtion_url, headers=self.headers)
                 url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(match_id)
-                print(url)
+                logger.info(url)
                 playbyplay_json_res = requests.get(url, headers=headers)
                 if playbyplay_json_res.text == '':
-                    print('playbyplay比赛未开赛。。。')
+                    logger.info('playbyplay比赛未开赛。。。 %s' % match_id)
                 else:
                     playbyplay_json_dict = json.loads(playbyplay_json_res.text)
                     localtion_json_dict = json.loads(localtion_json_res.text)
@@ -210,9 +210,10 @@ class EurLeagueSpider_playbyplay(object):
                                                                'period': period,
                                                                'items': playbyplay_list}
                                                        }}}
+                    logger.info('%s %s'%(match_id, playbyplay_list[-1]['text']))
                     data_queue.put(match_data_playbyplay)
-                    print('文字直播推送完成。。。')
+                    logger.info('文字直播推送完成。。。')
                     if playbyplay_list[-1]['text'] == '比赛结束':
                         break
-            except Exception as e:
-                print(e)
+            except:
+                logger.error(traceback.format_exc())

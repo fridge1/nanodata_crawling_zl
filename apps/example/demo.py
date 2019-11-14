@@ -6,16 +6,16 @@ import time
 
 import traceback
 from nats.aio.client import Client
-from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from pb.nana.biz.base_pb2 import Request, Result
 from pb.nana.biz.example import demo_pb2
 from apps.eur_basketball_spider import eur_boxscore
+from common.libs.log import LogMgr
+logger = LogMgr.get('demo_feed')
 
 def now():
     return int(time.time() * 1000)
 #设置日志
-logger = LogMgr.get('demo_feed')
 
 class DemoFeedSvr(object):
     data = dict()
