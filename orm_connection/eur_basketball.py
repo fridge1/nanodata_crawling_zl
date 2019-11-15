@@ -296,3 +296,5 @@ class BleaguejpBasketballMatch(BaseModel):
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+

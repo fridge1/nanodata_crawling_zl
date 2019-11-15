@@ -102,6 +102,18 @@ def get_manager_id_upsert(player_key):
     return row.id
 
 
+def get_player_position_upsert(player_key):
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    player_data = {
+        'key': player_key,
+    }
+    _, row = BleaguejpBasketballPlayer.upsert(
+        spx_dev_session,
+        'key',
+        player_data
+    )
+    return row.position
+
 
 def get_team_id(team_name):
     spx_dev_session = MysqlSvr.get('spider_zl')
