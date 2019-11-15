@@ -22,7 +22,7 @@ class EurLeagueSpider_boxscore(object):
             try:
                 seasoncode = 2019
                 url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp='%(gamecode,seasoncode)
-                print(url)
+                logger.info(url)
                 boxscore_api_res = requests.get(url, headers=self.headers)
                 if boxscore_api_res.text == '':
                     logger.info('box比赛未开赛。。。 %s' % str(gamecode))
@@ -146,7 +146,7 @@ class EurLeagueSpider_boxscore(object):
                     if minutes_team and minutes_team == '200:00':
                         break
             except Exception as e:
-                print(e)
+                logger.error(e)
 
 
 

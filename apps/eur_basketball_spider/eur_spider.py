@@ -1,10 +1,12 @@
 import requests
-from apps.eur_basketball_spider.tools import tree_parse,time_stamp,manager_name,team_id,translate_dict,team_name,get_manager_id_upsert
+from apps.eur_basketball_spider.tools import tree_parse,time_stamp,manager_name,translate_dict,team_name,get_manager_id_upsert,get_team_id
 import re
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
-import threading
+import schedule
 import time
+
+
 
 
 def get_coach_info(season_id):
@@ -165,7 +167,7 @@ def get_player_info(season_id):
                 player['nationality'] = \
                 player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(':')[-1]
             try:
-                player['team_id'] = team_id[team_key]
+                player['team_id'] = get_team_id(team_key)
             except:
                 player['team_id'] = 0
             try:
@@ -196,12 +198,16 @@ def get_player_info(season_id):
 
 
 def run():
-    season_ids = [2016, 2017, 2018, 2019]
+    season_ids = [2019]
     for season_id in season_ids:
         try:
             get_player_info(season_id)
         except:
             continue
-        # get_coach_info(season_id)
-        # get_team_info(season_id)
-        # get_player_info(season_id)
+
+
+def timing_run():
+    schedule.every().hour.do(run)
+    while True:
+        schedule.run_pending()
+        time.sleep(600)

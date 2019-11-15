@@ -220,4 +220,4 @@ class EurLeagueSpider_playbyplay(object):
                     if playbyplay_list[-1]['text'] == '比赛结束':
                         break
             except Exception as e:
-                print(e)
+                logger.error(e)
