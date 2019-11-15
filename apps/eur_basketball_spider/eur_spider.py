@@ -29,7 +29,7 @@ def get_coach_info(season_id):
             coach_res = requests.get(start_url + coach_url, headers=headers)
             coach_tree = tree_parse(coach_res)
             coach = {}
-            coach['team_key'] = re.findall(r'clubcode=(.*?)&', team_url)[0]
+            # coach['team_key'] = re.findall(r'clubcode=(.*?)&', team_url)[0]
             coach['sport_id'] = 2
             coach['key'] = re.findall(r'pcode=(.*?)&', coach_url)[0]
             coach['name_en'] = coach_tree.xpath('//div[@class="name"]/text()')[0]
@@ -63,7 +63,7 @@ def get_coach_info(season_id):
                 'birthday': coach['birthday'],
                 'age': coach['age'],
                 'nationality': coach['nationality'],
-                'team_key' : coach['team_key'],
+                # 'team_key' : coach['team_key'],
                 'name_zh' : coach['name_zh'],
                 # 'team_id' : coach['team_id'],
                 'logo' : coach['logo'],
@@ -82,6 +82,7 @@ def get_team_info(season_id):
         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
     }
     # season_ids = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
+    start_url = 'https://www.euroleague.net'
     team_map_url = 'https://www.euroleague.net/competition/teams?seasoncode=E%s' % season_id
     print(team_map_url)
     # for season_id in season_ids:
@@ -93,9 +94,16 @@ def get_team_info(season_id):
         team['logo'] = team_info.xpath('./div[@class="RoasterImage"]/a/img/@src')[0]
         team['name_en'] = team_info.xpath('./div[@class="RoasterName"]/a/text()')[0]
         team_url = team_info.xpath('./div[@class="RoasterName"]/a/@href')[0]
-        team['key'] = re.findall(r'clubcode=(.*?)&', team_url)[0]
+        # team['key'] = re.findall(r'clubcode=(.*?)&', team_url)[0]
+        team_url_res = requests.get(start_url+team_url,headers=headers)
+        team_url_tree = tree_parse(team_url_res)
+        coach_url = team_url_tree.xpath('//div[contains(@class,"item")]/div[@class="img"]/a/@href')[-1]
+        if 'showcoach' in coach_url:
+            coach_key = re.findall(r'pcode=(.*?)&', coach_url)[0]
+        else:
+            coach_key=''
         team['sport_id'] = 2
-        team['manager_id'] = get_manager_id_upsert(team['key'])
+        team['manager_id'] = get_manager_id_upsert(coach_key)
         try:
             team['name_zh'] = team_name[team['name_en']]
         except:
