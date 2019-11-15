@@ -6,16 +6,16 @@ import requests
 import json
 import re
 from common.libs.log import LogMgr
-logger = LogMgr.get('eur_basketball_player_stat')
+logger = LogMgr.get('eur_basketball_player_stat_end')
 
 
 
 def player_stat_end(season_id,gamecode):
+    count = 1
     while True:
         headers = {
             'user_agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
         }
-        id = 1
         code = re.findall(r'gamecode=(.*?)&', gamecode)[0]
         box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (code,season_id)
         box_api_res = requests.get(box_api_url,headers=headers)
@@ -78,7 +78,7 @@ def player_stat_end(season_id,gamecode):
                     personal_fouls = int(player_box['FoulsCommited'])
                     plus_minus = int(player_box['Valuation'])
                     data = {
-                        'id' : id,
+                        'id' : int(str(season_id) + str(code) + str(count)),
                         'sport_id' : sport_id,
                         'match_id' : match_id,
                         'team_id' : team_id,
@@ -114,13 +114,13 @@ def player_stat_end(season_id,gamecode):
                         'id',
                         data
                     )
-                    id += 1
+                    count += 1
                     print(data)
-                    minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
-                    if minutes_team and minutes_team == '200:00':
-                        break
-                    else:
-                        continue
+            minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
+            if minutes_team and minutes_team == '200:00':
+                break
+            else:
+                continue
 
 
 
@@ -132,20 +132,15 @@ def player_stat_run():
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
         seasons_id = [2008,2009,2010,2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
-        sport_id = 2
         for season_id in seasons_id:
-            season = '%s-%s' % (str(season_id),str(season_id+1))
             res = requests.get(url % str(season_id),headers=headers)
             res_tree = tree_parse(res)
             typecode_urls = res_tree.xpath('//div[@class="game-center-selector"]/div[2]/select/option/@value')
             for typecode_url in typecode_urls:
-                typecode = re.findall(r'phasetypecode=(.*?)&',typecode_url)[0]
-                print(season_id,typecode)
                 typecode_res = requests.get(start_url + typecode_url, headers=headers)
                 typecode_res_tree = tree_parse(typecode_res)
                 round_urls = typecode_res_tree.xpath('//div[@class="game-center-selector"]/div[3]/select/option/@value')
                 for round_url in round_urls:
-                    round_num = re.findall(r'gamenumber=(.*?)&', round_url)[0]
                     round_res = requests.get(start_url + round_url, headers=headers)
                     round_res_tree = tree_parse(round_res)
                     gamecode_urls = round_res_tree.xpath('//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
