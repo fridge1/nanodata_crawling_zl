@@ -2,6 +2,7 @@ import asyncio
 
 from apps.eur_basketball_spider.eur_client import EurBasketballFeedClient
 from apps.eur_basketball_spider.eur_svr import EurBasketballFeedSvr
+from apps.eur_basketball_spider import eur_spider
 
 servers = ["nats://hub.nats.namincs.com:4222"]
 user = 'nana'
@@ -17,9 +18,11 @@ def start_eur_basketball_client(opts):
     topic = 'euro.bk.live'
     asyncio.run(EurBasketballFeedClient().start(topic=topic, servers=servers, user=user, password=password))
 
+def eur_player_team_manager_info(opts):
+    eur_spider.run()
 
 eur_basketball_actions = {
     'start_eur_basketball_svr': start_eur_basketball_svr,
     'start_eur_basketball_client': start_eur_basketball_client,
-
+    'eur_player_team_manager_info': eur_player_team_manager_info,
 }

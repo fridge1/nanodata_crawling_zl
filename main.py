@@ -17,7 +17,7 @@ group_actions = {
 }
 
 if __name__ == '__main__':
-    actions = dict()
+    actions = dict() 
     for k, v in group_actions.items():
         actions.update(v)
     options = parse_options()
