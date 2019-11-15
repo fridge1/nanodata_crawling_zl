@@ -30,11 +30,11 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
             match_time = change_bjtime(date)
             box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (
             code, season_id)
-            print(box_api_url)
+            # print(box_api_url)
             home_team_url = box_url_tree.xpath('//div[@class="team local "]/a/@href|//div[@class="team local winner"]/a/@href')[0]
-            print(home_team_url)
+            # print(home_team_url)
             away_team_url = box_url_tree.xpath('//div[@class="team road "]/a/@href|//div[@class="team road winner"]/a/@href')[0]
-            print(away_team_url)
+            # print(away_team_url)
             home_team_key = re.findall(r'clubcode=(.*?)&',home_team_url)[0]
             away_team_key = re.findall(r'clubcode=(.*?)&',away_team_url)[0]
             home_team_id = get_team_id(home_team_key)
@@ -45,7 +45,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                 stage_name_zh = '欧篮联%s-%s赛季季后赛' % (str(season_id), str(season_id + 1))
             box_api_res = requests.get(box_api_url, headers=headers)
             if box_api_res.text == '':
-                print('比赛未开始...')
+                logger.info('比赛未开始...')
                 status_id = 0
                 match['sport_id'] = sport_id
                 match['season_id'] = season_id
@@ -107,8 +107,8 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                         'id',
                         match
                     )
-                    print(stage_name_zh)
-                    print(match)
+                    # print(stage_name_zh)
+                    logger.info(match)
                     break
                 else:
                     status_id = 0
