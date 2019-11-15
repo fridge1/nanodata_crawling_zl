@@ -116,7 +116,7 @@ def get_team_id(team_name):
     return row.id
 
 def translate_text(text):
-    data_tran = pd.read_excel('/Users/zhulang/Documents/workspace/Eur_League_basketball_spider/translate.xlsx')
+    data_tran = pd.read_excel('/root/nanodata_crawling/translate.xlsx')
     translate_dict = {}
     key_list = list(data_tran['words_text'])
     value_list = list(data_tran['words_text_zh'])
@@ -167,7 +167,7 @@ def mysql_update_playername_zh():
         charset='utf8mb4'
     )
     cur = conn.cursor()
-    data_tran = pd.read_excel('/Users/zhulang/Documents/workspace/Eur_League_basketball_spider/translate_player.xlsx')
+    data_tran = pd.read_excel('/root/nanodata_crawling/translate_player.xlsx')
     key_list = list(data_tran['id'])
     value_list = list(data_tran['name_en'])
     for index in range(len(key_list)):
