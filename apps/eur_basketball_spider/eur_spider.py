@@ -5,6 +5,8 @@ from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
 import schedule
 import time
+from common.libs.log import LogMgr
+logger = LogMgr.get('eur_basketball_player_coach_team')
 
 
 
@@ -13,11 +15,8 @@ def get_coach_info(season_id):
     headers = {
         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
     }
-    # season_ids = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
     start_url = 'https://www.euroleague.net'
     team_map_url = 'https://www.euroleague.net/competition/teams?seasoncode=E%s' % season_id
-    print(team_map_url)
-    # for season_id in season_ids:
     teams_res = requests.get(team_map_url,headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="RoasterName"]/a/@href')
@@ -29,7 +28,6 @@ def get_coach_info(season_id):
             coach_res = requests.get(start_url + coach_url, headers=headers)
             coach_tree = tree_parse(coach_res)
             coach = {}
-            # coach['team_key'] = re.findall(r'clubcode=(.*?)&', team_url)[0]
             coach['sport_id'] = 2
             coach['key'] = re.findall(r'pcode=(.*?)&', coach_url)[0]
             coach['name_en'] = coach_tree.xpath('//div[@class="name"]/text()')[0]
@@ -43,10 +41,6 @@ def get_coach_info(season_id):
             except:
                 coach['logo'] = ''
                 print('没有该教练的图片...')
-            # try:
-            #     coach['team_id'] = team_id[coach['team_key']]
-            # except:
-            #     coach['team_id'] = ''
             time_birthday = coach_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
             coach['birthday'], coach['age'] = time_stamp(time_birthday)
             try:
@@ -63,9 +57,7 @@ def get_coach_info(season_id):
                 'birthday': coach['birthday'],
                 'age': coach['age'],
                 'nationality': coach['nationality'],
-                # 'team_key' : coach['team_key'],
                 'name_zh' : coach['name_zh'],
-                # 'team_id' : coach['team_id'],
                 'logo' : coach['logo'],
             }
             spx_dev_session = MysqlSvr.get('spider_zl')
@@ -74,6 +66,7 @@ def get_coach_info(season_id):
                 'key',
                 data
             )
+            logger.info(data)
 
 
 
@@ -81,11 +74,9 @@ def get_team_info(season_id):
     headers = {
         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
     }
-    # season_ids = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
     start_url = 'https://www.euroleague.net'
     team_map_url = 'https://www.euroleague.net/competition/teams?seasoncode=E%s' % season_id
     print(team_map_url)
-    # for season_id in season_ids:
     teams_res = requests.get(team_map_url,headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="teams"]/div[@class="item"]')
@@ -94,7 +85,6 @@ def get_team_info(season_id):
         team['logo'] = team_info.xpath('./div[@class="RoasterImage"]/a/img/@src')[0]
         team['name_en'] = team_info.xpath('./div[@class="RoasterName"]/a/text()')[0]
         team_url = team_info.xpath('./div[@class="RoasterName"]/a/@href')[0]
-        # team['key'] = re.findall(r'clubcode=(.*?)&', team_url)[0]
         team_url_res = requests.get(start_url+team_url,headers=headers)
         team_url_tree = tree_parse(team_url_res)
         coach_url = team_url_tree.xpath('//div[contains(@class,"item")]/div[@class="img"]/a/@href')[-1]
@@ -116,6 +106,7 @@ def get_team_info(season_id):
             'key',
             team
         )
+        logger.info(team)
 
 
 def get_player_info(season_id):
@@ -123,11 +114,8 @@ def get_player_info(season_id):
         'user_agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
     }
 
-    # season_ids = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
     start_url = 'https://www.euroleague.net'
     team_map_url = 'https://www.euroleague.net/competition/teams?seasoncode=E%s' % season_id
-    print(team_map_url)
-    # for season_id in season_ids:
     teams_res = requests.get(team_map_url, headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="teams"]/div[@class="item"]')
@@ -203,6 +191,7 @@ def get_player_info(season_id):
                 'key',
                 data
             )
+            logger.info(data)
 
 
 def run():
@@ -210,7 +199,9 @@ def run():
     for season_id in season_ids:
         try:
             get_player_info(season_id)
-        except:
+            get_coach_info(season_id)
+        except Exception as e:
+            logger.error(e)
             continue
 
 
