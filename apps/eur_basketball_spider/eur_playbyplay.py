@@ -208,7 +208,7 @@ class EurLeagueSpider_playbyplay(object):
                                 }
                                 if playbyplay['words_text']:
                                     playbyplay_list.append(data)
-                            period += 1
+                        period += 1
                     match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
                                                        'basketball_items': {
                                                            'incident': {
