@@ -37,6 +37,7 @@ def get_coach_info():
                     coach_img = coach_tree.xpath('//div[@class="coach-img"]/img/@src')[0]
                     coach['logo'] = coach_img
                 except:
+                    coach['logo'] = ''
                     print('没有该教练的图片...')
                 # try:
                 #     coach['team_id'] = team_id[coach['team_key']]
