@@ -189,35 +189,36 @@ class EurLeagueSpider_playbyplay(object):
                                     playbyplay['time_info'] = '10:00'
                                 elif text == '比赛结束' or text == '本节结束':
                                     playbyplay['time_info'] = '00:00'
-                                data = {
-                                    'id': int(str(13) + '0000') + int(gamecode),
-                                    'type': 0,
-                                    'home_score': playbyplay['POINTS_A'],
-                                    'away_score': playbyplay['POINTS_B'],
-                                    'belong': belong,
-                                    'location_x' : int(local_y),
-                                    'location_y' : int(local_x),
-                                    'period': playbyplay['period'],
-                                    'period_time': playbyplay['time_info'],
-                                    'text': text,
-                                    'shooting_play': shooting_play,
-                                    'scoring_play': scoring_play,
-                                    'score_value': score_value,
-                                    'text_en': playbyplay['words_text'],
-                                    'player_ids' : [playbyplay['id']]
-                                }
-                                if playbyplay['words_text']:
-                                    playbyplay_list.append(data)
-                            period += 1
-                    match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
-                                                       'basketball_items': {
-                                                           'incident': {
-                                                               'period': period,
-                                                               'items': playbyplay_list}
-                                                       }}}
-                    data_queue.put(match_data_playbyplay)
-                    logger.info('文字直播推送完成。。。 %s' % str(gamecode))
-                    if playbyplay_list[-1]['text'] == '比赛结束':
-                        break
+                                if text:
+                                    data = {
+                                        'id': int(str(13) + '0000') + int(gamecode),
+                                        'type': 0,
+                                        'home_score': playbyplay['POINTS_A'],
+                                        'away_score': playbyplay['POINTS_B'],
+                                        'belong': belong,
+                                        'location_x' : int(local_y),
+                                        'location_y' : int(local_x),
+                                        'period': playbyplay['period'],
+                                        'period_time': playbyplay['time_info'],
+                                        'text': text,
+                                        'shooting_play': shooting_play,
+                                        'scoring_play': scoring_play,
+                                        'score_value': score_value,
+                                        'text_en': playbyplay['words_text'],
+                                        'player_ids' : [playbyplay['id']]
+                                    }
+                                    if playbyplay['words_text']:
+                                        playbyplay_list.append(data)
+                                period += 1
+                        match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
+                                                           'basketball_items': {
+                                                               'incident': {
+                                                                   'period': period,
+                                                                   'items': playbyplay_list}
+                                                           }}}
+                        data_queue.put(match_data_playbyplay)
+                        logger.info('文字直播推送完成。。。 %s' % str(gamecode))
+                        if playbyplay_list[-1]['text'] == '比赛结束':
+                            break
             except Exception as e:
                 logger.error(e)

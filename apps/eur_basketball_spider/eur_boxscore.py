@@ -105,7 +105,13 @@ class EurLeagueSpider_boxscore(object):
                             player['score_difference'] = home_player['Valuation']
                             player['point'] = home_player['Points']
                             player['first_publish'] = home_player['IsStarter']
-                            player['on_ground'] = home_player['IsPlaying']
+                            first = home_player['IsPlaying']
+                            if first == 1:
+                                player['on_ground'] = 0
+                            elif first == 0:
+                                player['on_ground'] = 1
+                            else:
+                                player['on_ground'] = 0
                             player_data = {
                                 'belong':int(player['belong']),
                                 'player_id':int(player['player_id']),
