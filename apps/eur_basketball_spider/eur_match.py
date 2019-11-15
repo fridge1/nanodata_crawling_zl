@@ -148,7 +148,7 @@ def match_run():
         }
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        seasons_id = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
+        seasons_id = [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
         sport_id = 2
         for season_id in seasons_id:
             season = '%s-%s' % (str(season_id),str(season_id+1))
