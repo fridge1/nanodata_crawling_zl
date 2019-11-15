@@ -209,16 +209,16 @@ class EurLeagueSpider_playbyplay(object):
                                     }
                                     if playbyplay['words_text']:
                                         playbyplay_list.append(data)
-                                period += 1
-                        match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
-                                                           'basketball_items': {
-                                                               'incident': {
-                                                                   'period': period,
-                                                                   'items': playbyplay_list}
-                                                           }}}
-                        data_queue.put(match_data_playbyplay)
-                        logger.info('文字直播推送完成。。。 %s' % str(gamecode))
-                        if playbyplay_list[-1]['text'] == '比赛结束':
-                            break
+                            period += 1
+                    match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
+                                                       'basketball_items': {
+                                                           'incident': {
+                                                               'period': period,
+                                                               'items': playbyplay_list}
+                                                       }}}
+                    data_queue.put(match_data_playbyplay)
+                    logger.info('文字直播推送完成。。。 %s' % str(gamecode))
+                    if playbyplay_list[-1]['text'] == '比赛结束':
+                        break
             except Exception as e:
                 logger.error(e)
