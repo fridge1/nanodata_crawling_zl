@@ -1,11 +1,12 @@
 import requests
-import traceback
 import json
-from apps.eur_basketball_spider.tools import translate_text, translate_player_name,get_player_id_upsert,key_id
+from apps.eur_basketball_spider.tools import translate_text, translate_player_name,get_player_id_upsert
 import time
 import queue
 from common.libs.log import LogMgr
-logger = LogMgr.get('eur_basketball_live')
+logger = LogMgr.get('eur_basketball_playbyplay_live')
+
+
 
 
 class EurLeagueSpider_playbyplay(object):
@@ -15,20 +16,20 @@ class EurLeagueSpider_playbyplay(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
 
-    def start_requests_2(self, data_queue, match_id):
+    def start_requests_2(self, data_queue, gamecode):
         headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
         while True:
             time.sleep(10)
             try:
-                localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(match_id)
+                localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
                 localtion_json_res = requests.get(localtion_url, headers=self.headers)
-                url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(match_id)
-                logger.info(url)
+                url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
+                print(url)
                 playbyplay_json_res = requests.get(url, headers=headers)
                 if playbyplay_json_res.text == '':
-                    logger.info('playbyplay比赛未开赛。。。 %s' % match_id)
+                    logger.info('playbyplay比赛未开赛。。。 %s' % str(gamecode))
                 else:
                     playbyplay_json_dict = json.loads(playbyplay_json_res.text)
                     localtion_json_dict = json.loads(localtion_json_res.text)
@@ -49,7 +50,10 @@ class EurLeagueSpider_playbyplay(object):
                         if playbyplay_json_dict[key]:
                             for playbyplay_info in playbyplay_json_dict[key]:
                                 playbyplay = {}
-                                playbyplay['id'] = key_id[playbyplay_info['PLAYER_ID'][1:]]
+                                try:
+                                    playbyplay['id'] = get_player_id_upsert(playbyplay_info['PLAYER_ID'][1:].strip())
+                                except:
+                                    playbyplay['id'] = 0
                                 playbyplay['sport_id'] = 2
                                 playbyplay['period'] = period
                                 playbyplay['key'] = playbyplay_info['CODETEAM']
@@ -186,7 +190,7 @@ class EurLeagueSpider_playbyplay(object):
                                 elif text == '比赛结束' or text == '本节结束':
                                     playbyplay['time_info'] = '00:00'
                                 data = {
-                                    'id': int(str(season_id) + str(match_id)),
+                                    'id': int(str(13) + '0000') + int(gamecode),
                                     'type': 0,
                                     'home_score': playbyplay['POINTS_A'],
                                     'away_score': playbyplay['POINTS_B'],
@@ -205,16 +209,15 @@ class EurLeagueSpider_playbyplay(object):
                                 if playbyplay['words_text']:
                                     playbyplay_list.append(data)
                             period += 1
-                    match_data_playbyplay = {'match': {'id': int(str(season_id) + str(match_id)),
+                    match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
                                                        'basketball_items': {
                                                            'incident': {
                                                                'period': period,
                                                                'items': playbyplay_list}
                                                        }}}
-                    logger.info('%s %s'%(match_id, playbyplay_list[-1]['text']))
                     data_queue.put(match_data_playbyplay)
-                    logger.info('文字直播推送完成。。。')
+                    logger.info('文字直播推送完成。。。 %s' % str(gamecode))
                     if playbyplay_list[-1]['text'] == '比赛结束':
                         break
-            except:
-                logger.error(traceback.format_exc())
+            except Exception as e:
+                print(e)

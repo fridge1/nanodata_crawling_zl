@@ -1,9 +1,10 @@
-import requests
 from apps.eur_basketball_spider.tools import tree_parse, get_player_id,get_team_id,get_player_id_upsert
 from apps.eur_basketball_spider.eur_playbyplay import *
 import queue
 from orm_connection.eur_basketball import *
 from orm_connection.orm_session import MysqlSvr
+from common.libs.log import LogMgr
+logger = LogMgr.get('eur_basketball_boxscore_live')
 
 
 
@@ -24,7 +25,7 @@ class EurLeagueSpider_boxscore(object):
                 print(url)
                 boxscore_api_res = requests.get(url, headers=self.headers)
                 if boxscore_api_res.text == '':
-                    print('box比赛未开赛。。。')
+                    logger.info('box比赛未开赛。。。 %s' % str(gamecode))
                 else:
                     boxscore_json_dict = json.loads(boxscore_api_res.text)
                     boxscore_player = boxscore_json_dict['Stats']
@@ -132,7 +133,7 @@ class EurLeagueSpider_boxscore(object):
                                 'shirt_number':int(player['shirt_number']),
                             }
                             player_stats_list.append(player_data)
-                        match_id = int(str(seasoncode) + str(gamecode))
+                    match_id = int(str(13) + '0000') + int(gamecode)
                     match_data_boxscore = {'match': {'id': int(match_id),
                                             'basketball_items': {
                                                 'player_stat': {
@@ -140,7 +141,7 @@ class EurLeagueSpider_boxscore(object):
                                                 'team_stat': {'items': team_stats_list}
                                             }}}
                     data_queue.put(match_data_boxscore)
-                    print('球员技术统计推送完成。。。')
+                    logger.info('球员技术统计推送完成。。。 %s' % str(gamecode))
                     minutes_team = boxscore_json_dict['Stats'][0]['totr']['Minutes']
                     if minutes_team and minutes_team == '200:00':
                         break
@@ -148,16 +149,6 @@ class EurLeagueSpider_boxscore(object):
                 print(e)
 
 
-
-
-                        #                 if '#graphic' in info_url:
-                        #                     print(self.start_url + game_url + info_url)
-                        #
-                        #                 if '#shooting' in info_url:
-                        #                     api_url = 'https://live.euroleague.net/api/Points?' + game_url.split('?')[-1] + '&disp='
-                        #                     print(api_url)
-                        # if 'PO' == category or 'FF' == category:
-                        #     pass
 
 
 
