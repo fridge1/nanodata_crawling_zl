@@ -12,6 +12,9 @@ logger = LogMgr.get('eur_basketball_match_live')
 
 
 def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
+    headers = {
+        'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
+    }
     spx_dev_session = MysqlSvr.get('spider_zl')
     code = re.findall(r'gamecode=(.*?)&', gamecode)[0]
     match_id = seasons[str(season_id)+'-'+str(season_id+1)]
