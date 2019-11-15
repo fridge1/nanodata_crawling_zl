@@ -45,6 +45,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                 stage_name_zh = '欧篮联%s-%s赛季季后赛' % (str(season_id), str(season_id + 1))
             box_api_res = requests.get(box_api_url, headers=headers)
             if box_api_res.text == '':
+                logger.info(box_api_url)
                 logger.info('比赛未开始...')
                 status_id = 0
                 match['sport_id'] = sport_id
