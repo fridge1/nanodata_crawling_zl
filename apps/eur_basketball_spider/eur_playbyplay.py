@@ -46,7 +46,7 @@ class EurLeagueSpider_playbyplay(object):
                     playbyplay_list = []
                     home_team = playbyplay_json_dict['TeamA']
                     away_team = playbyplay_json_dict['TeamB']
-                    for key in key_list[6:-1]:
+                    for key in key_list[6:]:
                         if playbyplay_json_dict[key]:
                             for playbyplay_info in playbyplay_json_dict[key]:
                                 playbyplay = {}
