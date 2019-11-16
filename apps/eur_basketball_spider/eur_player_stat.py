@@ -11,7 +11,7 @@ logger = LogMgr.get('eur_basketball_player_stat_end')
 
 
 def player_stat_end(season_id,gamecode):
-    count = 1
+    play_stat_id = seasons[str(season_id)+'-'+str(season_id+1)]
     while True:
         headers = {
             'user_agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
@@ -78,7 +78,7 @@ def player_stat_end(season_id,gamecode):
                     personal_fouls = int(player_box['FoulsCommited'])
                     plus_minus = int(player_box['Valuation'])
                     data = {
-                        'id' : int(str(season_id) + str(code) + str(count)),
+                        'id' : int(str(play_stat_id)+str(code)+str(layer_key)),
                         'sport_id' : sport_id,
                         'match_id' : match_id,
                         'team_id' : team_id,
@@ -114,7 +114,6 @@ def player_stat_end(season_id,gamecode):
                         'id',
                         data
                     )
-                    count += 1
                     print(data)
             minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
             if minutes_team and minutes_team == '200:00':
