@@ -78,7 +78,7 @@ def player_stat_end(season_id,gamecode):
                     personal_fouls = int(player_box['FoulsCommited'])
                     plus_minus = int(player_box['Valuation'])
                     data = {
-                        'id' : int(str(play_stat_id)+str(code)+str(layer_key)),
+                        'id' : int(str(play_stat_id)+str(code)+str(player_key)),
                         'sport_id' : sport_id,
                         'match_id' : match_id,
                         'team_id' : team_id,
