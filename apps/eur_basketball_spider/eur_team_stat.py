@@ -131,7 +131,7 @@ def player_stat_run():
         }
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        seasons_id = [2008,2009,2010,2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
+        seasons_id = [2008,2009,2010,2012, 2013, 2015, 2016, 2017, 2018, 2019]
         for season_id in seasons_id:
             res = requests.get(url % str(season_id),headers=headers)
             res_tree = tree_parse(res)

@@ -3,14 +3,14 @@ from orm_connection.orm_base import *
 from sqlalchemy.orm import sessionmaker
 
 
+engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
 
 
-
-prefix = 'eur_league_basketball_'
+prefix = 'nbl_league_basketball_'
 
 
 # 球队表  ----2019现阶段b1 b2的36支球队已存
-class BleaguejpBasketballTeam(BaseModel):
+class BleagueNblBasketballTeam(BaseModel):
     __tablename__ = prefix + 'team'
 
     # id和外部表id
@@ -53,7 +53,7 @@ class BleaguejpBasketballTeam(BaseModel):
 
 
 # 球员表  -----2019所有b1b2的球队的现役球员已存
-class BleaguejpBasketballPlayer(BaseModel):
+class BleagueNblBasketballPlayer(BaseModel):
     __tablename__ = prefix + 'player'
 
     # id和外部表id
@@ -96,7 +96,7 @@ class BleaguejpBasketballPlayer(BaseModel):
 
 
 # 教练表
-class BleaguejpBasketballManager(BaseModel):
+class BleagueNblBasketballManager(BaseModel):
     __tablename__ = prefix + 'manager'
 
     # id和外部表id
@@ -126,7 +126,7 @@ class BleaguejpBasketballManager(BaseModel):
 
 
 # 场馆表  ----- 已存   城市表和场馆表的key都是字符串类型   也就是城市名和场馆名字
-class BleaguejpBasketballVenue(BaseModel):
+class BleagueNblBasketballVenue(BaseModel):
     __tablename__ = prefix + 'venue'
 
     # id和外部表id
@@ -153,7 +153,7 @@ class BleaguejpBasketballVenue(BaseModel):
 
 
 # 城市表  -----已存
-class BleaguejpBasketballCity(BaseModel):
+class BleagueNblBasketballCity(BaseModel):
     __tablename__ = prefix + 'city'
 
     # id和外部表id
@@ -169,7 +169,7 @@ class BleaguejpBasketballCity(BaseModel):
 
 
 # 毕业院校 ----- 已存
-class BleaguejpBasketballSchool(BaseModel):
+class BleagueNblBasketballSchool(BaseModel):
     __tablename__ = prefix + 'school'
 
     # id和外部表id
@@ -185,7 +185,7 @@ class BleaguejpBasketballSchool(BaseModel):
 
 
 # 赛事
-class BleaguejpBasketballCompetition(BaseModel):
+class BleagueNblBasketballCompetition(BaseModel):
     __tablename__ = prefix + 'competition'
 
     # id和外部表id
@@ -223,7 +223,7 @@ class BleaguejpBasketballCompetition(BaseModel):
 
 
 # 赛季
-class BleaguejpBasketballSeason(BaseModel):
+class BleagueNblBasketballSeason(BaseModel):
     __tablename__ = prefix + 'season'
 
     # id和外部表id
@@ -248,7 +248,7 @@ class BleaguejpBasketballSeason(BaseModel):
 
 
 # 比赛阶段
-class BleaguejpBasketballStage(BaseModel):
+class BleagueNblBasketballStage(BaseModel):
     __tablename__ = prefix + 'stage'
     # id和外部表id
     id = Column(Integer, primary_key=True, comment='id')
@@ -272,7 +272,7 @@ class BleaguejpBasketballStage(BaseModel):
 
 
 # 比赛表      -------有些球队已经不在b1  b2了  信息不完整
-class BleaguejpBasketballMatch(BaseModel):
+class BleagueNblBasketballMatch(BaseModel):
     __tablename__ = prefix + 'match'
     # id和外部表id
     id = Column(Integer, primary_key=True, comment='id')  # 比赛id
@@ -304,7 +304,7 @@ class BleaguejpBasketballMatch(BaseModel):
 
 
 # 球队阵容
-class BleaguejpBasketballTeamLineup(BaseModel):
+class BleagueNblBasketballTeamLineup(BaseModel):
     __tablename__ = prefix + 'team_lineup'
 
     # id和外部表id
@@ -329,7 +329,7 @@ class BleaguejpBasketballTeamLineup(BaseModel):
 
 
 # 单场阵容信息
-class BleaguejpBasketballLineupInfo(BaseModel):
+class BleagueNblBasketballLineupInfo(BaseModel):
     __tablename__ = prefix + 'match_lineup_info'
 
     # id和外部表id
@@ -353,7 +353,7 @@ class BleaguejpBasketballLineupInfo(BaseModel):
 
 
 # 积分榜升降级
-class BleaguejpBasketballPromotion(BaseModel):
+class BleagueNblBasketballPromotion(BaseModel):
     __tablename__ = prefix + 'promotion'
 
     # id和外部表id
@@ -372,7 +372,7 @@ class BleaguejpBasketballPromotion(BaseModel):
 
 
 # 积分榜
-class BleaguejpBasketballTable(BaseModel):
+class BleagueNblBasketballTable(BaseModel):
     __tablename__ = prefix + 'table'
 
     # id和外部表id
@@ -398,7 +398,7 @@ class BleaguejpBasketballTable(BaseModel):
 
 
 # 积分榜详细数据
-class BleaguejpBasketballTableRow(BaseModel):
+class BleagueNblBasketballTableRow(BaseModel):
     __tablename__ = prefix + 'table_row'
 
     # id和外部表id
@@ -436,7 +436,7 @@ class BleaguejpBasketballTableRow(BaseModel):
 
 
 # 单场比赛球队统计        --------第三页   已存
-class BleaguejpBasketballTeamStats(BaseModel):
+class BleagueNblBasketballTeamStats(BaseModel):
     __tablename__ = prefix + 'match_team_stat'
 
     # id和外部表id
@@ -485,7 +485,7 @@ class BleaguejpBasketballTeamStats(BaseModel):
 
 
 # 单场比赛球员统计       -------第三页内容  核心
-class BleaguejpBasketballPlayerStats(BaseModel):
+class BleagueNblBasketballPlayerStats(BaseModel):
     __tablename__ = prefix + 'match_player_stat'
 
     # id和外部表id
@@ -534,7 +534,7 @@ class BleaguejpBasketballPlayerStats(BaseModel):
 
 
 # 球队榜统计
-class BleaguejpBasketballTeamTotal(BaseModel):
+class BleagueNblBasketballTeamTotal(BaseModel):
     __tablename__ = prefix + 'team_total'
 
     # id和外部表id
@@ -588,7 +588,7 @@ class BleaguejpBasketballTeamTotal(BaseModel):
 
 
 # 球员榜统计
-class BleaguejpBasketballPlayerTotal(BaseModel):
+class BleagueNblBasketballPlayerTotal(BaseModel):
     __tablename__ = prefix + 'player_total'
 
     # id和外部表id
@@ -642,7 +642,7 @@ class BleaguejpBasketballPlayerTotal(BaseModel):
 
 
 # 球队榜统计(计算)
-class BleaguejpBasketballTeamTotalCal(BaseModel):
+class BleagueNblBasketballTeamTotalCal(BaseModel):
     __tablename__ = prefix + 'team_total_cal'
 
     # id和外部表id
@@ -697,7 +697,7 @@ class BleaguejpBasketballTeamTotalCal(BaseModel):
 
 
 # 球员榜统计(计算)
-class BleaguejpBasketballPlayerTotalCal(BaseModel):
+class BleagueNblBasketballPlayerTotalCal(BaseModel):
     __tablename__ = prefix + 'player_total_cal'
 
     # id和外部表id
@@ -889,3 +889,4 @@ class Xmlchangekey(BaseModel):
     zh_rTW = Column(String(100), nullable=False, default='', comment='zh_rTW')
     zu = Column(String(100), nullable=False, default='', comment='zu')
 
+BaseModel.metadata.create_all(engine)

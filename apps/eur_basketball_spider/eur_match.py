@@ -72,6 +72,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                 )
                 print(stage_name_zh)
                 print(match)
+                break
             else:
                 box_api_dict = json.loads(box_api_res.text)
                 key_list = list(box_api_dict['ByQuarter'][0].keys())[1:]
@@ -137,7 +138,8 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                     )
                     print(stage_name_zh)
                     print(match)
-        spx_dev_session.close()
+                    break
+    spx_dev_session.close()
 
 
 
