@@ -295,6 +295,7 @@ class BleaguejpBasketballMatch(BaseModel):
     away_scores = Column(String(255), nullable=False, default='', comment='客队详细比分')  # 包含每节比分下一个
     # 通用字段
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
+    open_id = Column(Integer, nullable=False, server_default='0', default=0, comment='雷速关联字段')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 

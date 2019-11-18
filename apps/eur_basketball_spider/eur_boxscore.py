@@ -146,11 +146,12 @@ class EurLeagueSpider_boxscore(object):
                                                     'items': player_stats_list},
                                                 'team_stat': {'items': team_stats_list}
                                             }}}
-                    data_queue.put(match_data_boxscore)
-                    logger.info('球员技术统计推送完成。。。 %s' % str(gamecode))
-                    minutes_team = boxscore_json_dict['Stats'][0]['totr']['Minutes']
-                    if minutes_team and minutes_team == '200:00' or '225:00':
-                        break
+                    if player_stats_list:
+                        data_queue.put(match_data_boxscore)
+                        logger.info('球员技术统计推送完成。。。 %s' % str(gamecode))
+                        minutes_team = boxscore_json_dict['Stats'][0]['totr']['Minutes']
+                        if minutes_team and minutes_team == '200:00' or '225:00':
+                            break
             except Exception as e:
                 logger.error(e)
 

@@ -47,6 +47,7 @@ class EurBasketballFeedSvr(object):
             await self.pub_time_data(self.topic, data)
             await asyncio.sleep(0.1)
 
+
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic
         await self.nc.subscribe(rpc_topic, cb=self.msg_handler, queue='rpc')

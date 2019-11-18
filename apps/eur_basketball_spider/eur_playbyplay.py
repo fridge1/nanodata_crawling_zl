@@ -215,9 +215,10 @@ class EurLeagueSpider_playbyplay(object):
                                                                'period': period,
                                                                'items': playbyplay_list}
                                                        }}}
-                    data_queue.put(match_data_playbyplay)
-                    logger.info('文字直播推送完成。。。 %s' % str(gamecode))
-                    if playbyplay_list[-1]['text'] == '比赛结束':
-                        break
+                    if playbyplay_list:
+                        data_queue.put(match_data_playbyplay)
+                        logger.info('文字直播推送完成。。。 %s' % str(gamecode))
+                        if playbyplay_list[-1]['text'] == '比赛结束':
+                            break
             except Exception as e:
                 logger.error(e)
