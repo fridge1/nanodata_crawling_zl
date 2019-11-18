@@ -183,7 +183,7 @@ def get_player_info(season_id):
                 'shirt_number': player['shirt_number'],
                 'position': player['position'],
                 'team_id' : player['team_id'],
-                'logo' : player['logo'],
+                # 'logo' : player['logo'],
             }
             spx_dev_session = MysqlSvr.get('spider_zl')
             BleaguejpBasketballPlayer.upsert(

@@ -116,7 +116,7 @@ def player_stat_end(season_id,gamecode):
                     )
                     print(data)
             minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
-            if minutes_team and minutes_team == '200:00':
+            if minutes_team == '200:00':
                 break
             else:
                 continue
