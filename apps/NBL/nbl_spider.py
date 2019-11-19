@@ -16,7 +16,7 @@ def player_info():
         id = data['personId']
         sport_id = 2
         team_id = data['primaryTeamId']
-        name_en = data['firstName'] + data['familyName']
+        name_en = data['firstName'] + ' ' + data['familyName']
         try:
             logo = data['images']['photo']['L1']['url']
         except:

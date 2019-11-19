@@ -4,7 +4,6 @@ import re
 import json
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
-import threading
 import time
 from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_match_live')
@@ -21,7 +20,6 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
     while True:
         time.sleep(10)
         match = {}
-        # gamecode = re.findall(r'gamecode=(.*?)&', gamecode_url)[0]
         box_url = 'https://www.euroleague.net/main/results/showgame?gamecode=%s&seasoncode=E%s' % (code, season_id)
         box_url_res = requests.get(box_url, headers=headers)
         if box_url_res.status_code == 200:
@@ -30,11 +28,8 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
             match_time = change_bjtime(date)
             box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (
             code, season_id)
-            # print(box_api_url)
             home_team_url = box_url_tree.xpath('//div[@class="team local "]/a/@href|//div[@class="team local winner"]/a/@href')[0]
-            # print(home_team_url)
             away_team_url = box_url_tree.xpath('//div[@class="team road "]/a/@href|//div[@class="team road winner"]/a/@href')[0]
-            # print(away_team_url)
             home_team_key = re.findall(r'clubcode=(.*?)&',home_team_url)[0]
             away_team_key = re.findall(r'clubcode=(.*?)&',away_team_url)[0]
             home_team_id = get_team_id(home_team_key)
@@ -47,7 +42,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
             if box_api_res.text == '':
                 logger.info(box_api_url)
                 logger.info('比赛未开始...')
-                status_id = 0
+                status_id = 1
                 match['sport_id'] = sport_id
                 match['season_id'] = season_id
                 match['home_team_id'] = home_team_id
@@ -64,7 +59,6 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                 match['status_id'] = status_id
                 match['season_id'] = seasons[season]
                 match['id'] = int(str(match_id) + '0000') + int(code)
-                # spx_dev_session = MysqlSvr.get('spider_zl')
                 BleaguejpBasketballMatch.upsert(
                     spx_dev_session,
                     'id',
@@ -86,7 +80,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                 home_score = box_api_dict['EndOfQuarter'][0][key_list[-1]]
                 away_score = box_api_dict['EndOfQuarter'][1][key_list[-1]]
                 if box_api_dict['Live'] == False:
-                    status_id = 1
+                    status_id = 10
                     match['sport_id'] = sport_id
                     match['season_id'] = season_id
                     match['home_team_id'] = home_team_id
@@ -97,23 +91,21 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                     match['round_num'] = round_num
                     match['home_half_score'] = int(home_half_score)
                     match['away_half_score'] = int(away_half_score)
-                    match['home_scores'] = str(home_scores)
-                    match['away_scores'] = str(away_scores)
+                    match['home_scores'] = str(home_scores).replace(']','') + ', ' + str(home_score) + ']'
+                    match['away_scores'] = str(away_scores).replace(']','') + ', ' + str(away_score) + ']'
                     match['stage_id'] = stage_id[stage_name_zh]
                     match['status_id'] = status_id
                     match['season_id'] = seasons[season]
                     match['id'] = int(str(match_id) + '0000') + int(code)
-                    # spx_dev_session = MysqlSvr.get('spider_zl')
                     BleaguejpBasketballMatch.upsert(
                         spx_dev_session,
                         'id',
                         match
                     )
-                    # print(stage_name_zh)
                     logger.info(match)
                     break
                 else:
-                    status_id = 0
+                    status_id = 1
                     match['sport_id'] = sport_id
                     match['season_id'] = season_id
                     match['home_team_id'] = home_team_id
@@ -130,7 +122,6 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                     match['status_id'] = status_id
                     match['season_id'] = seasons[season]
                     match['id'] = int(str(match_id) + '0000') + int(code)
-                    # spx_dev_session = MysqlSvr.get('spider_zl')
                     BleaguejpBasketballMatch.upsert(
                         spx_dev_session,
                         'id',
