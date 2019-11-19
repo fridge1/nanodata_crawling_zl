@@ -36,3 +36,12 @@ def get_team_id(team_name):
     )
     return row.id
 
+
+def change_bjtime(date):
+    time_format = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d %H:%M:%S')
+    timeArray1 = datetime.datetime.strptime(timeArray, '%Y-%m-%d %H:%M:%S')
+    bj_time = (timeArray1+datetime.timedelta(hours=4)).strftime("%Y-%m-%d %H:%M:%S")
+    bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d %H:%M:%S')
+    timeStamp = int(time.mktime(bj_time1.timetuple()))
+    return timeStamp

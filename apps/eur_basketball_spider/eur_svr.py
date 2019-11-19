@@ -3,9 +3,7 @@ import queue
 import time
 import traceback
 import threading
-
 from stan.aio.client import Client as STAN
-
 from apps.eur_basketball_spider.eur_boxscore import EurLeagueSpider_boxscore
 from apps.eur_basketball_spider.eur_playbyplay import EurLeagueSpider_playbyplay
 from common.libs.log import LogMgr
@@ -14,6 +12,7 @@ from common.utils import NatsSvr
 from pb.nana.biz.base_pb2 import Request, Result
 from pb.nana.biz.example import demo_pb2
 from pb.nana.biz.japan_ball import match_pb2
+import os
 
 
 def now():
@@ -37,7 +36,7 @@ class EurBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        gamecode_list = [68, 69, 70, 71]
+        gamecode_list = [73, 74, 75, 76,79,77,78]
         for i in gamecode_list:
             threading.Thread(target=EurLeagueSpider_playbyplay().start_requests_2, args=(self.data_queue_svr,i)).start()
             threading.Thread(target=EurLeagueSpider_boxscore().start_requests,args=(self.data_queue_svr,i)).start()
@@ -46,6 +45,7 @@ class EurBasketballFeedSvr(object):
             print('get_data+++++++')
             await self.pub_time_data(self.topic, data)
             await asyncio.sleep(0.1)
+            os._exit(1)
 
 
     async def start_feed_rpc(self):
