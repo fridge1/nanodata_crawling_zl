@@ -23,7 +23,7 @@ def eur_player_team_manager_info(opts):
     eur_spider.timing_run()
 
 def eur_match_info(opts):
-    eur_match.match_run()
+    eur_match.run()
 
 def eur_player_stat_info(opts):
     eur_player_stat.player_stat_run()

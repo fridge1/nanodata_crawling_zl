@@ -165,7 +165,10 @@ def match_run():
         logger.error(e)
 
 
-
+def run():
+    while True:
+        match_run()
+        time.sleep(7200)
 
 
 
