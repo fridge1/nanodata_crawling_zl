@@ -36,7 +36,7 @@ class EurBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        gamecode_list = [73, 74, 75, 76,79,77,78]
+        gamecode_list = [80,81]
         for i in gamecode_list:
             threading.Thread(target=EurLeagueSpider_playbyplay().start_requests_2, args=(self.data_queue_svr,i)).start()
             threading.Thread(target=EurLeagueSpider_boxscore().start_requests,args=(self.data_queue_svr,i)).start()
@@ -45,7 +45,6 @@ class EurBasketballFeedSvr(object):
             print('get_data+++++++')
             await self.pub_time_data(self.topic, data)
             await asyncio.sleep(0.1)
-            os._exit(1)
 
 
     async def start_feed_rpc(self):
