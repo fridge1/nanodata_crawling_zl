@@ -164,27 +164,27 @@ class EurLeagueSpider_playbyplay(object):
                                     shooting_play = 1
                                     scoring_play = 0
                                     score_value = 0
-                                    local_x = 0
-                                    local_y = 0
+                                    local_x = -1
+                                    local_y = -1
                                 elif 'FTM' in playbyplay_info['PLAYTYPE'] :
                                     shooting_play = 1
                                     scoring_play = 1
                                     score_value = 1
-                                    local_x = 0
-                                    local_y = 0
+                                    local_x = -1
+                                    local_y = -1
                                 elif 'LAYUPATT' in playbyplay_info['PLAYTYPE'] and 'Missed' not in \
                                         playbyplay['words_text']:
                                     shooting_play = 0
                                     scoring_play = 1
                                     score_value = 2
-                                    local_x = 0
-                                    local_y = 0
+                                    local_x = -1
+                                    local_y = -1
                                 else:
                                     shooting_play = 0
                                     scoring_play = 0
                                     score_value = 0
-                                    local_x = 0
-                                    local_y = 0
+                                    local_x = -1
+                                    local_y = -1
                                 if text == '比赛开始':
                                     playbyplay['time_info'] = '10:00'
                                 elif text == '比赛结束' or text == '本节结束':

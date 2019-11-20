@@ -300,3 +300,51 @@ class BleaguejpBasketballMatch(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+class BleaguejpBasketballTeamStats(BaseModel):
+    __tablename__ = prefix + 'match_team_stat'
+
+    # id和外部表id
+    id = Column(Integer, primary_key=True, comment='id')
+    sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')  # 球类id   2
+    match_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='比赛id')  # 单场比赛的id
+    team_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球队id')  #  球队id
+
+    # 字段
+    period = Column(Integer, default=0, comment='比赛阶段')
+
+    two_pointers_scored = Column(Integer, nullable=True, default=0, comment='两分球')  # 2分球命中数
+    two_pointers_total = Column(Integer, nullable=True, default=0, comment='两分球总数')  # 2分球出手数
+    two_pointers_accuracy = Column(String(10), nullable=True, default=0, comment='两分球命中率')  # 2分球命中率
+    three_pointers_scored = Column(Integer, nullable=True, default=0, comment='三分球')  # 3分球命中数
+    three_pointers_total = Column(Integer, nullable=True, default=0, comment='三分球总数')  # 3分球出手数
+    three_pointers_accuracy = Column(String(10), nullable=True, default=0, comment='三分球命中率')  # 3分球命中率
+    field_goals_scored = Column(Integer, nullable=True, default=0, comment='投篮')  # 投篮数
+    field_goals_total = Column(Integer, nullable=True, default=0, comment='投篮总数')
+    field_goals_accuracy = Column(String(10), nullable=True, default=0, comment='投篮命中率')
+    free_throws_scored = Column(Integer, nullable=True, default=0, comment='罚球')
+    free_throws_total = Column(Integer, nullable=True, default=0, comment='罚球总数')
+    free_throws_accuracy = Column(String(10), nullable=True, default=0, comment='罚球命中率')
+
+    total_fouls = Column(Integer, nullable=True, default=0, comment='犯规')
+    timeouts = Column(Integer, nullable=True, default=0, comment='暂停')
+
+    ball_possession = Column(Integer, nullable=True, default=0, comment='控球')
+    rebounds = Column(Integer, nullable=True, default=0, comment='篮板')
+    defensive_rebounds = Column(Integer, nullable=True, default=0, comment='防守篮板')
+    offensive_rebounds = Column(Integer, nullable=True, default=0, comment='进攻篮板')
+    assists = Column(Integer, nullable=True, default=0, comment='助攻')
+    turnovers = Column(Integer, nullable=True, default=0, comment='失误')
+    steals = Column(Integer, nullable=True, default=0, comment='抢断')
+    blocks = Column(Integer, nullable=True, default=0, comment='盖帽')
+    max_points_in_arow = Column(Integer, nullable=True, default=0, comment='最多连续得分')
+    time_spent_in_lead = Column(Integer, nullable=True, default=0, comment='领先时间')
+    lead_changes = Column(Integer, nullable=True, default=0, comment='领先变化')
+    biggest_lead = Column(Integer, nullable=True, default=0, comment='最大领先优势')
+    successful_attempts = Column(Integer, nullable=True, default=0, comment='出手命中')
+
+    streaks = Column(Integer, nullable=True, default=0, comment='连胜(败)次数')
+
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+

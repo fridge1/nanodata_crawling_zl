@@ -85,3 +85,6 @@ def team_info():
             'id',
             data
         )
+
+team_info()
+player_info()

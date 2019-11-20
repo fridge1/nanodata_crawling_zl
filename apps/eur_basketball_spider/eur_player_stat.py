@@ -21,6 +21,7 @@ def player_stat_end(season_id,gamecode):
         box_api_res = requests.get(box_api_url,headers=headers)
         if box_api_res.text == '':
             print('比赛未开赛...')
+            break
         else:
             box_api_dict = json.loads(box_api_res.text)
             for index in range(2):
@@ -130,7 +131,7 @@ def player_stat_run():
         }
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        seasons_id = [2008,2009,2010,2012, 2013, 2015, 2016, 2017, 2018, 2019]
+        seasons_id = [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019]
         for season_id in seasons_id:
             res = requests.get(url % str(season_id),headers=headers)
             res_tree = tree_parse(res)
@@ -147,5 +148,6 @@ def player_stat_run():
                         player_stat_end(season_id, gamecode)
     except Exception as e:
         logger.error(e)
+
 
 

@@ -1,6 +1,6 @@
-from apps.eur_basketball_spider.tools import tree_parse, get_player_id,get_team_id,get_player_id_upsert
 from apps.eur_basketball_spider.eur_playbyplay import *
 import queue
+from apps.eur_basketball_spider.tools import *
 from orm_connection.eur_basketball import *
 from orm_connection.orm_session import MysqlSvr
 from common.libs.log import LogMgr
@@ -64,8 +64,69 @@ class EurLeagueSpider_boxscore(object):
                             player_key = home_player['Player_ID'][1:]
                             id = get_player_id_upsert(player_key)
                             if not id:
+                                url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % player_key
+                                player_res = requests.get(url, headers=self.headers)
+                                player_tree = tree_parse(player_res)
+                                player['sport_id'] = 2
+                                try:
+                                    player['name_en'] = player_tree.xpath('//div[@class="name"]/text()')[0]
+                                except:
+                                    player['name_en'] = ''
+                                player['key'] = player_key
+                                print(player['key'])
+                                try:
+                                    player['logo'] = player_tree.xpath('//div[@class="player-img"]/img/@src')[0]
+                                except:
+                                    player['logo'] = ''
+                                    print('没有该球员的图片...')
+                                try:
+                                    player['shirt_number'] = player_tree.xpath('//span[@class="dorsal"]/text()')[0]
+                                except:
+                                    player['shirt_number'] = 0
+                                try:
+                                    position = \
+                                    player_tree.xpath('//div[@class="summary-first"]/span[last()]/span[last()]/text()')[
+                                        0]
+                                    player['position'] = position.encode('utf-8').decode('utf-8')[0]
+                                except:
+                                    player['position'] = ''
+                                if 'Height' in \
+                                        player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
+                                                ':')[0]:
+                                    player['height'] = float(
+                                        player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
+                                            ':')[-1]) * 100
+                                    time_birthday = player_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[
+                                        0]
+                                    player['birthday'], player['age'] = time_stamp(time_birthday)
+                                    player['nationality'] = \
+                                    player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(
+                                        ':')[-1]
+                                else:
+                                    player['height'] = 0
+                                    time_birthday = player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[
+                                        0]
+                                    player['birthday'], player['age'] = time_stamp(time_birthday)
+                                    player['nationality'] = \
+                                        player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
+                                            0].split(':')[-1]
+                                try:
+                                    player['name_zh'] = translate_dict[player['name_en']]
+                                except:
+                                    player['name_zh'] = ''
+                                print('player:', player)
                                 data = {
-                                    'key': player_key,
+                                    'key': player['key'],
+                                    'name_en': player['name_en'],
+                                    'name_zh': player['name_zh'],
+                                    'sport_id': player['sport_id'],
+                                    'age': player['age'],
+                                    'birthday': player['birthday'],
+                                    'nationality': player['nationality'],
+                                    'height': player['height'],
+                                    'shirt_number': player['shirt_number'],
+                                    'position': player['position'],
+                                    # 'team_id': player['team_id'],
                                 }
                                 spx_dev_session = MysqlSvr.get('spider_zl')
                                 BleaguejpBasketballPlayer.upsert(

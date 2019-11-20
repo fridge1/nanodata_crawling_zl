@@ -40,16 +40,12 @@ def get_coach_info(season_id):
                 coach['logo'] = coach_img
             except:
                 coach['logo'] = ''
-                print('没有该教练的图片...')
             time_birthday = coach_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
             coach['birthday'], coach['age'] = time_stamp(time_birthday)
             try:
-                coach['nationality'] = coach_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0].split(':')[
-                    -1]
+                coach['nationality'] = coach_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0].split(':')[-1]
             except:
                 coach['nationality'] = ''
-                print('没有教练的国籍信息...')
-            print('coach:', coach)
             data = {
                 'key': coach['key'],
                 'name_en': coach['name_en'],
@@ -66,7 +62,7 @@ def get_coach_info(season_id):
                 'key',
                 data
             )
-            logger.info(data)
+            logger.info('coach:',data)
 
 
 
@@ -183,7 +179,6 @@ def get_player_info(season_id):
                 'shirt_number': player['shirt_number'],
                 'position': player['position'],
                 'team_id' : player['team_id'],
-                # 'logo' : player['logo'],
             }
             spx_dev_session = MysqlSvr.get('spider_zl')
             BleaguejpBasketballPlayer.upsert(
