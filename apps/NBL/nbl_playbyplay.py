@@ -7,13 +7,15 @@ import queue
 
 
 def pbp_box_live(data_queue):
+    tran_text = translate_text()
+    player_name_dict = get_nbl_nana_player_name_zh()
     while True:
         headers = {
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
                 }
-        match_id = 1307435
+        match_id = 1307430
         match_time = change_bjtime('2019-11-18 08:30:00')
-        url = 'https://www.fibalivestats.com/data/1307435/data.json'
+        url = 'https://www.fibalivestats.com/data/1307430/data.json'
         pbp_res = requests.get(url,headers=headers)
         if int(match_time) >= int(time.time()):
             print('比赛未开赛....')
@@ -102,19 +104,23 @@ def pbp_box_live(data_queue):
                 belong = pbp_info['tno']
                 try:
                     actionNumber = pbp_info['actionNumber']
-                    location_x = round(actionNumber_shot_dict[actionNumber][0]) * 0.01 * 49 / 2
-                    location_y = round(actionNumber_shot_dict[actionNumber][1]) * 0.01 * 32
+                    if round(actionNumber_shot_dict[actionNumber][1]) < 50:
+                        location_y = round(actionNumber_shot_dict[actionNumber][1]) * 0.01 * 32
+                    else:
+                        location_y = (round(actionNumber_shot_dict[actionNumber][1]) - 50) * 0.01 * 32
+                    location_x = round(actionNumber_shot_dict[actionNumber][0]) * 0.01 * 49
                 except:
                     location_x = -1
                     location_y = -1
                 try:
-                    player_name = pbp_info['familyName'] + ' ' + pbp_info['firstName']
+                    player_name = pbp_info['firstName'] + ' ' + pbp_info['familyName']
                 except:
                     player_name = ''
                 if player_name:
-                    player_ids = [int(get_player_id(player_name))]
+                    player_ids = int(get_player_id(player_name))
+
                 else:
-                    player_ids = []
+                    player_ids = 0
                 period_time = pbp_info['gt']
                 if player_name:
                     if 'jumpball' in pbp_info['actionType']:
@@ -174,16 +180,28 @@ def pbp_box_live(data_queue):
                     score_value = 0
                     scoring_play = 0
                     word_text = pbp_info['actionType'] + ' ' + pbp_info['subType']
+                for key in tran_text.keys():
+                    try:
+                        if key in word_text:
+                            game_text = tran_text[key]
+                    except:
+                        game_text = ''
+                if player_name != '':
+                    player_name_text = player_name_dict[player_name]
+                else:
+                    player_name_text = ''
+                word_text_zh = player_name_text + '' + game_text
+                print(word_text_zh)
                 data = {
                     'id' : int(match_id),
-                    'text':word_text,
+                    'text':word_text_zh,
                     'period':int(period),
                     'type':int(type),
                     'home_score':int(home_score),
                     'away_score':int(away_score),
                     'belong':int(belong),
                     'player_name':player_name,
-                    'player_ids':player_ids,
+                    'player_ids':[player_ids],
                     'period_time':str(period_time),
                     'shooting_play':int(shooting_play),
                     'score_value':int(score_value),

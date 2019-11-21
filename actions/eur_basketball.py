@@ -34,11 +34,11 @@ def eur_team_stat_info(opt):
     eur_team_stat.team_stat_run()
 
 def start_nbl_basketball_svr(opts):
-    topic = 'euro.bk.live'
+    topic = 'nbl.bk.live'
     asyncio.run(NblBasketballFeedSvr().start(topic=topic, servers=servers, user=user, password=password))
 
 def start_nbl_basketball_client(opts):
-    topic = 'euro.bk.live'
+    topic = 'nbl.bk.live'
     asyncio.run(NblBasketballFeedClient().start(topic=topic, servers=servers, user=user, password=password))
 
 eur_basketball_actions = {
