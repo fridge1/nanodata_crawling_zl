@@ -129,7 +129,7 @@ def get_team_id(team_name):
     return row.id
 
 def translate_text(text):
-    data_tran = pd.read_excel('/Users/zhulang/Desktop/nanodata_crawling/translate.xlsx')
+    data_tran = pd.read_excel('/root/nanodata_crawling/translate.xlsx')
     translate_dict = {}
     key_list = list(data_tran['words_text'])
     value_list = list(data_tran['words_text_zh'])
