@@ -16,7 +16,7 @@ class EurLeagueSpider_playbyplay(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
 
-    def start_requests_2(self, data_queue, gamecode):
+    def start_requests_2(self,data_queue,gamecode):
         headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
@@ -74,7 +74,7 @@ class EurLeagueSpider_playbyplay(object):
                                     name_zh = translate_player_name(playbyplay_info['PLAYER'])
                                     playbyplay['words_text'] = playbyplay_info['PLAYER'] + ' ' + playbyplay_info[
                                         'PLAYINFO']
-                                    text = name_zh + ' ' + translate_text(playbyplay['words_text'])
+                                    text = str(name_zh) + ' ' + str(translate_text(playbyplay['words_text']))
                                 else:
                                     playbyplay['words_text'] = playbyplay_info['PLAYINFO']
                                     text = translate_text(playbyplay['words_text'])
@@ -215,10 +215,11 @@ class EurLeagueSpider_playbyplay(object):
                                                                'period': period,
                                                                'items': playbyplay_list}
                                                        }}}
-
+                    # print(match_data_playbyplay)
                     data_queue.put(match_data_playbyplay)
                     logger.info('文字直播推送完成。。。 %s' % str(gamecode))
                     if playbyplay_list[-1]['text'] == '比赛结束':
                         break
             except Exception as e:
                 logger.error(e)
+

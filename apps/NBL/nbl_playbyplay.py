@@ -6,15 +6,16 @@ import queue
 
 
 
-def pbp_box_live(match_id,match_time):
+def pbp_box_live(data_queue):
     while True:
-        data_queue_svr = queue.Queue()
         headers = {
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
                 }
-        url = 'https://www.fibalivestats.com/data/%s/data.json' % (match_id)
+        match_id = 1307435
+        match_time = change_bjtime('2019-11-18 08:30:00')
+        url = 'https://www.fibalivestats.com/data/1307435/data.json'
         pbp_res = requests.get(url,headers=headers)
-        if int(match_time) <= int(time.time()):
+        if int(match_time) >= int(time.time()):
             print('比赛未开赛....')
         else:
             pbp_dict = json.loads(pbp_res.text)
@@ -26,7 +27,7 @@ def pbp_box_live(match_id,match_time):
             keys = pbp_dict['tm'].keys()
             for key in keys:
                 BkMatchTeamStats = {}
-                BkMatchTeamStats['belong'] = key
+                BkMatchTeamStats['belong'] = int(key)
                 BkMatchTeamStats['team_id'] = get_team_id(pbp_dict['tm'][key]['name'])
                 BkMatchTeamStats['team_name'] = pbp_dict['tm'][key]['name']
                 BkMatchTeamStats['goals'] = pbp_dict['tm'][key]['tot_sFieldGoalsMade']
@@ -51,43 +52,49 @@ def pbp_box_live(match_id,match_time):
                 player_keys = pbp_dict['tm'][key]['pl'].keys()
                 for player_key in player_keys:
                     player = {}
-                    player['belong'] = key
+                    player['belong'] = int(key)
                     player_name = pbp_dict['tm'][key]['pl'][player_key]['firstName'] + ' ' + pbp_dict['tm'][key]['pl'][player_key]['familyName']
                     player['player_id'] = get_player_id(player_name)
                     player['player_name'] = player_name
-                    player['minutes'] = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
-                    player['goals'] = pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade']
-                    player['field'] = pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted']
-                    player['two_points_goals'] = pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade']
-                    player['two_points_total'] = pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted']
-                    player['three_point_goals'] = pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade']
-                    player['three_point_field'] = pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted']
-                    player['free_throw_goals'] = pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade']
-                    player['free_throw_field'] = pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted']
-                    player['offensive_rebounds'] = pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive']
-                    player['defensive_rebounds'] = pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive']
-                    player['rebounds'] = pbp_dict['tm'][key]['pl'][player_key]['sReboundsTotal']
-                    player['assists'] = pbp_dict['tm'][key]['pl'][player_key]['sAssists']
-                    player['steals'] = pbp_dict['tm'][key]['pl'][player_key]['sSteals']
-                    player['blocks'] = pbp_dict['tm'][key]['pl'][player_key]['sBlocks']
-                    player['turnovers'] = pbp_dict['tm'][key]['pl'][player_key]['sTurnovers']
-                    player['personal_fouls'] = pbp_dict['tm'][key]['pl'][player_key]['sFoulsPersonal']
-                    player['point'] = pbp_dict['tm'][key]['pl'][player_key]['sPoints']
-                    player['first_publish'] = pbp_dict['tm'][key]['pl'][player_key]['starter']
+                    minutes  = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
+                    minute = minutes.split(':')[0]
+                    second = minutes.split(':')[1]
+                    if int(second) >= 30:
+                        player['minutes'] = int(minute) + 1
+                    else:
+                        player['minutes'] = int(minute)
+                    player['goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade'])
+                    player['field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted'])
+                    player['two_points_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
+                    player['two_points_total'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
+                    player['three_point_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
+                    player['three_point_field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
+                    player['free_throw_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
+                    player['free_throw_field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
+                    player['offensive_rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive'])
+                    player['defensive_rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive'])
+                    player['rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsTotal'])
+                    player['assists'] = int(pbp_dict['tm'][key]['pl'][player_key]['sAssists'])
+                    player['steals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sSteals'])
+                    player['blocks'] = int(pbp_dict['tm'][key]['pl'][player_key]['sBlocks'])
+                    player['turnovers'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTurnovers'])
+                    player['personal_fouls'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFoulsPersonal'])
+                    player['point'] = int(pbp_dict['tm'][key]['pl'][player_key]['sPoints'])
+                    player['first_publish'] = int(pbp_dict['tm'][key]['pl'][player_key]['starter'])
                     if pbp_dict['tm'][key]['pl'][player_key]['sMinutes'] == '0:00':
                         player['enter_ground'] = 0
                     elif pbp_dict['tm'][key]['pl'][player_key]['sMinutes'] != '0:00':
                         player['enter_ground'] = 1
                     else:
                         player['enter_ground'] = 0
-                    player['on_ground'] = pbp_dict['tm'][key]['pl'][player_key]['active']
-                    player['shirt_number'] = pbp_dict['tm'][key]['pl'][player_key]['shirtNumber']
+                    player['on_ground'] = int(pbp_dict['tm'][key]['pl'][player_key]['active'])
+                    player['shirt_number'] = int(pbp_dict['tm'][key]['pl'][player_key]['shirtNumber'])
                     player_stats_list.append(player)
                 for pbp_shot in pbp_dict['tm'][key]['shot']:
                     if 'jumpshot' in pbp_shot['subType']:
                         shot_location = (pbp_shot['y'],pbp_shot['x'])
                         actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
-            for pbp_info in pbp_dict['pbp']:
+            for pbp_info in pbp_dict['pbp'][::-1]:
                 period = pbp_info['period']
                 type = 0
                 home_score = pbp_info['s1']
@@ -105,9 +112,9 @@ def pbp_box_live(match_id,match_time):
                 except:
                     player_name = ''
                 if player_name:
-                    player_ids = get_player_id(player_name)
+                    player_ids = [int(get_player_id(player_name))]
                 else:
-                    player_ids = ''
+                    player_ids = []
                 period_time = pbp_info['gt']
                 if player_name:
                     if 'jumpball' in pbp_info['actionType']:
@@ -132,7 +139,10 @@ def pbp_box_live(match_id,match_time):
                                             pbp_info['actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
                             elif pbp_info['success'] == 1:
                                 shooting_play = pbp_info['scoring']
-                                score_value = pbp_info['actionType'][0]
+                                if 'f' not in pbp_info['actionType'][0]:
+                                    score_value = pbp_info['actionType'][0]
+                                else:
+                                    score_value = 0
                                 scoring_play = 1
                                 if pbp_info['lead'] > 0 and pbp_info['tno'] == 1:
                                     word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
@@ -165,39 +175,40 @@ def pbp_box_live(match_id,match_time):
                     scoring_play = 0
                     word_text = pbp_info['actionType'] + ' ' + pbp_info['subType']
                 data = {
-                    'id' : match_id,
+                    'id' : int(match_id),
                     'text':word_text,
-                    'period':period,
-                    'type':type,
-                    'home_score':home_score,
-                    'away_score':away_score,
-                    'belong':belong,
+                    'period':int(period),
+                    'type':int(type),
+                    'home_score':int(home_score),
+                    'away_score':int(away_score),
+                    'belong':int(belong),
                     'player_name':player_name,
-                    'player_ids':[player_ids],
-                    'period_time':period_time,
-                    'shooting_play':shooting_play,
-                    'score_value':score_value,
-                    'scoring_play':scoring_play,
+                    'player_ids':player_ids,
+                    'period_time':str(period_time),
+                    'shooting_play':int(shooting_play),
+                    'score_value':int(score_value),
+                    'scoring_play':int(scoring_play),
                     'text_en':word_text,
-                    'location_x' : location_x,
-                    'location_y' : location_y,
+                    'location_x' : int(location_x),
+                    'location_y' : int(location_y),
                 }
                 playbyplay_list.append(data)
-            match_data_boxscore = {'match': {'id': match_id,
+            match_data_boxscore = {'match': {'id': int(match_id),
                                              'basketball_items': {
                                                  'player_stat': {
                                                      'items': player_stats_list},
                                                  'team_stat': {'items': team_stats_list}
                                              }}}
-            data_queue_svr.put(match_data_boxscore)
+            data_queue.put(match_data_boxscore)
             print('球员技术统计推送完成...')
-            match_data_playbyplay = {'match': {'id': match_id,
+            match_data_playbyplay = {'match': {'id': int(match_id),
                                                'basketball_items': {
                                                    'incident': {
                                                        'period': period_total,
                                                        'items': playbyplay_list}
                                                    }}}
-            data_queue_svr.put(match_data_playbyplay)
+            print(json.dumps(match_data_playbyplay))
+            data_queue.put(match_data_playbyplay)
             print('球员技术文字直播推送完成...')
             if pbp_dict['clock'] == '00:00':
                 break
@@ -206,18 +217,17 @@ def pbp_box_live(match_id,match_time):
                 continue
 
 
-def get_match_id():
-    url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/24346/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl'
-    headers = {
-        'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
-    }
-    res = requests.get(url,headers=headers)
-    match_dict = json.loads(res.text)
-    for id_time in match_dict['data']:
-        match_id = id_time['matchId']
-        match_time = change_bjtime(id_time['matchTimeUTC'])
-        pbp_box_live(match_id,match_time)
-
+# def get_match_id():
+#     url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/24346/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl'
+#     headers = {
+#         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
+#     }
+#     res = requests.get(url,headers=headers)
+#     match_dict = json.loads(res.text)
+#     for id_time in match_dict['data']:
+#         match_id = id_time['matchId']
+#         match_time = change_bjtime(id_time['matchTimeUTC'])
+#         pbp_box_live(match_id,match_time)
 
 
 

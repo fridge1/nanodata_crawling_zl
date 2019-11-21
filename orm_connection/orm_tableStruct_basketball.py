@@ -3,7 +3,7 @@ from orm_connection.orm_base import *
 from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
+# engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
 
 
 prefix = 'nbl_league_basketball_'
@@ -890,5 +890,3 @@ class Xmlchangekey(BaseModel):
     zh_rHK = Column(String(100), nullable=False, default='', comment='zh_rHK')
     zh_rTW = Column(String(100), nullable=False, default='', comment='zh_rTW')
     zu = Column(String(100), nullable=False, default='', comment='zu')
-
-BaseModel.metadata.create_all(engine)

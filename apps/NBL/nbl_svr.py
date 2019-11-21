@@ -6,8 +6,7 @@ import threading
 
 from stan.aio.client import Client as STAN
 
-from apps.eur_basketball_spider.eur_boxscore import EurLeagueSpider_boxscore
-from apps.eur_basketball_spider.eur_playbyplay import EurLeagueSpider_playbyplay
+from apps.NBL.nbl_playbyplay import pbp_box_live
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
@@ -19,10 +18,10 @@ from pb.nana.biz.japan_ball import match_pb2
 def now():
     return int(time.time() * 1000)
 #设置日志
-logger = LogMgr.get('EurBasketballFeedSvr_feed_svr')
+logger = LogMgr.get('NblBasketballFeedSvr_feed_svr')
 
 
-class EurBasketballFeedSvr(object):
+class NblBasketballFeedSvr(object):
     data = dict()
     topic = ''
     cnt = 0
@@ -37,10 +36,7 @@ class EurBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        # gamecode_list = [68, 69, 70, 71]
-        # for i in gamecode_list:
-        #     threading.Thread(target=EurLeagueSpider_playbyplay().start_requests_2, args=(self.data_queue_svr,i)).start()
-        #     threading.Thread(target=EurLeagueSpider_boxscore().start_requests,args=(self.data_queue_svr,i)).start()
+        pbp_box_live(self.data_queue_svr)
         while True:
             data = self.data_queue_svr.get()
             print('get_data+++++++')

@@ -9,6 +9,7 @@ from datetime import date
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
 import pandas as pd
+import re
 
 
 
@@ -128,7 +129,7 @@ def get_team_id(team_name):
     return row.id
 
 def translate_text(text):
-    data_tran = pd.read_excel('/root/nanodata_crawling/translate.xlsx')
+    data_tran = pd.read_excel('/Users/zhulang/Desktop/nanodata_crawling/translate.xlsx')
     translate_dict = {}
     key_list = list(data_tran['words_text'])
     value_list = list(data_tran['words_text_zh'])
@@ -192,10 +193,11 @@ translate_dict = {'MASON, MAKAI': '马凯·梅森', 'SIVA, PEYTON': '佩顿·西
 
 
 def translate_player_name(text):
-    for key in translate_dict.keys():
-        if key == text:
-            text_en = translate_dict[key]
-            return text_en
+    if text in translate_dict.keys() :
+        text_en = translate_dict[text]
+        return text_en
+    else:
+        return text
 
 
 

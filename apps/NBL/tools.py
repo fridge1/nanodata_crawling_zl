@@ -13,16 +13,11 @@ def age_timeStamp(birthday):
 
 
 def get_player_id(player_en):
-    spx_dev_session = MysqlSvr.get('spider_zl')
-    player_data = {
-        'name_en':player_en,
-    }
-    _, row = BleagueNblBasketballPlayer.upsert(
-                        spx_dev_session,
-                        'name_en',
-                        player_data
-                    )
-    return row.id
+    try:
+        spx_dev_session = MysqlSvr.get('spider_zl')
+        return spx_dev_session.query(spx_dev_session).fliter(BleagueNblBasketballPlayer.name_en==player_en).all[0].id
+    except:
+        return 0
 
 def get_team_id(team_name):
     spx_dev_session = MysqlSvr.get('spider_zl')
@@ -45,6 +40,5 @@ def change_bjtime(date):
     bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d %H:%M:%S')
     timeStamp = int(time.mktime(bj_time1.timetuple()))
     return timeStamp
-
 
 

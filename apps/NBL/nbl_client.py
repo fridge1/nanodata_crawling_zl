@@ -21,7 +21,7 @@ def now():
     return int(time.time() * 1000)
 
 
-class EurBasketballFeedClient(object):
+class NblBasketballFeedClient(object):
     data = dict()
 
     topic = ''
