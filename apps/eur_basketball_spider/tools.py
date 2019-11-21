@@ -89,6 +89,13 @@ def get_player_id_upsert(player_key):
     )
     return row.id
 
+def get_eur_nana_player_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
+    data_dict = {row.key : row.id for row in rows}
+    return data_dict
+eur_nana_player_id_dict = get_eur_nana_player_id()
+
 
 def get_manager_id_upsert(player_key):
     spx_dev_session = MysqlSvr.get('spider_zl')

@@ -1,6 +1,6 @@
 import requests
 import json
-from apps.eur_basketball_spider.tools import translate_text, translate_player_name,get_player_id_upsert
+from apps.eur_basketball_spider.tools import *
 import time
 import queue
 from common.libs.log import LogMgr
@@ -15,6 +15,7 @@ class EurLeagueSpider_playbyplay(object):
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
+        self.eur_nana_player_id_dict = get_eur_nana_player_id()
 
     def start_requests_2(self,data_queue,gamecode):
         headers = {
@@ -26,7 +27,7 @@ class EurLeagueSpider_playbyplay(object):
                 localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
                 localtion_json_res = requests.get(localtion_url, headers=self.headers)
                 url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
-                print(url)
+                logger.info(url)
                 playbyplay_json_res = requests.get(url, headers=headers)
                 if playbyplay_json_res.text == '':
                     logger.info('playbyplay比赛未开赛。。。 %s' % str(gamecode))
@@ -51,9 +52,81 @@ class EurLeagueSpider_playbyplay(object):
                             for playbyplay_info in playbyplay_json_dict[key]:
                                 playbyplay = {}
                                 try:
-                                    playbyplay['id'] = get_player_id_upsert(playbyplay_info['PLAYER_ID'][1:].strip())
+                                    playbyplay['id'] = self.eur_nana_player_id_dict(playbyplay_info['PLAYER_ID'][1:].strip())
                                 except:
-                                    playbyplay['id'] = 0
+                                    player_url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % str(playbyplay_info['PLAYER_ID'][1:].strip())
+                                    player={}
+                                    player_res = requests.get(player_url, headers=headers)
+                                    if player_res.status_code == 200:
+                                        player_tree = tree_parse(player_res)
+                                        player['sport_id'] = 2
+                                        try:
+                                            player['name_en'] = player_tree.xpath('//div[@class="name"]/text()')[0]
+                                        except:
+                                            player['name_en'] = ''
+                                        player['key'] = re.findall(r'pcode=(.*?)&', player_url)[0]
+                                        print(player['key'])
+                                        try:
+                                            player['logo'] = player_tree.xpath('//div[@class="player-img"]/img/@src')[0]
+                                        except:
+                                            player['logo'] = ''
+                                            print('没有该球员的图片...')
+                                        try:
+                                            player['shirt_number'] = player_tree.xpath('//span[@class="dorsal"]/text()')[0]
+                                        except:
+                                            player['shirt_number'] = 0
+                                        try:
+                                            position = player_tree.xpath(
+                                                '//div[@class="summary-first"]/span[last()]/span[last()]/text()')[0]
+                                            player['position'] = position.encode('utf-8').decode('utf-8')[0]
+                                        except:
+                                            player['position'] = ''
+                                        if 'Height' in \
+                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
+                                                        ':')[0]:
+                                            player['height'] = float(
+                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
+                                                    ':')[-1]) * 100
+                                            time_birthday = \
+                                            player_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0]
+                                            player['birthday'], player['age'] = time_stamp(time_birthday)
+                                            player['nationality'] = \
+                                            player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
+                                                0].split(':')[-1]
+                                        else:
+                                            player['height'] = 0
+                                            time_birthday = \
+                                            player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
+                                            player['birthday'], player['age'] = time_stamp(time_birthday)
+                                            player['nationality'] = \
+                                                player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
+                                                    0].split(':')[-1]
+                                        try:
+                                            player['name_zh'] = translate_dict[player['name_en']]
+                                        except:
+                                            player['name_zh'] = ''
+                                        print('player:', player)
+                                        data = {
+                                            'key': player['key'],
+                                            'name_en': player['name_en'],
+                                            'name_zh': player['name_zh'],
+                                            'sport_id': player['sport_id'],
+                                            'age': player['age'],
+                                            'birthday': player['birthday'],
+                                            'nationality': player['nationality'],
+                                            'height': player['height'],
+                                            'shirt_number': player['shirt_number'],
+                                            'position': player['position'],
+                                        }
+                                        spx_dev_session = MysqlSvr.get('spider_zl')
+                                        _,row = BleaguejpBasketballPlayer.upsert(
+                                            spx_dev_session,
+                                            'key',
+                                            data
+                                        )
+                                        player['id'] = row.id
+                                    else:
+                                        player['id'] = 0
                                 playbyplay['sport_id'] = 2
                                 playbyplay['period'] = period
                                 playbyplay['key'] = playbyplay_info['CODETEAM']
