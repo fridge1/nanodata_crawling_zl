@@ -1,21 +1,18 @@
 import requests
 import json
 import traceback
-
+import threading
 from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
 import time
-import queue
 
 
-def pbp_box_live(data_queue):
+def pbp_box_live(data_queue,match_id,match_time):
     while True:
         headers = {
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
                 }
-        match_id = 1307436
-        match_time = change_bjtime('2019-11-07 06:30:00')
-        url = 'https://www.fibalivestats.com/data/1307436/data.json'
+        url = 'https://www.fibalivestats.com/data/%s/data.json' % str(match_id)
         pbp_res = requests.get(url,headers=headers)
         if int(match_time) >= int(time.time()) and pbp_res.status_code == 200:
             print('比赛未开赛....')
@@ -250,27 +247,27 @@ def pbp_box_live(data_queue):
                                                    }}}
             data_queue.put(match_data_playbyplay)
             print('球员技术文字直播推送完成...')
-            if pbp_dict['clock'] == '00:00':
+            if playbyplay_list[-1]['text'] == '比赛结束':
                 break
             else:
                 time.sleep(5)
                 print('休息5秒再请求....')
                 continue
 
-# data_queue = queue.Queue()
-#
-# pbp_box_live(data_queue)
-# def get_match_id():
-#     url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/24346/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl'
-#     headers = {
-#         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
-#     }
-#     res = requests.get(url,headers=headers)
-#     match_dict = json.loads(res.text)
-#     for id_time in match_dict['data']:
-#         match_id = id_time['matchId']
-#         match_time = change_bjtime(id_time['matchTimeUTC'])
-#         pbp_box_live(match_id,match_time)
+
+
+def get_match_id(data_queue):
+    url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/24346/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl'
+    headers = {
+        'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
+    }
+    res = requests.get(url,headers=headers)
+    match_dict = json.loads(res.text)
+    for id_time in match_dict['data']:
+        match_id = id_time['matchId']
+        match_time = change_bjtime(id_time['matchTimeUTC'])
+        threading.Thread(target=pbp_box_live,args=(data_queue,match_id,match_time)).start()
+
 
 
 
