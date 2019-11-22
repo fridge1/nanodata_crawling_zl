@@ -75,7 +75,7 @@ class EurLeagueSpider_boxscore(object):
                                 player['key'] = player_key
                                 print(player['key'])
                                 try:
-                                    player['logo'] = player_tree.xpath('//div[@class="player-img"]/img/@src')[0]
+                                    player['logo'] = player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
                                 except:
                                     player['logo'] = ''
                                     print('没有该球员的图片...')
@@ -114,7 +114,7 @@ class EurLeagueSpider_boxscore(object):
                                     player['name_zh'] = translate_dict[player['name_en']]
                                 except:
                                     player['name_zh'] = ''
-                                print('player:', player)
+                                print('player_img:', player)
                                 data = {
                                     'key': player['key'],
                                     'name_en': player['name_en'],
@@ -126,7 +126,7 @@ class EurLeagueSpider_boxscore(object):
                                     'height': player['height'],
                                     'shirt_number': player['shirt_number'],
                                     'position': player['position'],
-                                    # 'team_id': player['team_id'],
+                                    # 'team_id': player_img['team_id'],
                                 }
                                 spx_dev_session = MysqlSvr.get('spider_zl')
                                 BleaguejpBasketballPlayer.upsert(

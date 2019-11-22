@@ -3,7 +3,7 @@ import traceback
 from qiniu import Auth, put_data, put_file
 import os
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.eur_basketball import *
+from orm_connection.orm_tableStruct_basketball import *
 
 
 
@@ -13,7 +13,7 @@ QINIU_SECRET_KEY = 'pltamVO3mzmtlcQyqm8UDm-nEqUZbCMNn229Spf1'
 
 def player_logo():
     try:
-        content_list = ['manager_img/']
+        content_list = ['player_img/']
         for filePath in content_list:
             for fileName in os.listdir(filePath):
                 key = fileName.split('.')[0]
@@ -30,13 +30,13 @@ def player_logo():
                 ret, info = put_file(token, psw, file_path)
                 logo = ret['key']
                 data_team = {
-                 'key' : key,
+                 'id' : key,
                  'logo' : logo.split('/')[-1],
                 }
                 spx_dev_session = MysqlSvr.get('spider_zl')
-                BleaguejpBasketballManager.upsert(
+                BleagueNblBasketballPlayer.upsert(
                     spx_dev_session,
-                    'key',
+                    'id',
                     data_team
                 )
                 print(data_team)

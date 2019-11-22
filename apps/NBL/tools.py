@@ -3,6 +3,9 @@ from datetime import date
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.orm_tableStruct_basketball import *
 import pandas as pd
+import requests
+import io
+from PIL import Image
 
 
 
@@ -63,5 +66,24 @@ def translate_text():
     for index in range(len(key_list)):
         translate_dict[key_list[index]] = value_list[index]
     return translate_dict
+
+
+def get_nbl_nana_player_name_zh_1():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
+    data_dict = {row.id: row.logo for row in rows}
+    return data_dict
+
+
+
+def download_img(img_url,name,content):
+    res = requests.get(img_url)
+    byte_stream = io.BytesIO(res.content)
+    roiImg = Image.open(byte_stream)
+    imgByteArr = io.BytesIO()
+    roiImg.save(imgByteArr, format='PNG')
+    imgByteArr = imgByteArr.getvalue()
+    with open('./' + content + '/' + name + ".png", "wb") as f:
+        f.write(imgByteArr)
 
 

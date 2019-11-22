@@ -116,7 +116,7 @@ def player_stat_end(season_id,gamecode):
                         'id',
                         data
                     )
-                    print('player:',data)
+                    print('player_img:',data)
             minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
             if minutes_team == '200:00':
                 break
