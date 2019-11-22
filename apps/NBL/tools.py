@@ -2,7 +2,6 @@ import time,datetime
 from datetime import date
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.orm_tableStruct_basketball import *
-import pymysql
 import pandas as pd
 
 
@@ -53,8 +52,7 @@ def get_nbl_nana_player_name_zh():
     data_dict = {row.name_en.lower(): row.name_zh for row in rows}
     return data_dict
 
-# a = get_nbl_nana_player_name_zh()
-# print(a)
+
 
 def translate_text():
     data_tran = pd.read_excel('/root/nanodata_crawling/nbl_league_basketball_game_text.xlsx')
