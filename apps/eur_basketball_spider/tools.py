@@ -95,6 +95,7 @@ def get_eur_nana_player_id():
     data_dict = {row.key : row.id for row in rows}
     return data_dict
 eur_nana_player_id_dict = get_eur_nana_player_id()
+# print(eur_nana_player_id_dict['009834'])
 
 
 def get_manager_id_upsert(player_key):
@@ -136,7 +137,7 @@ def get_team_id(team_name):
     return row.id
 
 def translate_text(text):
-    data_tran = pd.read_excel('/root/nanodata_crawling/translate.xlsx')
+    data_tran = pd.read_excel('/Users/zhulang/Desktop/nanodata_crawling/translate.xlsx')
     translate_dict = {}
     key_list = list(data_tran['words_text'])
     value_list = list(data_tran['words_text_zh'])
@@ -263,7 +264,12 @@ def get_team_id_name(team_key):
 
 
 
-
+def get_player_id_key(player_en):
+    try:
+        spx_dev_session = MysqlSvr.get('spider_zl')
+        return spx_dev_session.query(BleaguejpBasketballPlayer).filter(BleaguejpBasketballPlayer.key==player_en).all()[0].id
+    except:
+        return 0
 
 
 
