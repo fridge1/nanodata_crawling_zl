@@ -9,8 +9,6 @@ import queue
 
 
 def pbp_box_live(data_queue):
-    tran_text = translate_text()
-    player_name_dict = get_nbl_nana_player_name_zh()
     while True:
         headers = {
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
