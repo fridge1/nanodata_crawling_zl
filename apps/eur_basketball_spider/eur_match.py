@@ -5,6 +5,7 @@ import json
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
 import time
+import threading
 from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_match_live')
 
@@ -160,12 +161,11 @@ def match_run():
                     round_res_tree = tree_parse(round_res)
                     gamecode_urls = round_res_tree.xpath('//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                     for gamecode in gamecode_urls:
-                        match_end(sport_id, season_id, typecode, round_num, season, gamecode)
+                        threading.Thread(target=match_end,args=(sport_id, season_id, typecode, round_num, season, gamecode)).start()
     except Exception as e:
         logger.error(e)
 
 
-# match_run()
 
 def run():
     while True:
