@@ -118,7 +118,10 @@ def pbp_box_live(data_queue):
                             player['enter_ground'] = 1
                         else:
                             player['enter_ground'] = 0
-                        player['on_ground'] = int(pbp_dict['tm'][key]['pl'][player_key]['active'])
+                        if int(pbp_dict['tm'][key]['pl'][player_key]['active']) == 0:
+                            player['on_ground'] = 1
+                        else:
+                            player['on_ground'] = 0
                         player['shirt_number'] = int(pbp_dict['tm'][key]['pl'][player_key]['shirtNumber'])
                         player_stats_list.append(player)
                 except:
@@ -250,8 +253,8 @@ def pbp_box_live(data_queue):
             if pbp_dict['clock'] == '00:00':
                 break
             else:
-                time.sleep(10)
-                print('休息10秒再请求....')
+                time.sleep(5)
+                print('休息5秒再请求....')
                 continue
 
 # data_queue = queue.Queue()
