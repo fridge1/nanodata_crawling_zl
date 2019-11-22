@@ -214,8 +214,6 @@ def pbp_box_live(data_queue):
                     scoring_play = 0
                     word_text = pbp_info['actionType'] + ' ' + pbp_info['subType']
                 word_text_zh = translate(word_text)
-                print('word_text:',word_text)
-                print('word_text_zh:',word_text_zh)
                 data = {
                     'id' : int(match_id),
                     'text':word_text_zh,
@@ -249,7 +247,6 @@ def pbp_box_live(data_queue):
                                                        'period': period_total,
                                                        'items': playbyplay_list}
                                                    }}}
-            print(json.dumps(match_data_playbyplay))
             data_queue.put(match_data_playbyplay)
             print('球员技术文字直播推送完成...')
             if pbp_dict['clock'] == '00:00':

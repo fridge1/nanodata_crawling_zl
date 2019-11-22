@@ -57,7 +57,7 @@ def get_nbl_nana_player_name_zh():
 # print(a)
 
 def translate_text():
-    data_tran = pd.read_excel('/Users/zhulang/Desktop/nbl_league_basketball_game_text(1)(1).xlsx')
+    data_tran = pd.read_excel('/root/nanodata_crawling/nbl_league_basketball_game_text.xlsx')
     dup_data_tran = data_tran.drop_duplicates('words_text')
     translate_dict = {}
     key_list = list(dup_data_tran['words_text'])
