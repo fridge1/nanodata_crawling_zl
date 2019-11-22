@@ -2,7 +2,6 @@ import requests
 import json
 from apps.NBL.tools import *
 import time
-import queue
 
 
 
@@ -13,9 +12,9 @@ def pbp_box_live(data_queue):
         headers = {
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
                 }
-        match_id = 1307430
-        match_time = change_bjtime('2019-11-18 08:30:00')
-        url = 'https://www.fibalivestats.com/data/1307430/data.json'
+        match_id = 1307436
+        match_time = change_bjtime('2019-11-22 08:30:00')
+        url = 'https://www.fibalivestats.com/data/1307436/data.json'
         pbp_res = requests.get(url,headers=headers)
         if int(match_time) >= int(time.time()):
             print('比赛未开赛....')
@@ -232,6 +231,7 @@ def pbp_box_live(data_queue):
                 break
             else:
                 time.sleep(10)
+                print('休息10秒再请求....')
                 continue
 
 
