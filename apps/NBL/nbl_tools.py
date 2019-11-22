@@ -55,4 +55,4 @@ def translate(text):
         if name_en in text:
             text = text.replace(name_en, name_cn.replace('-', '·'))
 
-    return text.replace('\t', '').strip().replace(',','')
+    return text.replace('\t', '').strip().replace(',',' ')
