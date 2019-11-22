@@ -67,7 +67,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                 )
                 print(stage_name_zh)
                 print(match)
-                break
+                # break
             else:
                 box_api_dict = json.loads(box_api_res.text)
                 key_list = list(box_api_dict['ByQuarter'][0].keys())[1:]
@@ -104,7 +104,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                         match
                     )
                     logger.info(match)
-                    break
+                    # break
                 else:
                     status_id = 1
                     match['sport_id'] = sport_id

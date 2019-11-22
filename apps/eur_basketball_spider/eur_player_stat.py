@@ -5,12 +5,14 @@ from orm_connection.orm_session import MysqlSvr
 import requests
 import json
 import re
+import threading
 from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_player_stat_end')
 
 
 
 def player_stat_end(season_id,gamecode):
+    spx_dev_session = MysqlSvr.get('spider_zl')
     play_stat_id = seasons[str(season_id)+'-'+str(season_id+1)]
     while True:
         headers = {
@@ -21,7 +23,7 @@ def player_stat_end(season_id,gamecode):
         box_api_res = requests.get(box_api_url,headers=headers)
         if box_api_res.text == '':
             print('比赛未开赛...')
-            break
+            # break
         else:
             box_api_dict = json.loads(box_api_res.text)
             for index in range(2):
@@ -109,7 +111,6 @@ def player_stat_end(season_id,gamecode):
                         'personal_fouls' : personal_fouls,
                         'plus_minus' : plus_minus,
                     }
-                    spx_dev_session = MysqlSvr.get('spider_zl')
                     BleaguejpBasketballPlayerStats.upsert(
                         spx_dev_session,
                         'id',
@@ -121,6 +122,7 @@ def player_stat_end(season_id,gamecode):
                 break
             else:
                 continue
+    spx_dev_session.close()
 
 
 
@@ -131,7 +133,8 @@ def player_stat_run():
         }
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        seasons_id = [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019]
+        # seasons_id = [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019]
+        seasons_id = [2019]
         for season_id in seasons_id:
             res = requests.get(url % str(season_id),headers=headers)
             res_tree = tree_parse(res)
@@ -145,9 +148,10 @@ def player_stat_run():
                     round_res_tree = tree_parse(round_res)
                     gamecode_urls = round_res_tree.xpath('//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                     for gamecode in gamecode_urls:
-                        player_stat_end(season_id, gamecode)
+                        threading.Thread(target=player_stat_end,args=(season_id, gamecode)).start()
+                        # player_stat_end(season_id, gamecode)
     except Exception as e:
         logger.error(e)
 
 
-
+player_stat_run()

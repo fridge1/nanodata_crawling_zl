@@ -5,6 +5,7 @@ from orm_connection.orm_session import MysqlSvr
 import requests
 import json
 import re
+import threading
 from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_team_stat_end')
 
@@ -20,7 +21,6 @@ def team_stat_end(season_id,gamecode):
         box_api_res = requests.get(box_api_url,headers=headers)
         if box_api_res.text == '':
             logger.info('比赛未开赛...')
-            break
         else:
             box_api_dict = json.loads(box_api_res.text)
             count = 1
@@ -111,7 +111,7 @@ def team_stat_run():
         }
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        seasons_id = [2007,2008,2009,2010,2011,2012, 2013, 2014,2015, 2016, 2017, 2018, 2019]
+        seasons_id = [2019]
         for season_id in seasons_id:
             res = requests.get(url % str(season_id),headers=headers)
             res_tree = tree_parse(res)
@@ -125,7 +125,8 @@ def team_stat_run():
                     round_res_tree = tree_parse(round_res)
                     gamecode_urls = round_res_tree.xpath('//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                     for gamecode in gamecode_urls:
-                        team_stat_end(season_id, gamecode)
+                        threading.Thread(target=team_stat_end,args=(season_id, gamecode)).start()
+                        # team_stat_end(season_id, gamecode)
     except Exception as e:
         logger.error(e)
 
