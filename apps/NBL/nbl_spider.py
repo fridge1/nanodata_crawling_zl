@@ -46,7 +46,7 @@ def player_info():
             'nationality' : nationality,
             'position' : position,
         }
-        print(data)
+        print('player_info %s' % data)
         spx_dev_session = MysqlSvr.get('spider_zl')
         BleagueNblBasketballPlayer.upsert(
             spx_dev_session,
@@ -86,5 +86,3 @@ def team_info():
             data
         )
 
-team_info()
-player_info()

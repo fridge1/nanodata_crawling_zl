@@ -116,14 +116,13 @@ def player_stat_end(season_id,gamecode):
                         'id',
                         data
                     )
-                    print(data)
+                    print('player:',data)
             minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
             if minutes_team == '200:00':
                 break
             else:
                 continue
     spx_dev_session.close()
-
 
 
 def player_stat_run():
@@ -154,4 +153,5 @@ def player_stat_run():
         logger.error(e)
 
 
-player_stat_run()
+if __name__ == '__main__':
+    player_stat_run()

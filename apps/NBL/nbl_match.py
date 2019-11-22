@@ -84,7 +84,7 @@ for data in match_dict['data']:
                     'away_scores': str(away_scores),
                     'sport_id': sport_id,
                 }
-                print(data)
+                print('match:',data)
                 spx_dev_session = MysqlSvr.get('spider_zl')
                 BleagueNblBasketballMatch.upsert(
                     spx_dev_session,
@@ -125,7 +125,7 @@ for data in match_dict['data']:
                 'away_scores': str(away_scores),
                 'sport_id': sport_id,
             }
-            print(data)
+            print('match:',data)
             spx_dev_session = MysqlSvr.get('spider_zl')
             BleagueNblBasketballMatch.upsert(
                 spx_dev_session,

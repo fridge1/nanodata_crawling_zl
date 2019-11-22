@@ -50,7 +50,7 @@ def change_bjtime(date):
 def get_nbl_nana_player_name_zh():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
-    data_dict = {row.name_en : row.name_zh for row in rows}
+    data_dict = {row.name_en.lower(): row.name_zh for row in rows}
     return data_dict
 
 # a = get_nbl_nana_player_name_zh()
