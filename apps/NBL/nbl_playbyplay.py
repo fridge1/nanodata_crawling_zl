@@ -5,6 +5,8 @@ import threading
 from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
 import time
+from common.libs.log import LogMgr
+logger = LogMgr.get('nbl_basketball_pbp_box_live')
 
 
 def pbp_box_live(data_queue,match_id,match_time):
@@ -15,7 +17,7 @@ def pbp_box_live(data_queue,match_id,match_time):
         url = 'https://www.fibalivestats.com/data/%s/data.json' % str(match_id)
         pbp_res = requests.get(url,headers=headers)
         if int(match_time) >= int(time.time()) and pbp_res.status_code == 200:
-            print('比赛未开赛....')
+            logger.info('比赛未开赛.... %s' % str(match_id))
             time.sleep(10)
         else:
             pbp_dict = json.loads(pbp_res.text)
@@ -238,7 +240,7 @@ def pbp_box_live(data_queue,match_id,match_time):
                                                  'team_stat': {'items': team_stats_list}
                                              }}}
             data_queue.put(match_data_boxscore)
-            print('球员技术统计推送完成...')
+            logger.info('球员技术统计推送完成... %s' % str(match_id))
             match_data_playbyplay = {'match': {'id': int(match_id),
                                                'basketball_items': {
                                                    'incident': {
@@ -246,12 +248,12 @@ def pbp_box_live(data_queue,match_id,match_time):
                                                        'items': playbyplay_list}
                                                    }}}
             data_queue.put(match_data_playbyplay)
-            print('球员技术文字直播推送完成...')
+            logger.info('球员技术文字直播推送完成... %s' % str(match_id))
             if playbyplay_list[-1]['text'] == '比赛结束':
                 break
             else:
                 time.sleep(5)
-                print('休息5秒再请求....')
+                logger.info('休息5秒再请求....')
                 continue
 
 
