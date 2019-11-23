@@ -15,8 +15,9 @@ def pbp_box_live(data_queue,match_id,match_time):
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
                 }
         url = 'https://www.fibalivestats.com/data/%s/data.json' % str(match_id)
+        print(url)
         pbp_res = requests.get(url,headers=headers)
-        if int(match_time) >= int(time.time()) and pbp_res.status_code == 200:
+        if int(match_time) >= int(time.time()) and pbp_res.status_code != 200:
             logger.info('比赛未开赛.... %s' % str(match_id))
             time.sleep(10)
         else:
