@@ -124,7 +124,7 @@ def pbp_box_live(data_queue,match_id,match_time):
                         player['shirt_number'] = int(pbp_dict['tm'][key]['pl'][player_key]['shirtNumber'])
                         player_stats_list.append(player)
                 except:
-                    print(traceback.format_exc())
+                    logger.error(traceback.format_exc())
                 for pbp_shot in pbp_dict['tm'][key]['shot']:
                     if 'jumpshot' in pbp_shot['subType']:
                         shot_location = (pbp_shot['y'],pbp_shot['x'])
