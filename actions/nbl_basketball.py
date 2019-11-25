@@ -15,7 +15,7 @@ def start_nbl_basketball_client(opts):
     asyncio.run(NblBasketballFeedClient().start(topic))
 
 def start_nbl_basketball_match(opts):
-    match_live()
+    run()
 
 
 
