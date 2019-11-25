@@ -136,12 +136,13 @@ class pbp_box(object):
                         actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
                 for pbp_info in pbp_dict['pbp'][::-1]:
                     period = pbp_info['period']
+                    if pbp_dict['inOT'] == 1:
+                        period = 5
                     type = 0
                     home_score = pbp_info['s1']
                     away_score = pbp_info['s2']
                     belong = pbp_info['tno']
                     actionNumber = pbp_info['actionNumber']
-                    # print(actionNumber)
                     try:
                         if round(actionNumber_shot_dict[actionNumber][1]) < 50:
                             location_y = (round(actionNumber_shot_dict[actionNumber][1]) * 0.01 * 70)
@@ -151,7 +152,6 @@ class pbp_box(object):
                     except:
                         location_x = 0
                         location_y = 0
-                    # print(location_x,location_y)
                     try:
                         player_name = pbp_info['firstName'] + ' ' + pbp_info['familyName']
                     except:
