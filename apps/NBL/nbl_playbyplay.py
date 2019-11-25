@@ -10,6 +10,7 @@ logger = LogMgr.get('nbl_basketball_pbp_box_live')
 
 
 def pbp_box_live(data_queue,match_id,match_time):
+    team_id_dict = get_team_id()
     while True:
         headers = {
                     'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
@@ -32,7 +33,7 @@ def pbp_box_live(data_queue,match_id,match_time):
                 try:
                     BkMatchTeamStats = {}
                     BkMatchTeamStats['belong'] = int(key)
-                    BkMatchTeamStats['team_id'] = get_team_id(pbp_dict['tm'][key]['name'])
+                    BkMatchTeamStats['team_id'] = team_id_dict(pbp_dict['tm'][key]['name'])
                     BkMatchTeamStats['team_name'] = pbp_dict['tm'][key]['name']
                     try:
                         BkMatchTeamStats['goals'] = pbp_dict['tm'][key]['tot_sFieldGoalsMade']

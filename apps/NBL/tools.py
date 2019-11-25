@@ -26,17 +26,14 @@ def get_player_id(player_en):
     except:
         return 0
 
-def get_team_id(team_name):
+
+
+def get_team_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    team_data = {
-        'name_en': team_name,
-    }
-    _, row = BleagueNblBasketballTeam.upsert(
-        spx_dev_session,
-        'name_en',
-        team_data
-    )
-    return row.id
+    rows = spx_dev_session.query(BleagueNblBasketballTeam).all()
+    data_dict = {row.name_en.lower(): row.id for row in rows}
+    return data_dict
+
 
 
 def change_bjtime(date):
