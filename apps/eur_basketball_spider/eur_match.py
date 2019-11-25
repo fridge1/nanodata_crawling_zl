@@ -6,6 +6,7 @@ from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
 import time
 import threading
+import traceback
 from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_match_live')
 
@@ -65,9 +66,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                     'id',
                     match
                 )
-                # print(stage_name_zh)
-                print('match:',match)
-                # break
+                logger.info(match)
             else:
                 box_api_dict = json.loads(box_api_res.text)
                 key_list = list(box_api_dict['ByQuarter'][0].keys())[1:]
@@ -104,7 +103,6 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                         match
                     )
                     logger.info(match)
-                    # break
                 else:
                     status_id = 1
                     match['sport_id'] = sport_id
@@ -128,8 +126,7 @@ def match_end(sport_id,season_id,typecode,round_num,season,gamecode):
                         'id',
                         match
                     )
-                    print(stage_name_zh)
-                    print('match1:',match)
+                    logger.info(match)
                     break
     spx_dev_session.close()
 
@@ -162,8 +159,8 @@ def match_run():
                     gamecode_urls = round_res_tree.xpath('//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                     for gamecode in gamecode_urls:
                         threading.Thread(target=match_end,args=(sport_id, season_id, typecode, round_num, season, gamecode)).start()
-    except Exception as e:
-        logger.error(e)
+    except:
+        logger.error(traceback.format_exc())
 
 
 
