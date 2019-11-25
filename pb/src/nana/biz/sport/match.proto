@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package nana.biz.sports;
+
+import "nana/sports/match.proto";
+import "nana/sports/odds.proto";
+
+enum SportsSvrID {
+	SID_SPORTS_UNKNOW = 0x000;
+	SID_SPORTS_LIVE = 0x001; //实时比赛
+	SID_SPORTS_SCHEDULE = 0x002; //赛程赛果
+	SID_SPORTS_ODDS = 0x003; //指数
+
+	SID_SPORTS_HEARTBEAT = 0x901; //心跳检测
+	SID_SPORTS_RESTART = 0x902; //重启服务
+}
+
+message SportsMatchesReq {
+}
+
+message SportsMatchesRes {
+	int32 sport_id = 1;
+	string site = 2;
+	map<int32, nana.sports.Match> matches = 3;
+}
+
+message SportsOddsReq {
+
+}
+
+message MatchOdds {
+	int32 match_id = 1;
+	int32 site_id = 2;
+	repeated nana.sports.Odds odds = 4;
+	bool is_first = 5; //是否首条数据
+}
+
+message SportsOddsRes {
+	int32 sport_id = 1;
+	int32 uptime = 2;
+	repeated MatchOdds data = 3;
+}
+
+message SportsCheckReq {
+}
+
+message SportsCheckRes {
+
+}
+
+message SportsRestartReq {
+}
+
+message SportsRestartRes {
+
+}

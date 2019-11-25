@@ -18,6 +18,10 @@ def start_eur_basketball_client(opts):
     topic = 'euro.bk.live'
     asyncio.run(EurBasketballFeedClient().start(topic=topic, servers=servers, user=user, password=password))
 
+def send_eur_basketball_svr(opts):
+    topic = 'bk.score.live'
+    asyncio.run(EurBasketballFeedSvr().start(topic=topic, servers=servers, user=user, password=password))
+
 
 def eur_player_team_manager_info(opts):
     eur_spider.timing_run()

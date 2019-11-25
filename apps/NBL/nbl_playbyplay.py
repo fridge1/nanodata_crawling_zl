@@ -127,32 +127,34 @@ def pbp_box_live(data_queue,match_id,match_time):
                 except:
                     logger.error(traceback.format_exc())
                 for pbp_shot in pbp_dict['tm'][key]['shot']:
-                    if 'jumpshot' in pbp_shot['subType']:
-                        shot_location = (pbp_shot['y'],pbp_shot['x'])
-                        actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
+                    shot_location = (pbp_shot['y'],pbp_shot['x'])
+                    actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
+                print('actionNumber_shot_dict:',actionNumber_shot_dict)
+                print(actionNumber_shot_dict[442])
             for pbp_info in pbp_dict['pbp'][::-1]:
                 period = pbp_info['period']
                 type = 0
                 home_score = pbp_info['s1']
                 away_score = pbp_info['s2']
                 belong = pbp_info['tno']
+                actionNumber = pbp_info['actionNumber']
+                print(actionNumber)
                 try:
-                    actionNumber = pbp_info['actionNumber']
                     if round(actionNumber_shot_dict[actionNumber][1]) < 50:
-                        location_y = round(actionNumber_shot_dict[actionNumber][1]) * 0.01 * 32
+                        location_y = (round(actionNumber_shot_dict[actionNumber][1]) * 0.01 * 70)
                     else:
-                        location_y = (round(actionNumber_shot_dict[actionNumber][1]) - 50) * 0.01 * 32
-                    location_x = round(actionNumber_shot_dict[actionNumber][0]) * 0.01 * 49
+                        location_y = (abs(round(actionNumber_shot_dict[actionNumber][1]) - 100) * 0.01 * 70)
+                    location_x = (round(actionNumber_shot_dict[actionNumber][0]) * 0.01 * 50) - 1
                 except:
-                    location_x = -1
-                    location_y = -1
+                    location_x = 0
+                    location_y = 0
+                print(location_x,location_y)
                 try:
                     player_name = pbp_info['firstName'] + ' ' + pbp_info['familyName']
                 except:
                     player_name = ''
                 if player_name:
                     player_ids = int(get_player_id(player_name))
-
                 else:
                     player_ids = 0
                 period_time = pbp_info['gt']
