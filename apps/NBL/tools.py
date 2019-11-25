@@ -31,7 +31,7 @@ def get_player_id(player_en):
 def get_team_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueNblBasketballTeam).all()
-    data_dict = {row.name_en.lower(): row.id for row in rows}
+    data_dict = {row.name_en: row.id for row in rows}
     return data_dict
 
 

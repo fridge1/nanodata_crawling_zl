@@ -6,7 +6,7 @@ import threading
 
 from stan.aio.client import Client as STAN
 
-from apps.NBL.nbl_playbyplay import pbp_box_live,get_match_id
+from apps.NBL.nbl_playbyplay import pbp_box
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
@@ -40,7 +40,7 @@ class NblBasketballFeedSvr(object):
 
     async def start_feed(self):
         # pbp_box_live(self.data_queue_svr,1307438,'1574499600')
-        threading.Thread(target=get_match_id,args=(self.data_queue_svr,)).start()
+        threading.Thread(target=pbp_box().get_match_id,args=(self.data_queue_svr,)).start()
         while True:
             data = self.data_queue_svr.get()
             print('get_data+++++++')
