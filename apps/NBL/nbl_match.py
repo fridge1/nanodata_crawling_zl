@@ -46,7 +46,10 @@ def match_live():
                         home_p1_score = game_dict['tm']['1']['p1_score']
                         home_p2_score = game_dict['tm']['1']['p2_score']
                         home_p3_score = game_dict['tm']['1']['p3_score']
-                        home_p4_score = game_dict['tm']['1']['p4_score']
+                        try:
+                            home_p4_score = game_dict['tm']['1']['p4_score']
+                        except:
+                            home_p4_score = 0
                         if home_score != home_p1_score + home_p2_score + home_p3_score + home_p4_score:
                             home_p5_score = game_dict['tm']['1']['ot_score']
                             home_scores = [home_p1_score, home_p2_score, home_p3_score, home_p4_score, home_p5_score, home_score]
