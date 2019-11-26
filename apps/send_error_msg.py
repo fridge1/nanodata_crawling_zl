@@ -14,11 +14,11 @@ url=host_url+text
 # 检查是否出现error日志，若出现则钉钉报警出来~
 
 # 先找到最新的error日志文件名
-cmd1 = "ls /root/nanodata_crawling/logs/ -l | grep error | tail -n 1 | awk '{print $9}'"
+cmd1 = "ls /root/nanodata_crawling/logs/error/ -l | grep error | tail -n 1 | awk '{print $9}'"
 res1 = os.popen(cmd1)
 res1_1=res1.read()
 
-cmd2="tail /root/nanodata_crawling/logs/%s/" %res1_1
+cmd2="tail /root/nanodata_crawling/logs/%s" %res1_1
 res2=os.popen(cmd2)
 res2_1=res2.read()
 
