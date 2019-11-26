@@ -58,7 +58,10 @@ def match_live():
                         away_p1_score = game_dict['tm']['2']['p1_score']
                         away_p2_score = game_dict['tm']['2']['p2_score']
                         away_p3_score = game_dict['tm']['2']['p3_score']
-                        away_p4_score = game_dict['tm']['2']['p4_score']
+                        try:
+                            away_p4_score = game_dict['tm']['2']['p4_score']
+                        except:
+                            away_p4_score = 0
                         if away_score != away_p1_score + away_p2_score + away_p3_score + away_p4_score:
                             away_p5_score = game_dict['tm']['2']['ot_score']
                             away_scores = [away_p1_score, away_p2_score, away_p3_score, away_p4_score, away_p5_score, away_score]
