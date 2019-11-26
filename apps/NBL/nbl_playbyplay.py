@@ -137,8 +137,8 @@ class pbp_box(object):
                         actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
                 for pbp_info in pbp_dict['pbp'][::-1]:
                     period = pbp_info['period']
-                    if pbp_dict['inOT'] == 1:
-                        period = 5
+                    if pbp_dict['inOT'] != 0:
+                        period = pbp_info['period'] + 4
                     type = 0
                     home_score = pbp_info['s1']
                     away_score = pbp_info['s2']

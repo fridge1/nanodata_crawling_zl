@@ -83,4 +83,3 @@ def download_img(img_url,name,content):
     with open('./' + content + '/' + name + ".png", "wb") as f:
         f.write(imgByteArr)
 
-
