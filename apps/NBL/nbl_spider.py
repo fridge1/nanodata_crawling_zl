@@ -5,6 +5,7 @@ import json
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.orm_tableStruct_basketball import *
 from apps.NBL.tools import get_player_id_update
+from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
 logger = LogMgr.get('nbl_basketball_player_team_info_live')
 
@@ -116,4 +117,5 @@ def run():
             player_info()
             team_info()
     except:
+        dingding_alter(traceback.format_exc())
         logger.error(traceback.format_exc())
