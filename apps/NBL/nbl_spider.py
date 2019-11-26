@@ -1,7 +1,7 @@
 import requests
 from apps.NBL.tools import age_timeStamp
 import traceback
-import json
+import json,time
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.orm_tableStruct_basketball import *
 from apps.NBL.tools import get_player_id_update
@@ -116,6 +116,7 @@ def run():
         while True:
             player_info()
             team_info()
+            time.sleep(3600)
     except:
         dingding_alter(traceback.format_exc())
         logger.error(traceback.format_exc())
