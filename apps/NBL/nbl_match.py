@@ -101,10 +101,9 @@ def match_live():
                     'id',
                     data
                 )
-                logger.info('match:',data)
-                print('match:',data)
+                logger.info('match:',data,competitionId)
         except:
-            dingding_alter(traceback.format_exc())
+            dingding_alter(traceback.format_exc()+str(competitionId))
             logger.error(traceback.format_exc())
 
 
