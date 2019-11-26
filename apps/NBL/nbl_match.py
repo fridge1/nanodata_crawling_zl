@@ -103,7 +103,7 @@ def match_live():
                 )
                 logger.info(id)
         except:
-            dingding_alter(traceback.format_exc()+str(competitionId))
+            dingding_alter(traceback.format_exc()+str(id))
             logger.error(traceback.format_exc())
 
 
