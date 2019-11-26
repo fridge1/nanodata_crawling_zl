@@ -4,6 +4,7 @@ import json
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.orm_tableStruct_basketball import *
 
+
 def player_info():
     headers = {
         'USER_AGENT' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',

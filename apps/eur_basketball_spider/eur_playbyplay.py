@@ -1,5 +1,6 @@
 import requests
 import traceback
+from apps.send_error_msg import dingding_alter
 import json
 from apps.eur_basketball_spider.tools import *
 import time
@@ -292,5 +293,6 @@ class EurLeagueSpider_playbyplay(object):
                     if playbyplay_list[-1]['text'] == '比赛结束':
                         break
             except:
+                dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())
 

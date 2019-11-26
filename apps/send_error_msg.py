@@ -12,4 +12,3 @@ def dingding_alter(text):  # 程序报警
     }
     headers = {'Content-Type': 'application/json'}
     requests.post(url, data=json.dumps(data), headers=headers)
-

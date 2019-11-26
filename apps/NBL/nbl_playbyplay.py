@@ -5,6 +5,7 @@ import threading
 from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
 import time
+from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
 logger = LogMgr.get('nbl_basketball_pbp_box_live')
 
@@ -277,7 +278,9 @@ class pbp_box(object):
                 match_time = change_bjtime(id_time['matchTimeUTC'])
                 threading.Thread(target=pbp_box().pbp_box_live,args=(data_queue,match_id,match_time)).start()
         except:
+            dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
+
 
 
 

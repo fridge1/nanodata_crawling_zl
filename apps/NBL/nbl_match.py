@@ -2,6 +2,7 @@ import requests
 import json
 from apps.NBL.tools import *
 import traceback
+from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
 logger = LogMgr.get('nbl_basketball_match_live')
 
@@ -18,7 +19,6 @@ def match_live():
     try:
         for data in match_dict['data']:
             id = data['matchId']
-            print(id)
             sport_id = 2
             competition_id = 7
             season_id = competitionId
@@ -102,6 +102,7 @@ def match_live():
             )
             logger.info('match:',data)
     except:
+        dingding_alter(traceback.format_exc())
         logger.error(traceback.format_exc())
 
 

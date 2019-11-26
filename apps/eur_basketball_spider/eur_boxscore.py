@@ -1,5 +1,7 @@
 from apps.eur_basketball_spider.eur_playbyplay import *
 import queue
+import traceback
+from apps.send_error_msg import dingding_alter
 from apps.eur_basketball_spider.tools import *
 from orm_connection.eur_basketball import *
 from orm_connection.orm_session import MysqlSvr
@@ -213,8 +215,9 @@ class EurLeagueSpider_boxscore(object):
                         minutes_team = boxscore_json_dict['Stats'][0]['totr']['Minutes']
                         if minutes_team and minutes_team == '200:00' or '225:00':
                             break
-            except Exception as e:
-                logger.error(e)
+            except:
+                dingding_alter(traceback.format_exc())
+                logger.error(traceback.format_exc())
 
 
 
