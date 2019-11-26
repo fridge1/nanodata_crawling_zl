@@ -6,6 +6,7 @@ import pandas as pd
 import requests
 import io
 from PIL import Image
+import pymysql
 
 
 
@@ -83,3 +84,37 @@ def download_img(img_url,name,content):
     with open('./' + content + '/' + name + ".png", "wb") as f:
         f.write(imgByteArr)
 
+
+def get_season_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballSeason).all()
+    data_list = [row.id for row in rows]
+    return data_list
+
+
+def update_stage_id():
+    conn = pymysql.connect(
+        host='rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com',
+        port=3306,
+        user='spider_zl',
+        password='0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow',
+        db='spider_zl',
+        charset='utf8mb4'
+    )
+
+    cur = conn.cursor()
+    select_id = 'select id,season_id from nbl_league_basketball_stage;'
+    cur.execute(select_id)
+    results = cur.fetchall()
+    for result in results:
+        update_id = 'update nbl_league_basketball_match set stage_id=%s where season_id=%s;'
+        cur.execute(update_id,(result[0],result[1]))
+    conn.commit()
+
+
+
+def get_player_id_update():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
+    data_list = [row.id for row in rows]
+    return data_list
