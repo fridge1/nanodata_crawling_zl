@@ -1,8 +1,8 @@
 import asyncio
 from apps.NBL.nbl_client import NblBasketballFeedClient
 from apps.NBL.nbl_svr import NblBasketballFeedSvr
-from apps.NBL.nbl_match import *
-from apps.NBL.nbl_spider import *
+from apps.NBL import nbl_match
+from apps.NBL import nbl_spider
 from apps.NBL.nbl_player_stat import player_stats
 
 
@@ -17,10 +17,10 @@ def start_nbl_basketball_client(opts):
     asyncio.run(NblBasketballFeedClient().start(topic))
 
 def start_nbl_basketball_match(opts):
-    run()
+    nbl_match.run()
 
 def nbl_player_team_info(opts):
-    run()
+    nbl_spider.run()
 
 def nbl_player_stats(opts):
     player_stats().get_match_id_player_stats()
