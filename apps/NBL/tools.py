@@ -55,16 +55,6 @@ def get_nbl_nana_player_name_zh():
 
 
 
-def translate_text():
-    data_tran = pd.read_excel('/root/nanodata_crawling/nbl_league_basketball_game_text.xlsx')
-    dup_data_tran = data_tran.drop_duplicates('words_text')
-    translate_dict = {}
-    key_list = list(dup_data_tran['words_text'])
-    value_list = list(dup_data_tran['words_text_zh'])
-    for index in range(len(key_list)):
-        translate_dict[key_list[index]] = value_list[index]
-    return translate_dict
-
 
 def get_nbl_nana_player_name_zh_1():
     spx_dev_session = MysqlSvr.get('spider_zl')
@@ -118,3 +108,12 @@ def get_player_id_update():
     rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
     data_list = [row.id for row in rows]
     return data_list
+
+
+def get_player_id_position_update():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
+    data_dict = {row.name_en.lower():(row.id,row.position) for row in rows}
+    return data_dict
+
+
