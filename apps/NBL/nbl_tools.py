@@ -24,7 +24,11 @@ words = {'game end': '比赛结束', 'period end': '赛节结束', 'rebound defe
  'jumpball - won': '跳球-获胜', 'jumpball startperiod': '开场跳球', 'game start': '比赛开始','Free throw 1 of 1 missed':'第1罚不中（1罚）',
  'Technical foul':'技术犯规','2pt alley oop':'2分空中接力命中','jumpball lodgedball':"双方倒地争抢形成争球",'Turnover - double dribble':'两次运球失误',
  '3pt pull up jump shot missed':'3分急停跳投不中','3pt pull up jump shot made':'3分急停跳投命中','2pt step back jump shot made':'2分后撤步跳投命中'}
-players = get_nbl_nana_player_name_zh()
+players={}
+players_update = {'hunter jack madden':'亨特·杰克·马登 ',' tohi smith milner':'托希·史密斯·米尔纳'}
+players_sql = get_nbl_nana_player_name_zh()
+players = players.update(players_sql)
+players = players.update(players_update)
 
 
 def translate(text):
