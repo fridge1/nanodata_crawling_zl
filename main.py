@@ -1,6 +1,7 @@
 from __patch__ import patch_all
 from actions.eur_basketball import eur_basketball_actions
 from actions.nbl_basketball import nbl_basketball_actions
+from actions.kbl_basketball import kbl_basketball_actions
 from apps.app import AppCtx
 
 patch_all()
@@ -13,7 +14,7 @@ logger = LogMgr.get()
 group_actions = {
     'eur_basketball_actions': eur_basketball_actions,
     'nbl_basketball_actions' : nbl_basketball_actions,
-
+    'kbl_basketball_actions' : kbl_basketball_actions,
 }
 
 if __name__ == '__main__':
