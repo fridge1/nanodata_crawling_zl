@@ -22,7 +22,7 @@ class match_info(object):
         for match_url in match_urls:
             match_res = requests.get(self.start_url+match_url,headers=self.headers)
             match_tree = tree_parse(match_res)
-            match_info_url = match_tree.xpath('//div[@class="btn_wrap game_end"]/a/@href')[0]
+            match_info_url = match_tree.xpath('//div[@class="btn_wrap game_end"]/a/@href|//div[@class="btn_wrap"]/a/@href')[0]
             print(match_info_url)
             match_date = re.findall(r'tdate=(.*)', match_info_url)[0]
             match['season_id'] = re.findall(r'scode=(.*?)&',match_info_url)[0]
