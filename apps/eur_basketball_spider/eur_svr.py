@@ -12,7 +12,7 @@ from common.utils import NatsSvr
 from pb.nana.biz.base_pb2 import Request, Result
 from pb.nana.biz.example import demo_pb2
 from pb.nana.biz.japan_ball import match_pb2
-import os
+from apps.eur_basketball_spider.tools import match_id_list
 
 
 def now():
@@ -36,7 +36,7 @@ class EurBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        gamecode_list = [91,92,93,94,95]
+        gamecode_list = match_id_list
         for i in gamecode_list:
             threading.Thread(target=EurLeagueSpider_playbyplay().start_requests_2, args=(self.data_queue_svr,i)).start()
             threading.Thread(target=EurLeagueSpider_boxscore().start_requests,args=(self.data_queue_svr,i)).start()
