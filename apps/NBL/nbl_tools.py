@@ -23,7 +23,7 @@ words = {'game end': '比赛结束', 'period end': '赛节结束', 'rebound defe
  ',3pt jumpshot missed': '3分跳投不中', '2pt pullupjumpshot missed': '2分急停跳投不中', 'jumpball - lost': '跳球-失败',
  'jumpball - won': '跳球-获胜', 'jumpball startperiod': '开场跳球', 'game start': '比赛开始','Free throw 1 of 1 missed':'第1罚不中（1罚）',
  'Technical foul':'技术犯规','2pt alleyoop':'2分空中接力命中','jumpball lodgedball':"双方倒地争抢形成争球",'turnover doubledribble':'两次运球失误',
- '3pt pullupjumpshotmissed':'3分急停跳投不中','3pt pullupjumpshotmade':'3分急停跳投命中','2pt stepbackjumpshot':'2分后撤步跳投命中','3pt fadeaway':'3分后仰跳投'}
+ '3pt pullupjumpshotmissed':'3分急停跳投不中','3pt pullupjumpshotmade':'3分急停跳投命中','2pt stepbackjumpshot':'2分后撤步跳投命中','3pt fadeaway':'3分后仰跳投','3pt pullup':'3分急停'}
 
 
 players_sql = get_nbl_nana_player_name_zh()

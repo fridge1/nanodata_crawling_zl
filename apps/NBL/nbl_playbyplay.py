@@ -167,22 +167,19 @@ class pbp_box(object):
                             shooting_play = 0
                             score_value = 0
                             scoring_play = 0
-                            word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                        pbp_info['actionType'] + ' - ' + pbp_info['subType']
+                            word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' - ' + pbp_info['subType']
                         else:
                             if pbp_info['scoring'] == 0:
                                 shooting_play = pbp_info['scoring']
                                 score_value = 0
                                 scoring_play = 0
-                                word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                            pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
                             elif pbp_info['scoring'] == 1:
                                 if pbp_info['success'] == 0:
                                     shooting_play = pbp_info['scoring']
                                     score_value = 0
                                     scoring_play = 0
-                                    word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                                pbp_info['actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
+                                    word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
                                 elif pbp_info['success'] == 1:
                                     shooting_play = pbp_info['scoring']
                                     if 'f' not in pbp_info['actionType'][0]:
@@ -191,20 +188,15 @@ class pbp_box(object):
                                         score_value = 0
                                     scoring_play = 1
                                     if pbp_info['lead'] > 0 and pbp_info['tno'] == 1:
-                                        word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     elif pbp_info['lead'] > 0 and pbp_info['tno'] == 2:
-                                        word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                        pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     elif pbp_info['lead'] < 0 and pbp_info['tno'] == 1:
-                                        word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info[
-                                            'familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     elif pbp_info['lead'] < 0 and pbp_info['tno'] == 2:
-                                        word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     else:
-                                        word_text = pbp_info['shirtNumber'] + ',' + pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
-                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
                                 else:
                                     shooting_play = 0
                                     score_value = 0
