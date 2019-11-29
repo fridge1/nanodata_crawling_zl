@@ -1,4 +1,8 @@
 from apps.kbl.tools import *
+import traceback
+from apps.send_error_msg import dingding_alter
+from common.libs.log import LogMgr
+logger = LogMgr.get('kbl_basketball_match_live')
 
 
 class match_info(object):
@@ -56,7 +60,7 @@ class match_info(object):
                     'id',
                     match
                 )
-                print('已结束:',match)
+                logger.info('已结束:',match)
             else:
                 match['status_id'] =1
                 home_team_name = match_tree.xpath('//div[@class="team_block fl_l"]/strong/text()')[0]
@@ -75,22 +79,26 @@ class match_info(object):
                     'id',
                     match
                 )
-                print('未开赛:',match)
+                logger.info('未开赛:',match)
 
 
 
 
 
     def get_date_url(self,url):
-        res = requests.get(url,headers=self.headers)
-        match_info().get_match_info(url)
-        res_tree = tree_parse(res)
-        next_url = res_tree.xpath('//span[@id="span_next_date"]/a/@href')[0]
-        if 'game_date' in next_url:
-            map_url = self.start_url + next_url
-            match_info().get_match_info(map_url)
-            match_info().get_date_url(map_url)
-        else:
-            print('赛季结束。。。')
+        try:
+            res = requests.get(url,headers=self.headers)
+            match_info().get_match_info(url)
+            res_tree = tree_parse(res)
+            next_url = res_tree.xpath('//span[@id="span_next_date"]/a/@href')[0]
+            if 'game_date' in next_url:
+                map_url = self.start_url + next_url
+                match_info().get_match_info(map_url)
+                match_info().get_date_url(map_url)
+            else:
+                print('赛季结束。。。')
+        except:
+            dingding_alter(traceback.format_exc())
+            logger.error(traceback.format_exc())
 
 
