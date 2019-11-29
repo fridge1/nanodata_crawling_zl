@@ -79,7 +79,7 @@ def change_bjtime(date):
 def get_team_id(team_name):
     try:
         spx_dev_session = MysqlSvr.get('spider_zl')
-        return spx_dev_session.query(BleagueNblBasketballTeam).filter(BleagueNblBasketballTeam.name_en==team_name).all()[0].id
+        return spx_dev_session.query(BleagueNblBasketballTeam).filter(BleagueNblBasketballTeam.name_en.like('%%'+team_name+'%%')).all()[0].id
     except:
         return 0
 
