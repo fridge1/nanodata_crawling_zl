@@ -84,9 +84,5 @@ def get_team_id(team_name):
         return 0
 
 
-import cv2
 
-img = cv2.imread("/Users/zhulang/Downloads/92c24f1024ae6883be76ca14fd1c43ceL1.png")
-cropped = img[0:220, 150:450]  # 裁剪坐标为[y0:y1, x0:x1]
-cv2.imwrite("92c24f1024ae6883be76ca14fd1c43ceL1.png", cropped)
 
