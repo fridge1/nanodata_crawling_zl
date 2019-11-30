@@ -24,7 +24,7 @@ def send_eur_basketball_svr(opts):
 
 
 def eur_player_team_manager_info(opts):
-    eur_spider.timing_run()
+    eur_spider.run()
 
 
 def eur_match_info(opts):

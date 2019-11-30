@@ -115,12 +115,16 @@ def get_player_info(season_id):
     teams_res = requests.get(team_map_url, headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="teams"]/div[@class="item"]')
+    # print(team_list)
     for team_info in team_list:
+        # print(team_info)
         team_url = team_info.xpath('./div[@class="RoasterName"]/a/@href')[0]
         team_key = re.findall(r'clubcode=(.*?)&', team_url)[0]
         player_list_res = requests.get(start_url+team_url,headers=headers)
+        print(start_url+team_url)
         player_list_tree = tree_parse(player_list_res)
-        player_urls = player_list_tree.xpath('//div[@class="wp-module"]/div[@class="item player_img"]/div[@class="img"]/a/@href')
+        player_urls = player_list_tree.xpath('//div[@class="wp-module"]/div[@class="item player"]/div[@class="img"]/a/@href')
+        print(player_urls)
         for player_url in player_urls:
             player={}
             print(start_url+player_url)
@@ -186,6 +190,7 @@ def get_player_info(season_id):
                 'key',
                 data
             )
+            print(data)
             logger.info(data)
 
 
@@ -196,6 +201,7 @@ def run():
             get_player_info(season_id)
             get_coach_info(season_id)
         except Exception as e:
+
             logger.error(e)
             continue
 
@@ -205,3 +211,6 @@ def timing_run():
     while True:
         schedule.run_pending()
         time.sleep(600)
+
+
+get_player_info('2019')
