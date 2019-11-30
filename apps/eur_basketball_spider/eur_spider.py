@@ -212,5 +212,3 @@ def timing_run():
         schedule.run_pending()
         time.sleep(600)
 
-
-get_player_info('2019')
