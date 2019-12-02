@@ -9,8 +9,7 @@ from apps.kbl.kbl_match import match_info
 
 
 def start_kbl_basketball_match(opts):
-    url = 'https://www.kbl.or.kr/main/main.asp?game_date=20191005'
-    match_info().get_date_url(url)
+    match_info().run()
 
 
 
