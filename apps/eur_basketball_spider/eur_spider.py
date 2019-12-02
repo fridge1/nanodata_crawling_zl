@@ -123,7 +123,7 @@ def get_player_info(season_id):
         player_list_res = requests.get(start_url+team_url,headers=headers)
         print(start_url+team_url)
         player_list_tree = tree_parse(player_list_res)
-        player_urls = player_list_tree.xpath('//div[@class="wp-module"]/div[@class="item player"]/div[@class="img"]/a/@href')
+        player_urls = player_list_tree.xpath('//div[@class="wp-module"]/div[@class="item nbl_player"]/div[@class="img"]/a/@href')
         print(player_urls)
         for player_url in player_urls:
             player={}

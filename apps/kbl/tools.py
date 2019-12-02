@@ -1,6 +1,5 @@
 import requests
 from lxml import etree
-import re
 import datetime,time
 from datetime import date
 from orm_connection.orm_session import MysqlSvr
@@ -82,7 +81,5 @@ def get_team_id(team_name):
         return spx_dev_session.query(BleagueNblBasketballTeam).filter(BleagueNblBasketballTeam.name_en.like('%%'+team_name+'%%')).all()[0].id
     except:
         return 0
-
-
 
 
