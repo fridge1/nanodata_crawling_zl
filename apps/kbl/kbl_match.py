@@ -35,11 +35,15 @@ class match_info(object):
                 infos = requests.get('https://www.kbl.or.kr/schedule/today/'+match_info_url,headers=self.headers)
                 infos_tree = tree_parse(infos)
                 home_logo = infos_tree.xpath('//div[@class="col col_left"]/div/img/@src')[0]
+                print(home_logo)
                 home_name = infos_tree.xpath('//div[@class="col col_left"]/strong[@class="team_name"]/text()')[0]
                 match['home_team_id'] = get_team_id(home_name,home_logo)
+                print(match['home_team_id'])
                 away_logo = infos_tree.xpath('//div[@class="col col_right"]/div/img/@src')[0]
+                print(away_logo)
                 away_name = infos_tree.xpath('//div[@class="col col_right"]/strong[@class="team_name"]/text()')[0]
-                match['home_team_id'] = get_team_id(away_logo, away_name)
+                match['away_team_id'] = get_team_id(away_logo, away_name)
+                print(match['away_team_id'])
                 home_scores = infos_tree.xpath('//tbody/tr[1]/td/text()')[1:]
                 home_total = infos_tree.xpath('//span[@class="l"]/text()')[0]
                 home_scores.append(home_total)
@@ -69,6 +73,7 @@ class match_info(object):
                 spx_dev_session.close()
                 logger.info('已结束match:', match)
             except:
+                logger.info(traceback.format_exc())
                 match['status_id'] = 1
                 home_name = time_info.xpath('./td[@class="match"]/span[@class="home"]/text()')[0]
                 away_name = time_info.xpath('./td[@class="match"]/span[@class="away"]/text()')[0]
