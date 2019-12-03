@@ -68,6 +68,7 @@ class match_info(object):
                 )
                 spx_dev_session.close()
                 logger.info('已结束match:', match)
+                player_stat_url = infos_tree.xpath('')
             except:
                 logger.info(traceback.format_exc())
                 match['status_id'] = 1

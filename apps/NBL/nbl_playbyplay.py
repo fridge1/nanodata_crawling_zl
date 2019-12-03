@@ -76,15 +76,38 @@ class pbp_box(object):
                             BkMatchTeamStats['offensive_rebounds'] = pbp_dict['tm'][key]['tot_sReboundsOffensive']
                         except:
                             BkMatchTeamStats['offensive_rebounds'] = 0
-                        BkMatchTeamStats['defensive_rebounds'] = pbp_dict['tm'][key]['tot_sReboundsDefensive']
-                        BkMatchTeamStats['rebounds'] = pbp_dict['tm'][key]['tot_sReboundsTotal']
-                        BkMatchTeamStats['assists'] = pbp_dict['tm'][key]['tot_sAssists']
-                        BkMatchTeamStats['steals'] = pbp_dict['tm'][key]['tot_sSteals']
-                        BkMatchTeamStats['blocks'] = pbp_dict['tm'][key]['tot_sBlocks']
-                        BkMatchTeamStats['turnovers'] = pbp_dict['tm'][key]['tot_sTurnovers']
-                        BkMatchTeamStats['personal_fouls'] = pbp_dict['tm'][key]['tot_sFoulsPersonal']
-                        BkMatchTeamStats['point'] = pbp_dict['tm'][key]['tot_sPoints']
-                        BkMatchTeamStats[''] = pbp_dict['tm'][key]['tot_sTwoPointersMade']
+                        try:
+                            BkMatchTeamStats['defensive_rebounds'] = pbp_dict['tm'][key]['tot_sReboundsDefensive']
+                        except:
+                            BkMatchTeamStats['defensive_rebounds'] = 0
+                        try:
+                            BkMatchTeamStats['rebounds'] = pbp_dict['tm'][key]['tot_sReboundsTotal']
+                        except:
+                            BkMatchTeamStats['rebounds'] = 0
+                        try:
+                            BkMatchTeamStats['assists'] = pbp_dict['tm'][key]['tot_sAssists']
+                        except:
+                            BkMatchTeamStats['assists'] = 0
+                        try:
+                            BkMatchTeamStats['steals'] = pbp_dict['tm'][key]['tot_sSteals']
+                        except:
+                            BkMatchTeamStats['steals'] = 0
+                        try:
+                            BkMatchTeamStats['blocks'] = pbp_dict['tm'][key]['tot_sBlocks']
+                        except:
+                            BkMatchTeamStats['blocks'] = 0
+                        try:
+                            BkMatchTeamStats['turnovers'] = pbp_dict['tm'][key]['tot_sTurnovers']
+                        except:
+                            BkMatchTeamStats['turnovers'] = 0
+                        try:
+                            BkMatchTeamStats['personal_fouls'] = pbp_dict['tm'][key]['tot_sFoulsPersonal']
+                        except:
+                            BkMatchTeamStats['personal_fouls'] = 0
+                        try:
+                            BkMatchTeamStats['point'] = pbp_dict['tm'][key]['tot_sPoints']
+                        except:
+                            BkMatchTeamStats['point'] = 0
                         team_stats_list.append(BkMatchTeamStats)
                         player_keys = pbp_dict['tm'][key]['pl'].keys()
                         for player_key in player_keys:

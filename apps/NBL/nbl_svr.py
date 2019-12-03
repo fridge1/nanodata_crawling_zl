@@ -39,7 +39,6 @@ class NblBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        # pbp_box_live(self.data_queue_svr,1307438,'1574499600')
         threading.Thread(target=pbp_box().get_match_id,args=(self.data_queue_svr,)).start()
         while True:
             data = self.data_queue_svr.get()
