@@ -292,7 +292,7 @@ class pbp_box(object):
             for id_time in match_dict['data']:
                 match_id = id_time['matchId']
                 match_time = change_bjtime(id_time['matchTimeUTC'])
-                threading.Thread(target=pbp_box().pbp_box_live,args=(data_queue,'1307444',match_time)).start()
+                threading.Thread(target=pbp_box().pbp_box_live,args=(data_queue,match_id,match_time)).start()
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
