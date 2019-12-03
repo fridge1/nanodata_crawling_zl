@@ -289,7 +289,7 @@ class pbp_box(object):
             }
             res = requests.get(url,headers=headers)
             match_dict = json.loads(res.text)
-            for id_time in match_dict['data']:
+            for id_time in match_dict['data'][::-1]:
                 match_id = id_time['matchId']
                 match_time = change_bjtime(id_time['matchTimeUTC'])
                 threading.Thread(target=pbp_box().pbp_box_live,args=(data_queue,match_id,match_time)).start()
