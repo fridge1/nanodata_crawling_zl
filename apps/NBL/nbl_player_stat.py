@@ -48,6 +48,7 @@ class player_stats(object):
                             data['first'] = 1
                         else:
                             data['first'] = 0
+                        data['match_id'] = match_id
                         data['points'] = player_box['sPoints']
                         data['free_throws_scored'] = player_box['sFreeThrowsMade']
                         data['free_throws_total'] = player_box['sFreeThrowsAttempted']

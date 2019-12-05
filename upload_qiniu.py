@@ -13,7 +13,7 @@ QINIU_SECRET_KEY = 'pltamVO3mzmtlcQyqm8UDm-nEqUZbCMNn229Spf1'
 
 def player_logo():
     try:
-        filePath = '/Users/zhulang/Desktop/nanodata_crawling/apps/NBL/nbl_player/'
+        filePath = '/Users/zhulang/Desktop/nbl_player/'
         # for filePath in content_list:
         for fileName in os.listdir(filePath):
             key = fileName.split('.')[0]
@@ -26,7 +26,7 @@ def player_logo():
             token = q.upload_token(bucket_name, None)
             m = hashlib.md5()
             m.update(data)
-            psw = 'basketball/%s/%s.png' % ('nbl_player', m.hexdigest())
+            psw = 'basketball/%s/%s.png' % ('player', m.hexdigest())
             ret, info = put_file(token, psw, file_path)
             logo = ret['key']
             data_team = {
