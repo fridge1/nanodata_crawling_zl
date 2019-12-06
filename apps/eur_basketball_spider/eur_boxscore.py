@@ -25,7 +25,7 @@ class EurLeagueSpider_boxscore(object):
                 seasoncode = 2019
                 url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp='%(gamecode,seasoncode)
                 logger.info(url)
-                boxscore_api_res = requests.get(url, headers=self.headers)
+                boxscore_api_res = requests.get(url, headers=self.headers,verify=False)
                 if boxscore_api_res.text == '':
                     logger.info('box比赛未开赛。。。 %s' % str(gamecode))
                 else:
@@ -67,7 +67,7 @@ class EurLeagueSpider_boxscore(object):
                             id = get_player_id_upsert(player_key)
                             if not id:
                                 url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % player_key
-                                player_res = requests.get(url, headers=self.headers)
+                                player_res = requests.get(url, headers=self.headers,verify=False)
                                 player_tree = tree_parse(player_res)
                                 player['sport_id'] = 2
                                 try:

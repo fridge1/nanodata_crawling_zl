@@ -26,10 +26,10 @@ class EurLeagueSpider_playbyplay(object):
             time.sleep(10)
             try:
                 localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
-                localtion_json_res = requests.get(localtion_url, headers=self.headers)
+                localtion_json_res = requests.get(localtion_url, headers=self.headers,verify=False)
                 url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
                 logger.info(url)
-                playbyplay_json_res = requests.get(url, headers=headers)
+                playbyplay_json_res = requests.get(url, headers=headers,verify=False)
                 if playbyplay_json_res.text == '':
                     logger.info('playbyplay比赛未开赛。。。 %s' % str(gamecode))
                 else:
@@ -56,7 +56,7 @@ class EurLeagueSpider_playbyplay(object):
                                 except:
                                     player_url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % str(playbyplay_info['PLAYER_ID'][1:].strip())
                                     player={}
-                                    player_res = requests.get(player_url, headers=headers)
+                                    player_res = requests.get(player_url, headers=headers,verify=False)
                                     if player_res.status_code == 200:
                                         player_tree = tree_parse(player_res)
                                         player['sport_id'] = 2
