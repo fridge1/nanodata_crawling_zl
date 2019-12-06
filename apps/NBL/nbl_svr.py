@@ -45,7 +45,7 @@ class NblBasketballFeedSvr(object):
             print('get_data+++++++')
             await self.pub_time_data(self.topic, data)
             os._exit(1)
-            
+
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic
