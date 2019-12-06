@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='nana.sports',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1cnana/sports/team_squad.proto\x12\x0bnana.sports\x1a\x18nana/sports/season.proto\x1a\x16nana/sports/team.proto\x1a\x18nana/sports/nbl_player.proto\"\x80\x02\n\tTeamSquad\x12#\n\x06season\x18\x01 \x01(\x0b\x32\x13.nana.sports.Season\x12\x1f\n\x04team\x18\x02 \x01(\x0b\x32\x11.nana.sports.Team\x12$\n\x07players\x18\x03 \x03(\x0b\x32\x13.nana.sports.Player\x1a\x86\x01\n\nTeamPlayer\x12#\n\x06player\x18\x01 \x01(\x0b\x32\x13.nana.sports.Player\x12\x10\n\x08position\x18\x02 \x01(\t\x12\x17\n\x0f\x64\x65tail_position\x18\x03 \x01(\t\x12\x14\n\x0cshirt_number\x18\x04 \x01(\t\x12\x12\n\nis_captain\x18\x05 \x01(\x05\x62\x06proto3')
+  serialized_pb=_b('\n\x1cnana/sports/team_squad.proto\x12\x0bnana.sports\x1a\x18nana/sports/season.proto\x1a\x16nana/sports/team.proto\x1a\x18nana/sports/player.proto\"\x80\x02\n\tTeamSquad\x12#\n\x06season\x18\x01 \x01(\x0b\x32\x13.nana.sports.Season\x12\x1f\n\x04team\x18\x02 \x01(\x0b\x32\x11.nana.sports.Team\x12$\n\x07players\x18\x03 \x03(\x0b\x32\x13.nana.sports.Player\x1a\x86\x01\n\nTeamPlayer\x12#\n\x06player\x18\x01 \x01(\x0b\x32\x13.nana.sports.Player\x12\x10\n\x08position\x18\x02 \x01(\t\x12\x17\n\x0f\x64\x65tail_position\x18\x03 \x01(\t\x12\x14\n\x0cshirt_number\x18\x04 \x01(\t\x12\x12\n\nis_captain\x18\x05 \x01(\x05\x62\x06proto3')
   ,
   dependencies=[nana_dot_sports_dot_season__pb2.DESCRIPTOR,nana_dot_sports_dot_team__pb2.DESCRIPTOR,nana_dot_sports_dot_player__pb2.DESCRIPTOR,])
 
@@ -38,7 +38,7 @@ _TEAMSQUAD_TEAMPLAYER = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='nbl_player', full_name='nana.sports.TeamSquad.TeamPlayer.nbl_player', index=0,
+      name='player', full_name='nana.sports.TeamSquad.TeamPlayer.player', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -132,7 +132,7 @@ _TEAMSQUAD = _descriptor.Descriptor(
   serialized_end=378,
 )
 
-_TEAMSQUAD_TEAMPLAYER.fields_by_name['nbl_player'].message_type = nana_dot_sports_dot_player__pb2._PLAYER
+_TEAMSQUAD_TEAMPLAYER.fields_by_name['player'].message_type = nana_dot_sports_dot_player__pb2._PLAYER
 _TEAMSQUAD_TEAMPLAYER.containing_type = _TEAMSQUAD
 _TEAMSQUAD.fields_by_name['season'].message_type = nana_dot_sports_dot_season__pb2._SEASON
 _TEAMSQUAD.fields_by_name['team'].message_type = nana_dot_sports_dot_team__pb2._TEAM

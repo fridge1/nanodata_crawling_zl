@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='nana.sports',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1enana/sports/player_honor.proto\x12\x0bnana.sports\x1a\x18nana/sports/season.proto\x1a\x16nana/sports/comp.proto\x1a\x17nana/sports/honor.proto\x1a\x16nana/sports/team.proto\x1a\x18nana/sports/nbl_player.proto\x1a\x19nana/sports/country.proto\"\xcc\x02\n\x0bPlayerHonor\x12#\n\x06player\x18\x01 \x01(\x0b\x32\x13.nana.sports.Player\x12.\n\x06honors\x18\x02 \x03(\x0b\x32\x1e.nana.sports.PlayerHonor.Honor\x1a\xe7\x01\n\x05Honor\x12-\n\x05honor\x18\x01 \x01(\x0b\x32\x1e.nana.sports.PlayerHonor.Honor\x12\x1f\n\x04team\x18\x02 \x01(\x0b\x32\x11.nana.sports.Team\x12\x1f\n\x04\x63omp\x18\x03 \x01(\x0b\x32\x11.nana.sports.Comp\x12#\n\x06season\x18\x04 \x01(\x0b\x32\x13.nana.sports.Season\x12%\n\x07\x63ountry\x18\x05 \x01(\x0b\x32\x14.nana.sports.Country\x12!\n\x05title\x18\x06 \x01(\x0b\x32\x12.nana.sports.Titleb\x06proto3')
+  serialized_pb=_b('\n\x1enana/sports/player_honor.proto\x12\x0bnana.sports\x1a\x18nana/sports/season.proto\x1a\x16nana/sports/comp.proto\x1a\x17nana/sports/honor.proto\x1a\x16nana/sports/team.proto\x1a\x18nana/sports/player.proto\x1a\x19nana/sports/country.proto\"\xcc\x02\n\x0bPlayerHonor\x12#\n\x06player\x18\x01 \x01(\x0b\x32\x13.nana.sports.Player\x12.\n\x06honors\x18\x02 \x03(\x0b\x32\x1e.nana.sports.PlayerHonor.Honor\x1a\xe7\x01\n\x05Honor\x12-\n\x05honor\x18\x01 \x01(\x0b\x32\x1e.nana.sports.PlayerHonor.Honor\x12\x1f\n\x04team\x18\x02 \x01(\x0b\x32\x11.nana.sports.Team\x12\x1f\n\x04\x63omp\x18\x03 \x01(\x0b\x32\x11.nana.sports.Comp\x12#\n\x06season\x18\x04 \x01(\x0b\x32\x13.nana.sports.Season\x12%\n\x07\x63ountry\x18\x05 \x01(\x0b\x32\x14.nana.sports.Country\x12!\n\x05title\x18\x06 \x01(\x0b\x32\x12.nana.sports.Titleb\x06proto3')
   ,
   dependencies=[nana_dot_sports_dot_season__pb2.DESCRIPTOR,nana_dot_sports_dot_comp__pb2.DESCRIPTOR,nana_dot_sports_dot_honor__pb2.DESCRIPTOR,nana_dot_sports_dot_team__pb2.DESCRIPTOR,nana_dot_sports_dot_player__pb2.DESCRIPTOR,nana_dot_sports_dot_country__pb2.DESCRIPTOR,])
 
@@ -106,7 +106,7 @@ _PLAYERHONOR = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='nbl_player', full_name='nana.sports.PlayerHonor.nbl_player', index=0,
+      name='player', full_name='nana.sports.PlayerHonor.player', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -142,7 +142,7 @@ _PLAYERHONOR_HONOR.fields_by_name['season'].message_type = nana_dot_sports_dot_s
 _PLAYERHONOR_HONOR.fields_by_name['country'].message_type = nana_dot_sports_dot_country__pb2._COUNTRY
 _PLAYERHONOR_HONOR.fields_by_name['title'].message_type = nana_dot_sports_dot_honor__pb2._TITLE
 _PLAYERHONOR_HONOR.containing_type = _PLAYERHONOR
-_PLAYERHONOR.fields_by_name['nbl_player'].message_type = nana_dot_sports_dot_player__pb2._PLAYER
+_PLAYERHONOR.fields_by_name['player'].message_type = nana_dot_sports_dot_player__pb2._PLAYER
 _PLAYERHONOR.fields_by_name['honors'].message_type = _PLAYERHONOR_HONOR
 DESCRIPTOR.message_types_by_name['PlayerHonor'] = _PLAYERHONOR
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)

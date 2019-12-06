@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='nana.sports',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n!nana/sports/player_transfer.proto\x12\x0bnana.sports\x1a\x18nana/sports/nbl_player.proto\x1a\x16nana/sports/team.proto\"\xf0\x01\n\x0ePlayerTransfer\x12#\n\x06player\x18\x01 \x01(\x0b\x32\x13.nana.sports.Player\x12$\n\tfrom_team\x18\x02 \x01(\x0b\x32\x11.nana.sports.Team\x12\"\n\x07to_team\x18\x03 \x01(\x0b\x32\x11.nana.sports.Team\x12\x15\n\rtransfer_time\x18\x04 \x01(\x05\x12\x14\n\x0ctransfer_fee\x18\x05 \x01(\x05\x12\x15\n\rtransfer_desc\x18\x06 \x01(\x05\x12\x15\n\rtransfer_type\x18\x07 \x01(\x05\x12\x14\n\x0cmarket_value\x18\x08 \x01(\x05\x62\x06proto3')
+  serialized_pb=_b('\n!nana/sports/player_transfer.proto\x12\x0bnana.sports\x1a\x18nana/sports/player.proto\x1a\x16nana/sports/team.proto\"\xf0\x01\n\x0ePlayerTransfer\x12#\n\x06player\x18\x01 \x01(\x0b\x32\x13.nana.sports.Player\x12$\n\tfrom_team\x18\x02 \x01(\x0b\x32\x11.nana.sports.Team\x12\"\n\x07to_team\x18\x03 \x01(\x0b\x32\x11.nana.sports.Team\x12\x15\n\rtransfer_time\x18\x04 \x01(\x05\x12\x14\n\x0ctransfer_fee\x18\x05 \x01(\x05\x12\x15\n\rtransfer_desc\x18\x06 \x01(\x05\x12\x15\n\rtransfer_type\x18\x07 \x01(\x05\x12\x14\n\x0cmarket_value\x18\x08 \x01(\x05\x62\x06proto3')
   ,
   dependencies=[nana_dot_sports_dot_player__pb2.DESCRIPTOR,nana_dot_sports_dot_team__pb2.DESCRIPTOR,])
 
@@ -37,7 +37,7 @@ _PLAYERTRANSFER = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='nbl_player', full_name='nana.sports.PlayerTransfer.nbl_player', index=0,
+      name='player', full_name='nana.sports.PlayerTransfer.player', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -108,7 +108,7 @@ _PLAYERTRANSFER = _descriptor.Descriptor(
   serialized_end=341,
 )
 
-_PLAYERTRANSFER.fields_by_name['nbl_player'].message_type = nana_dot_sports_dot_player__pb2._PLAYER
+_PLAYERTRANSFER.fields_by_name['player'].message_type = nana_dot_sports_dot_player__pb2._PLAYER
 _PLAYERTRANSFER.fields_by_name['from_team'].message_type = nana_dot_sports_dot_team__pb2._TEAM
 _PLAYERTRANSFER.fields_by_name['to_team'].message_type = nana_dot_sports_dot_team__pb2._TEAM
 DESCRIPTOR.message_types_by_name['PlayerTransfer'] = _PLAYERTRANSFER
