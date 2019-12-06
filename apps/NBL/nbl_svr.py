@@ -5,7 +5,7 @@ import traceback
 import threading
 
 from stan.aio.client import Client as STAN
-
+import os
 from apps.NBL.nbl_playbyplay import pbp_box
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
@@ -44,6 +44,8 @@ class NblBasketballFeedSvr(object):
             data = self.data_queue_svr.get()
             print('get_data+++++++')
             await self.pub_time_data(self.topic, data)
+            os._exit(1)
+            
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic
