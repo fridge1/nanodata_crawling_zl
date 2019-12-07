@@ -2,6 +2,7 @@ import requests
 import traceback
 from apps.send_error_msg import dingding_alter
 import json
+from apps.eur_basketball_spider.eur_tools import translate
 import re
 from apps.eur_basketball_spider.tools import *
 import time
@@ -148,10 +149,10 @@ class EurLeagueSpider_playbyplay(object):
                                     name_zh = translate_player_name(playbyplay_info['PLAYER'])
                                     playbyplay['words_text'] = playbyplay_info['PLAYER'] + ' ' + playbyplay_info[
                                         'PLAYINFO']
-                                    text = str(name_zh) + ' ' + str(translate_text(playbyplay['words_text']))
+                                    text = str(name_zh) + ' ' + str(translate(playbyplay['words_text']))
                                 else:
                                     playbyplay['words_text'] = playbyplay_info['PLAYINFO']
-                                    text = translate_text(playbyplay['words_text'])
+                                    text = translate(playbyplay['words_text'])
                                 if playbyplay_info['TEAM'] == home_team:
                                     belong = 1
                                 elif playbyplay_info['TEAM'] == away_team:

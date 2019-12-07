@@ -137,18 +137,6 @@ def get_team_id(team_name):
     return row.id
 
 
-def translate_text(text):
-    data_tran = pd.read_excel('/Users/zhulang/Desktop/nanodata_crawling/translate.xlsx')
-    translate_dict = {}
-    key_list = list(data_tran['words_text'])
-    value_list = list(data_tran['words_text_zh'])
-    for index in range(len(key_list)):
-        translate_dict[key_list[index]] = value_list[index]
-    for key in translate_dict.keys():
-        if key in text:
-            text_en = translate_dict[key]
-            return text_en
-
 
 def translate_player_name(text):
     if text in translate_dict.keys() :
