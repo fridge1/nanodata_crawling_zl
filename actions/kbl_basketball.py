@@ -1,7 +1,9 @@
 import asyncio
 from apps.kbl.kbl_client import KblBasketballFeedClient
 from apps.kbl.kbl_svr import KblBasketballFeedSvr
-from apps.kbl.kbl_match import match_info
+from apps.kbl.kbl_match import GetMatchObj
+
+
 
 servers = ["nats://hub.nats.namincs.com:4222"]
 user = 'nana'
@@ -18,7 +20,7 @@ def start_kbl_basketball_client(opts):
 
 
 def start_kbl_basketball_match(opts):
-    match_info().run()
+    GetMatchObj().run()
 
 
 

@@ -36,6 +36,3 @@ def translate(text):
     #         text = text.replace(name_en, name_cn.replace('-', '·'))
     #
     return text.replace('\t', '').strip().replace(',',' ')
-
-str1 = 'Begin Period'
-print(translate(str1))
