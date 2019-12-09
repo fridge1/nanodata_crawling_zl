@@ -131,7 +131,7 @@ def get_team_name():
 
 def get_match_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id==1).all()
+    rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id==10).all()
     data_dict = {row.key: row.id for row in rows}
     return data_dict
 
