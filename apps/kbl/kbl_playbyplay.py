@@ -51,58 +51,6 @@ class PbpBoxLive(object):
             return match_data_boxscore, match_data_playbyplay
 
         else:
-            playbyplay_list = []
-            period_total = res['live_text']['time'][0]
-            for stage in list(res['live_text']):
-                if 'Q' in stage or 'X' in stage:
-                    period = period_list[stage]
-                    for minutes_second in res['live_text'][stage]:
-                        minute = minutes_second.split(':')[0]
-                        second = minutes_second.split(':')[1]
-                        match_minute = 9 - int(minute)
-                        match_second = 60 - int(second)
-                        if match_second == 60:
-                            game_minute = match_minute + 1
-                            game_second = '00'
-                        else:
-                            game_minute = match_minute
-                            game_second = match_second
-                        if len(str(game_second)) == 1:
-                            period_time = '0' + str(game_minute) + ':0' + str(game_second)
-                        else:
-                            period_time = '0' + str(game_minute) + ':' + str(game_second)
-
-                        for playbyplay_info in res['live_text'][stage][minutes_second]:
-                            playbyplay_dict = {}
-                            team_code = playbyplay_info.split(',')[0]
-                            if team_code == home_team_code:
-                                belong = 1
-                            else:
-                                belong = 2
-                            player = ' '.join(playbyplay_info.split(',')[-1].split(' ')[:-1])
-                            player_name_zh = translate(player)
-                            text_en = player + ' ' + playbyplay_info.split(',')[-1].split(' ')[-1]
-                            text_no_name = playbyplay_info.split(',')[-1].split(' ')[-1]
-                            text = player_name_zh + ' '+ translate(text_no_name)
-                            home_score = res['quarter_score'][home_team_code]['total_score']
-                            away_score = res['quarter_score'][away_team_code]['total_score']
-                            type = 0
-                            playbyplay_dict['id'] = int(match_id)
-                            playbyplay_dict['type'] = type
-                            playbyplay_dict['home_score'] = int(home_score)
-                            playbyplay_dict['away_score'] = int(away_score)
-                            playbyplay_dict['belong'] = int(belong)
-                            playbyplay_dict['period'] = int(period)
-                            playbyplay_dict['period_time'] = period_time
-                            playbyplay_dict['text'] = text
-                            playbyplay_dict['text_en'] = text_en
-                            playbyplay_list.append(playbyplay_dict)
-            match_data_playbyplay = {'match': {'id': int(match_id),
-                                               'basketball_items': {
-                                                   'incident': {
-                                                       'period': int(period_total),
-                                                       'items': playbyplay_list}
-                                               }}}
             first_id = []
             for index_name in res['line_up']:
                 if 'status' not in index_name:
@@ -139,7 +87,8 @@ class PbpBoxLive(object):
                     if player_id in self.player_id_list:
                         player_boxer['player_id'] = int(player_id)
                     else:
-                        player_boxer['player_id'] = upsert_player_id(player_id,box_list[0].box_list[1],box_list[2],box_list[3])
+                        player_boxer['player_id'] = upsert_player_id(player_id, box_list[0], box_list[2], box_list[3],
+                                                                     box_list[1])
                     player_boxer['two_points_goals'] = int(box_list[6])
                     player_boxer['two_points_total'] = int(box_list[7])
                     player_boxer['free_throw_goals'] = int(box_list[8])
@@ -147,7 +96,7 @@ class PbpBoxLive(object):
                     player_boxer['three_point_goals'] = int(box_list[10])
                     player_boxer['three_point_field'] = int(box_list[11])
                     player_boxer['goals'] = player_boxer['two_points_goals'] + player_boxer['three_point_goals']
-                    player_boxer['field'] =  player_boxer['two_points_total'] + player_boxer['three_point_field']
+                    player_boxer['field'] = player_boxer['two_points_total'] + player_boxer['three_point_field']
                     player_boxer['offensive_rebounds'] = int(box_list[14])
                     player_boxer['defensive_rebounds'] = int(box_list[15])
                     player_boxer['rebounds'] = player_boxer['offensive_rebounds'] + player_boxer['defensive_rebounds']
@@ -162,7 +111,7 @@ class PbpBoxLive(object):
                     if team_code == away_team_code:
                         team_boxer['belong'] = 1
                     else:
-                        team_boxer['belong'] = 0
+                        team_boxer['belong'] = 2
                     team_boxer['team_id'] = int(team_code)
                     team_boxer['team_name'] = translater_team_name[int(team_code)]
                     team_boxer['two_points_goals'] = int(res['team_game_rec'][team_code]['fg'])
@@ -188,6 +137,58 @@ class PbpBoxLive(object):
                                                      'items': player_list},
                                                  'team_stat': {'items': team_list}
                                              }}}
+            playbyplay_list = []
+            period_total = len(res['quarter_score'][home_team_code].keys()) - 1
+            for stage in list(res['live_text']):
+                if 'Q' in stage or 'X' in stage:
+                    period = period_list[stage]
+                    for minutes_second in res['live_text'][stage]:
+                        minute = minutes_second.split(':')[0]
+                        second = minutes_second.split(':')[1]
+                        match_minute = 9 - int(minute)
+                        match_second = 60 - int(second)
+                        if match_second == 60:
+                            game_minute = match_minute + 1
+                            game_second = '00'
+                        else:
+                            game_minute = match_minute
+                            game_second = match_second
+                        if len(str(game_second)) == 1:
+                            period_time = '0' + str(game_minute) + ':0' + str(game_second)
+                        else:
+                            period_time = '0' + str(game_minute) + ':' + str(game_second)
+                        for playbyplay_info in res['live_text'][stage][minutes_second]:
+                            playbyplay_dict = {}
+                            team_code = playbyplay_info.split(',')[0]
+                            if team_code == home_team_code:
+                                belong = 1
+                            else:
+                                belong = 2
+                            player = ' '.join(playbyplay_info.split(',')[-1].split(' ')[:-1])
+                            player_name_zh = translate(player)
+                            text_en = player + ' ' + playbyplay_info.split(',')[-1].split(' ')[-1]
+                            text_no_name = playbyplay_info.split(',')[-1].split(' ')[-1]
+                            text = player_name_zh + ' '+ translate(text_no_name)
+                            home_score = res['quarter_score'][home_team_code]['total_score']
+                            away_score = res['quarter_score'][away_team_code]['total_score']
+                            type = 0
+                            playbyplay_dict['id'] = int(match_id)
+                            playbyplay_dict['type'] = type
+                            playbyplay_dict['home_score'] = int(home_score)
+                            playbyplay_dict['away_score'] = int(away_score)
+                            playbyplay_dict['belong'] = int(belong)
+                            playbyplay_dict['period'] = int(period)
+                            playbyplay_dict['period_time'] = period_time
+                            playbyplay_dict['text'] = text
+                            playbyplay_dict['text_en'] = text_en
+                            playbyplay_list.append(playbyplay_dict)
+            match_data_playbyplay = {'match': {'id': int(match_id),
+                                               'basketball_items': {
+                                                   'incident': {
+                                                       'period': int(period_total),
+                                                       'items': playbyplay_list}
+                                               }}}
+
             logger.info('')
             return match_data_boxscore,match_data_playbyplay
 

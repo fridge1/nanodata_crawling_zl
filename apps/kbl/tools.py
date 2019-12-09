@@ -150,9 +150,9 @@ def upsert_player_id(id,name_en,team_id,shirt_number,position):
         'name_en':str(name_en),
         'team_id':int(team_id),
         'shirt_number':int(shirt_number),
-        'position':int(position),
+        'position':str(position),
     }
-    _, row = BleagueNblBasketballMatch.upsert(
+    _, row = BleagueNblBasketballPlayer.upsert(
         spx_dev_session,
         'id',
         data
