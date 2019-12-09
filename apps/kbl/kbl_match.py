@@ -29,7 +29,8 @@ class GetMatchObj():
             season = str(date[:4]) + '-' + str(int(date[:4])+1)
         else:
             season = str(int(date[:4])-1) + '-' + str(int(date[:4]))
-        date_time = date+' '+url_api_res['kick_off']
+        date_time = date+' '+url_api_res['kick_off'].replace(' ','')
+        print(date_time)
         match_time = change_match_bjtime(date_time)
         print(match_time)
         season_id = season_id_dict[season]
@@ -110,7 +111,7 @@ class GetMatchObj():
 
     async def run(self):
         while True:
-            url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=20191206&month=11&year=2008&teamCode=&category=kbl'
+            url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=20191206&month=12&year=2008&teamCode=&category=kbl'
             await self.get_match_info_async(url)
             time.sleep(7200)
 
