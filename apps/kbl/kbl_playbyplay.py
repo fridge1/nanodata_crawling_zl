@@ -2,6 +2,8 @@
 from apps.kbl.tools import *
 from apps.kbl.kbl_translate import translate
 import asyncio
+from common.libs.log import LogMgr
+logger = LogMgr.get('kbl_basketball_pbp_box_live')
 
 
 
@@ -32,7 +34,7 @@ class PbpBoxLive(object):
         player_list = []
         team_list = []
         if res['line_up']['status'] == 0:
-            print('未开赛......')
+            logger.info('未开赛......%s' % game_id)
             match_data_boxscore = {'match': {'id': int(match_id),
                                              'basketball_items': {
                                                  'player_stat': {
@@ -45,6 +47,7 @@ class PbpBoxLive(object):
                                                        'period': '',
                                                        'items': ''}
                                                }}}
+            return match_data_boxscore, match_data_playbyplay
 
         else:
             playbyplay_list = []
@@ -182,7 +185,8 @@ class PbpBoxLive(object):
                                                      'items': player_list},
                                                  'team_stat': {'items': team_list}
                                              }}}
-        return match_data_boxscore,match_data_playbyplay
+            logger.info('')
+            return match_data_boxscore,match_data_playbyplay
 
 
 
