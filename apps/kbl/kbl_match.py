@@ -3,11 +3,10 @@ import requests
 from apps.kbl.tools import tree_parse,season_id_dict,change_match_bjtime
 import re
 import asyncio
-import json
 import time
-import threading
 from orm_connection.kbl_basketball import BleagueNblBasketballMatch
 from orm_connection.orm_session import MysqlSvr
+
 
 
 

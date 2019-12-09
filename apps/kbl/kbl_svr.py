@@ -3,15 +3,20 @@ import queue
 import time
 import traceback
 import threading
-from apps.kbl.kbl_playbyplay import kbl_playbyplay
+
+import requests
+
+from apps.kbl.kbl_playbyplay import PbpBoxLive
 from stan.aio.client import Client as STAN
 
+from apps.kbl.tools import tree_parse
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
 from pb.nana.biz.base_pb2 import Request, Result
 from pb.nana.biz.example import demo_pb2
 from pb.nana.biz.japan_ball import match_pb2
+from apps.kbl.tools import get_match_id
 
 
 def now():
@@ -31,6 +36,7 @@ class KblBasketballFeedSvr(object):
         self.data_queue_svr = queue.Queue()
         self.nc = STAN()
 
+
     async def start(self, topic):
         self.topic = topic
         self.nc = await NatsSvr.get_stan('hub.nats')
@@ -38,11 +44,17 @@ class KblBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        threading.Thread(target=kbl_playbyplay,args=(self.data_queue_svr,)).start()
         while True:
-            data = self.data_queue_svr.get()
-            print('get_data+++++++')
-            await self.pub_time_data(self.topic, data)
+            match_id_dict = get_match_id()
+            for key in match_id_dict.keys():
+                game_id = key
+                match_id = match_id_dict[key]
+                box,pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id)
+                await self.pub_time_data(self.topic, box)
+                logger.info('技术统计推送成功%s' % game_id)
+                await self.pub_time_data(self.topic, pbp)
+                logger.info('文字直播推送成功%s' % game_id)
+
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic

@@ -129,6 +129,13 @@ def get_team_name():
     data_dict = {row.id: row.name_en for row in rows}
     return data_dict
 
+def get_match_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id==1).all()
+    data_dict = {row.key: row.id for row in rows}
+    return data_dict
+
+
 
 
 season_id_dict = {'2008-2009': 1, '2009-2010': 2, '2010-2011': 3, '2011-2012': 4, '2012-2013': 5, '2013-2014': 6, '2014-2015': 7, '2015-2016': 8, '2016-2017': 9, '2017-2018': 10, '2018-2019': 11, '2019-2020': 12}
