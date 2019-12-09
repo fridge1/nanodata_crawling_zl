@@ -135,6 +135,29 @@ def get_match_id():
     data_dict = {row.key: row.id for row in rows}
     return data_dict
 
+def get_player_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    id_list = spx_dev_session.query(BleagueNblBasketballPlayer).all()
+    list1 = []
+    for player_info in id_list:
+        list1.append(player_info.id)
+    return list1
+
+def upsert_player_id(id,name_en,team_id,shirt_number,position):
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    data = {
+        'id':int(id),
+        'name_en':str(name_en),
+        'team_id':int(team_id),
+        'shirt_number':int(shirt_number),
+        'position':int(position),
+    }
+    _, row = BleagueNblBasketballMatch.upsert(
+        spx_dev_session,
+        'id',
+        data
+    )
+    return row.id
 
 
 

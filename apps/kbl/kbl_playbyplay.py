@@ -14,6 +14,7 @@ class PbpBoxLive(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
         }
         self.match_id_dict = get_match_id()
+        self.player_id_list = get_player_id()
 
 
 
@@ -51,8 +52,7 @@ class PbpBoxLive(object):
 
         else:
             playbyplay_list = []
-            period_total = 4
-            print(period_total)
+            period_total = res['live_text']['time'][0]
             for stage in list(res['live_text']):
                 if 'Q' in stage or 'X' in stage:
                     period = period_list[stage]
@@ -114,7 +114,6 @@ class PbpBoxLive(object):
                 player_box = res['player_avg_record']['game'][player_rec]
                 for player_id in player_box:
                     player_boxer = {}
-                    player_boxer['player_id'] = int(player_id)
                     if player_id in first_id:
                         player_boxer['first_publish'] = 1
                     else:
@@ -137,6 +136,10 @@ class PbpBoxLive(object):
                         player_boxer['enter_ground'] = 0
                     else:
                         player_boxer['enter_ground'] = 1
+                    if player_id in self.player_id_list:
+                        player_boxer['player_id'] = int(player_id)
+                    else:
+                        player_boxer['player_id'] = upsert_player_id(player_id,box_list[0].box_list[1],box_list[2],box_list[3])
                     player_boxer['two_points_goals'] = int(box_list[6])
                     player_boxer['two_points_total'] = int(box_list[7])
                     player_boxer['free_throw_goals'] = int(box_list[8])
