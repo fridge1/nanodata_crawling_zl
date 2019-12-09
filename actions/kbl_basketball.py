@@ -20,7 +20,7 @@ def start_kbl_basketball_client(opts):
 
 
 def start_kbl_basketball_match(opts):
-    GetMatchObj().run()
+    asyncio.run(GetMatchObj().run())
 
 
 
