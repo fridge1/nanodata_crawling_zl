@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
-from apps.kbl.tools import tree_parse,season_id_dict
+from apps.kbl.tools import tree_parse,season_id_dict,change_match_bjtime
 import re
 import asyncio
 import json
@@ -29,6 +29,9 @@ class GetMatchObj():
             season = str(date[:4]) + '-' + str(int(date[:4])+1)
         else:
             season = str(int(date[:4])-1) + '-' + str(int(date[:4]))
+        date_time = date+' '+url_api_res['kick_off']
+        match_time = change_match_bjtime(date_time)
+        print(match_time)
         season_id = season_id_dict[season]
         stage_id = season_id
         sport_id = 2
@@ -56,6 +59,8 @@ class GetMatchObj():
             away_scores = []
             for key in url_api_res['quarter_score'][away_team_id]:
                 away_scores.append(url_api_res['quarter_score'][away_team_id][key])
+            home_scores = str(list(map(int, home_scores)))
+            away_scores = str(list(map(int, away_scores)))
         data = {
             'key':key1,
             'sport_id':int(sport_id),
@@ -66,10 +71,11 @@ class GetMatchObj():
             'away_score':int(away_score),
             'home_half_score':int(home_half_score),
             'away_half_score':int(away_half_score),
-            'home_scores':str(list(map(int,home_scores))),
-            'away_scores':str(list(map(int,away_scores))),
+            'home_scores':home_scores,
+            'away_scores':away_scores,
             'season_id':int(season_id),
             'stage_id':int(stage_id),
+            'match_time':int(match_time),
         }
         BleagueNblBasketballMatch.upsert(
             self.spx_dev_session,
