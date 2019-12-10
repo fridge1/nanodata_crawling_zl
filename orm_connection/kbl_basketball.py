@@ -443,6 +443,7 @@ class BleagueNblBasketballTeamStats(BaseModel):
 
     # id和外部表id
     id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(255), nullable=True, default=0, comment='辅助字段')
     sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')  # 球类id   2
     match_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='比赛id')  # 单场比赛的id
     team_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球队id')  #  球队id
@@ -491,7 +492,8 @@ class BleagueNblBasketballPlayerStats(BaseModel):
     __tablename__ = prefix + 'match_player_stat'
 
     # id和外部表id
-    id = Column(Integer, primary_key=True, comment='id')                #team_id+player_id
+    id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(255), nullable=False, server_default='', default='', comment='位置')
     sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')
     match_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='比赛id')
     team_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球队id')
@@ -531,6 +533,7 @@ class BleagueNblBasketballPlayerStats(BaseModel):
     blocks = Column(Integer, nullable=True, default=0, comment='盖帽')
     personal_fouls = Column(Integer, nullable=True, default=0, comment='个人犯规')
     plus_minus = Column(Integer, nullable=True, default=0, comment='+/-')
+
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
