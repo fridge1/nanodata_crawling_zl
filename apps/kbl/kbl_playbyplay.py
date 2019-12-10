@@ -84,10 +84,7 @@ class PbpBoxLive(object):
                             player_boxer['minutes'] = 1
                         else:
                             player_boxer['minutes'] = int(box_list[4])
-                        if player_boxer['minutes'] == 0:
-                            player_boxer['enter_ground'] = 0
-                        else:
-                            player_boxer['enter_ground'] = 1
+                        player_boxer['enter_ground'] = 1
                         if player_id in self.player_id_list:
                             player_boxer['player_id'] = int(player_id)
                         else:
@@ -109,13 +106,14 @@ class PbpBoxLive(object):
                         player_boxer['blocks'] = int(box_list[18])
                         player_boxer['point'] = int(box_list[22])
                         player_boxer['shirt_number'] = int(box_list[3])
+                        player_boxer['on_ground'] = 1
                         player_list.append(player_boxer)
                     for team_code in res['team_game_rec']:
                         team_boxer = {}
                         if team_code == away_team_code:
-                            team_boxer['belong'] = 1
-                        else:
                             team_boxer['belong'] = 2
+                        else:
+                            team_boxer['belong'] = 1
                         team_boxer['team_id'] = int(team_code)
                         team_boxer['team_name'] = translater_team_name[int(team_code)]
                         team_boxer['two_points_goals'] = int(res['team_game_rec'][team_code]['fg'])
@@ -185,7 +183,6 @@ class PbpBoxLive(object):
                                 playbyplay_dict['period_time'] = period_time
                                 playbyplay_dict['text'] = text
                                 playbyplay_dict['text_en'] = text_en
-                                playbyplay_dict['on_ground'] = 1
                                 playbyplay_list.append(playbyplay_dict)
                 match_data_playbyplay = {'match': {'id': int(match_id),
                                                    'basketball_items': {
