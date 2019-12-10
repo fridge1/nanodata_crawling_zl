@@ -129,7 +129,7 @@ def get_team_name():
     data_dict = {row.id: row.name_en for row in rows}
     return data_dict
 
-def get_match_id():
+def get_match_id_end():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id==10).all()
     data_dict = {row.key: row.id for row in rows}
@@ -159,7 +159,11 @@ def upsert_player_id(id,name_en,team_id,shirt_number,position):
     )
     return row.id
 
-
+def get_match_id_start():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id==1).all()
+    data_dict = {row.key: row.id for row in rows}
+    return data_dict
 
 
 

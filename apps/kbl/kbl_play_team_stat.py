@@ -16,7 +16,7 @@ logger = LogMgr.get('kbl_basketball_player_team_stat')
 
 class PlayerTeamStats(object):
     def __init__(self):
-        self.match_id_dict = get_match_id()
+        self.match_id_dict = get_match_id_end()
 
 
 
@@ -162,10 +162,12 @@ class PlayerTeamStats(object):
 
 
     async def run(self):
-        task1 = asyncio.create_task(self.jiexi_player_stat())
-        task2 = asyncio.create_task(self.jiexi_team_stat())
-        coro = [task1,task2]
-        await asyncio.gather(*coro)
+        while True:
+            task1 = asyncio.create_task(self.jiexi_player_stat())
+            task2 = asyncio.create_task(self.jiexi_team_stat())
+            coro = [task1,task2]
+            await asyncio.gather(*coro)
+            time.sleep(7200)
 
 
 
