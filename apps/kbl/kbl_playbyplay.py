@@ -17,6 +17,7 @@ class PbpBoxLive(object):
         }
         self.match_id_dict = get_match_id_start()
         self.player_id_list = get_player_id()
+        self.first_id_list = self.get_first_id_list()
 
 
 
@@ -55,21 +56,25 @@ class PbpBoxLive(object):
                 return match_data_boxscore, match_data_playbyplay
 
             else:
-                first_id = []
+                line_up_id = []
                 for index_name in res['line_up']:
                     if 'status' not in index_name:
                         for first_player_id in res['line_up'][index_name]:
-                            first_id.append(res['line_up'][index_name][first_player_id])
+                            line_up_id.append(res['line_up'][index_name][first_player_id])
                 team_code_list = list(res['player_avg_record']['game'])
                 team_code_list.remove('format')
                 for player_rec in team_code_list:
                     player_box = res['player_avg_record']['game'][player_rec]
                     for player_id in player_box:
                         player_boxer = {}
-                        if player_id in first_id:
+                        if player_id in self.first_id_list:
                             player_boxer['first_publish'] = 1
                         else:
                             player_boxer['first_publish'] = 0
+                        if player_id in line_up_id:
+                            player_boxer['on_ground'] = 1
+                        else:
+                            player_boxer['on_ground'] = 0
                         box_list = player_box[player_id].split(',')
                         if int(away_team_code) == int(box_list[2]):
                             player_boxer['belong'] = 2
@@ -106,7 +111,6 @@ class PbpBoxLive(object):
                         player_boxer['blocks'] = int(box_list[18])
                         player_boxer['point'] = int(box_list[22])
                         player_boxer['shirt_number'] = int(box_list[3])
-                        player_boxer['on_ground'] = 1
                         player_list.append(player_boxer)
                     for team_code in res['team_game_rec']:
                         team_boxer = {}
@@ -218,6 +222,25 @@ class PbpBoxLive(object):
                 return match_data_boxscore, match_data_playbyplay
         except:
             dingding_alter(traceback.format_exc())
+
+
+    async def get_first_id_list(self,game_id):
+        url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(game_id)
+        res = requests.get(url, headers=self.headers).json()
+        away_team_code = res['away_team']
+        home_team_code = res['home_team']
+        if res['line_up']['status'] == 0:
+            logger.info('未开赛......%s' % game_id)
+        else:
+            first_id_list = []
+            for team_id in [away_team_code,home_team_code]:
+                for value in res['line_up'][team_id].values():
+                    first_id_list.append(value)
+            return first_id_list
+
+
+
+
 
 
 
