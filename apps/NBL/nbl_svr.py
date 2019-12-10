@@ -15,6 +15,7 @@ from pb.nana.biz.example import demo_pb2
 from pb.nana.biz.japan_ball import match_pb2
 
 
+
 def now():
     return int(time.time() * 1000)
 
