@@ -16,7 +16,7 @@ from common.utils import NatsSvr
 from pb.nana.biz.base_pb2 import Request, Result
 from pb.nana.biz.example import demo_pb2
 from pb.nana.biz.japan_ball import match_pb2
-from apps.kbl.tools import get_match_id
+from apps.kbl.tools import get_match_id_end
 
 
 def now():
@@ -45,7 +45,7 @@ class KblBasketballFeedSvr(object):
 
     async def start_feed(self):
         while True:
-            match_id_dict = get_match_id()
+            match_id_dict = get_match_id_end()
             for key in match_id_dict.keys():
                 game_id = key
                 match_id = match_id_dict[key]
