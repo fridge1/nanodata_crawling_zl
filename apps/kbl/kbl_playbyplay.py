@@ -141,6 +141,8 @@ class PbpBoxLive(object):
                                                  }}}
                 playbyplay_list = []
                 period_total = len(res['quarter_score'][home_team_code].keys()) - 1
+                home_score = 0
+                away_score = 0
                 for stage in list(res['live_text']):
                     if 'Q' in stage or 'X' in stage:
                         period = period_list[stage]
@@ -169,10 +171,32 @@ class PbpBoxLive(object):
                                 player = ' '.join(playbyplay_info.split(',')[-1].split(' ')[:-1])
                                 player_name_zh = translate(player)
                                 text_en = player + ' ' + playbyplay_info.split(',')[-1].split(' ')[-1]
+                                if '2점슛성공' in playbyplay_info or '덩크슛성공' in playbyplay_info:
+                                    if int(playbyplay_info.split(',')[0]) == int(home_team_code):
+                                        home_score += 2
+                                        away_score += 0
+                                    else:
+                                        home_score += 0
+                                        away_score += 2
+                                elif '자유투성공' in playbyplay_info:
+                                    if int(playbyplay_info.split(',')[0]) == int(home_team_code):
+                                        home_score += 1
+                                        away_score += 0
+                                    else:
+                                        home_score += 0
+                                        away_score += 1
+                                elif '3점슛성공' in playbyplay_info:
+                                    if int(playbyplay_info.split(',')[0]) == int(home_team_code):
+                                        home_score += 3
+                                        away_score += 0
+                                    else:
+                                        home_score += 0
+                                        away_score += 3
+                                else:
+                                    home_score += 0
+                                    away_score += 0
                                 text_no_name = playbyplay_info.split(',')[-1].split(' ')[-1]
                                 text = player_name_zh + ' '+ translate(text_no_name)
-                                home_score = res['quarter_score'][home_team_code]['total_score']
-                                away_score = res['quarter_score'][away_team_code]['total_score']
                                 type = 0
                                 playbyplay_dict['id'] = int(match_id)
                                 playbyplay_dict['type'] = type
