@@ -185,6 +185,7 @@ class PbpBoxLive(object):
                                 playbyplay_dict['period_time'] = period_time
                                 playbyplay_dict['text'] = text
                                 playbyplay_dict['text_en'] = text_en
+                                playbyplay_dict['on_ground'] = 0
                                 playbyplay_list.append(playbyplay_dict)
                 match_data_playbyplay = {'match': {'id': int(match_id),
                                                    'basketball_items': {
