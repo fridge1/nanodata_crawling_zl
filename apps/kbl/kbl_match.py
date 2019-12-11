@@ -112,7 +112,7 @@ class GetMatchObj():
             while True:
                 url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=20191206&month=11&year=2008&teamCode=&category=kbl'
                 await self.get_match_info_async(url)
-                time.sleep(7200)
+                time.sleep(10800)
         except:
             logger.error(traceback.format_exc())
             dingding_alter(traceback.format_exc())
