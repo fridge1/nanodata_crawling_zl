@@ -19,6 +19,7 @@ class PlayerTeamStats(object):
     async def get_player_stat(self):
         for key, value in self.match_id_dict.items():
             url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(key)
+            print(url)
             conn = aiohttp.TCPConnector(verify_ssl=False)
             async with ClientSession(connector=conn) as session:
                 async with session.get(url) as response:
@@ -168,6 +169,5 @@ class PlayerTeamStats(object):
             task2 = asyncio.create_task(self.jiexi_team_stat())
             coro = [task1, task2]
             await asyncio.gather(*coro)
-            time.sleep(7200)
 
 

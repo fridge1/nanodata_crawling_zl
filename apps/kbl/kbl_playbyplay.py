@@ -70,9 +70,9 @@ class PbpBoxLive(object):
                         else:
                             player_boxer['first_publish'] = 0
                         if player_id in line_up_id:
-                            player_boxer['on_ground'] = 1
-                        else:
                             player_boxer['on_ground'] = 0
+                        else:
+                            player_boxer['on_ground'] = 1
                         box_list = player_box[player_id].split(',')
                         if int(away_team_code) == int(box_list[2]):
                             player_boxer['belong'] = 2
