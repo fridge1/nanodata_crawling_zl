@@ -47,7 +47,7 @@ class KblBasketballFeedSvr(object):
         first_id_dict = await PbpBoxLive().get_first_id_list(list(match_id_dict.keys()))
         while True:
             match_id_dict = get_match_id_start()
-            for key in list(match_id_dict.keys())[:5]:
+            for key in list(match_id_dict.keys()):
                 game_id = key
                 match_id = match_id_dict[key]
                 box, pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id,first_id_dict)
