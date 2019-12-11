@@ -64,7 +64,7 @@ class PbpBoxLive(object):
                     player_box = res['player_avg_record']['game'][player_rec]
                     for player_id in player_box:
                         player_boxer = {}
-                        first_id_list = first_id_dict[game_id]
+                        first_id_list = first_id_dict[str(game_id)]
                         if player_id in first_id_list:
                             player_boxer['first_publish'] = 1
                         else:
