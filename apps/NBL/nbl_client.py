@@ -1,4 +1,4 @@
-#服务接收方   接收数据
+# 服务接收方   接收数据
 
 import asyncio
 import json
@@ -10,8 +10,7 @@ from common.libs.log import LogMgr
 from common.utils import NatsSvr
 from pb.nana.biz.base_pb2 import Request, Result
 
-
-#-----日志信息-----
+# -----日志信息-----
 from pb.nana.biz.japan_ball import match_pb2
 
 logger = LogMgr.get('demo_feed_client')
@@ -50,4 +49,4 @@ class NblBasketballFeedClient(object):
             match_pb.ParseFromString(res_pb.data)
             result = MessageToDict(
                 match_pb, preserving_proto_field_name=True, including_default_value_fields=True)
-            print(json.dumps(result,ensure_ascii=False))
+            print(json.dumps(result, ensure_ascii=False))

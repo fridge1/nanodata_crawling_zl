@@ -1,12 +1,12 @@
-import requests
 import json
-import traceback
 import threading
+import traceback
+
 from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
-import time
 from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
+
 logger = LogMgr.get('nbl_basketball_pbp_box_live')
 
 
@@ -14,15 +14,15 @@ class pbp_box(object):
     def __init__(self):
         self.team_id_get = get_team_id()
 
-    def pbp_box_live(self,data_queue,match_id,match_time):
+    def pbp_box_live(self, data_queue, match_id, match_time):
         while True:
             headers = {
-                        'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
-                    }
+                'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
+            }
             url = 'https://www.fibalivestats.com/data/%s/data.json' % str(match_id)
             logger.info(url)
-            pbp_res = requests.get(url,headers=headers)
-            if  pbp_res.status_code != 200:
+            pbp_res = requests.get(url, headers=headers)
+            if pbp_res.status_code != 200:
                 logger.info('比赛未开赛.... %s' % str(match_id))
                 time.sleep(10)
             else:
@@ -113,11 +113,12 @@ class pbp_box(object):
                         for player_key in player_keys:
                             player = {}
                             player['belong'] = int(key)
-                            player_name = pbp_dict['tm'][key]['pl'][player_key]['firstName'] + ' ' + pbp_dict['tm'][key]['pl'][player_key]['familyName']
+                            player_name = pbp_dict['tm'][key]['pl'][player_key]['firstName'] + ' ' + \
+                                          pbp_dict['tm'][key]['pl'][player_key]['familyName']
                             player['player_id'] = get_player_id(player_name)
                             print(player['player_id'])
                             player['player_name'] = player_name
-                            minutes  = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
+                            minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
                             minute = minutes.split(':')[0]
                             second = minutes.split(':')[1]
                             if int(second) >= 30:
@@ -127,13 +128,19 @@ class pbp_box(object):
                             player['goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade'])
                             player['field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted'])
                             player['two_points_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
-                            player['two_points_total'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
-                            player['three_point_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
-                            player['three_point_field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
+                            player['two_points_total'] = int(
+                                pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
+                            player['three_point_goals'] = int(
+                                pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
+                            player['three_point_field'] = int(
+                                pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
                             player['free_throw_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
-                            player['free_throw_field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
-                            player['offensive_rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive'])
-                            player['defensive_rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive'])
+                            player['free_throw_field'] = int(
+                                pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
+                            player['offensive_rebounds'] = int(
+                                pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive'])
+                            player['defensive_rebounds'] = int(
+                                pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive'])
                             player['rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsTotal'])
                             player['assists'] = int(pbp_dict['tm'][key]['pl'][player_key]['sAssists'])
                             player['steals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sSteals'])
@@ -157,7 +164,7 @@ class pbp_box(object):
                     except:
                         logger.error(traceback.format_exc())
                     for pbp_shot in pbp_dict['tm'][key]['shot']:
-                        shot_location = (pbp_shot['y'],pbp_shot['x'])
+                        shot_location = (pbp_shot['y'], pbp_shot['x'])
                         actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
                 for pbp_info in pbp_dict['pbp'][::-1]:
                     period = pbp_info['period']
@@ -191,19 +198,22 @@ class pbp_box(object):
                             shooting_play = 0
                             score_value = 0
                             scoring_play = 0
-                            word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' - ' + pbp_info['subType']
+                            word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info[
+                                'actionType'] + ' - ' + pbp_info['subType']
                         else:
                             if pbp_info['scoring'] == 0:
                                 shooting_play = pbp_info['scoring']
                                 score_value = 0
                                 scoring_play = 0
-                                word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info[
+                                    'actionType'] + ' ' + pbp_info['subType']
                             elif pbp_info['scoring'] == 1:
                                 if pbp_info['success'] == 0:
                                     shooting_play = pbp_info['scoring']
                                     score_value = 0
                                     scoring_play = 0
-                                    word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
+                                    word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info[
+                                        'actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
                                 elif pbp_info['success'] == 1:
                                     shooting_play = pbp_info['scoring']
                                     if 'f' not in pbp_info['actionType'][0]:
@@ -212,15 +222,20 @@ class pbp_box(object):
                                         score_value = 0
                                     scoring_play = 1
                                     if pbp_info['lead'] > 0 and pbp_info['tno'] == 1:
-                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
+                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     elif pbp_info['lead'] > 0 and pbp_info['tno'] == 2:
-                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
+                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     elif pbp_info['lead'] < 0 and pbp_info['tno'] == 1:
-                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
+                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     elif pbp_info['lead'] < 0 and pbp_info['tno'] == 2:
-                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
+                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
                                     else:
-                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info['actionType'] + ' ' + pbp_info['subType']
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
+                                                    pbp_info['actionType'] + ' ' + pbp_info['subType']
                                 else:
                                     shooting_play = 0
                                     score_value = 0
@@ -238,22 +253,22 @@ class pbp_box(object):
                         word_text = pbp_info['actionType'] + ' ' + pbp_info['subType']
                     word_text_zh = translate(word_text)
                     data = {
-                        'id' : int(match_id),
-                        'text':word_text_zh,
-                        'period':int(period),
-                        'type':int(type),
-                        'home_score':int(home_score),
-                        'away_score':int(away_score),
-                        'belong':int(belong),
-                        'player_name':player_name,
-                        'player_ids':[player_ids],
-                        'period_time':str(period_time),
-                        'shooting_play':int(shooting_play),
-                        'score_value':int(score_value),
-                        'scoring_play':int(scoring_play),
-                        'text_en':word_text,
-                        'location_x' : int(location_x),
-                        'location_y' : int(location_y),
+                        'id': int(match_id),
+                        'text': word_text_zh,
+                        'period': int(period),
+                        'type': int(type),
+                        'home_score': int(home_score),
+                        'away_score': int(away_score),
+                        'belong': int(belong),
+                        'player_name': player_name,
+                        'player_ids': [player_ids],
+                        'period_time': str(period_time),
+                        'shooting_play': int(shooting_play),
+                        'score_value': int(score_value),
+                        'scoring_play': int(scoring_play),
+                        'text_en': word_text,
+                        'location_x': int(location_x),
+                        'location_y': int(location_y),
                     }
                     playbyplay_list.append(data)
                 match_data_boxscore = {'match': {'id': int(match_id),
@@ -269,7 +284,7 @@ class pbp_box(object):
                                                        'incident': {
                                                            'period': period_total,
                                                            'items': playbyplay_list}
-                                                       }}}
+                                                   }}}
                 data_queue.put(match_data_playbyplay)
                 logger.info('球员技术文字直播推送完成... %s' % str(match_id))
                 if playbyplay_list[-1]['text'] == '比赛结束':
@@ -279,26 +294,18 @@ class pbp_box(object):
                     logger.info('休息5秒再请求....')
                     continue
 
-
-
-    def get_match_id(self,data_queue):
+    def get_match_id(self, data_queue):
         try:
             url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/24346/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl'
             headers = {
                 'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
             }
-            res = requests.get(url,headers=headers)
+            res = requests.get(url, headers=headers)
             match_dict = json.loads(res.text)
             for id_time in match_dict['data'][::-1]:
                 match_id = id_time['matchId']
                 match_time = change_bjtime(id_time['matchTimeUTC'])
-                threading.Thread(target=pbp_box().pbp_box_live,args=(data_queue,match_id,match_time)).start()
+                threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, match_id, match_time)).start()
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
-
-
-
-
-
-

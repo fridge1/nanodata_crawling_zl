@@ -1,5 +1,5 @@
 import requests
-from apps.eur_basketball_spider.tools import tree_parse,change_bjtime,get_team_id,seasons,stage_id
+from apps.eur_basketball_spider.tools import tree_parse, change_bjtime, get_team_id, seasons, stage_id
 import re
 import json
 from orm_connection.orm_session import MysqlSvr
@@ -8,8 +8,8 @@ import time
 import threading
 import traceback
 from common.libs.log import LogMgr
-logger = LogMgr.get('eur_basketball_match_live')
 
+logger = LogMgr.get('eur_basketball_match_live')
 
 
 def match_end(gamecode):
@@ -19,7 +19,7 @@ def match_end(gamecode):
     spx_dev_session = MysqlSvr.get('spider_zl')
     season_id = 2019
     sport_id = 2
-    match_id = seasons[str(season_id)+'-'+str(season_id+1)]
+    match_id = seasons[str(season_id) + '-' + str(season_id + 1)]
     while True:
         time.sleep(10)
         match = {}
@@ -30,11 +30,13 @@ def match_end(gamecode):
             date = box_url_tree.xpath('//div[@class="date cet"]/text()')[0]
             match_time = change_bjtime(date)
             box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (
-            gamecode, season_id)
-            home_team_url = box_url_tree.xpath('//div[@class="team local "]/a/@href|//div[@class="team local winner"]/a/@href')[0]
-            away_team_url = box_url_tree.xpath('//div[@class="team road "]/a/@href|//div[@class="team road winner"]/a/@href')[0]
-            home_team_key = re.findall(r'clubcode=(.*?)&',home_team_url)[0]
-            away_team_key = re.findall(r'clubcode=(.*?)&',away_team_url)[0]
+                gamecode, season_id)
+            home_team_url = \
+            box_url_tree.xpath('//div[@class="team local "]/a/@href|//div[@class="team local winner"]/a/@href')[0]
+            away_team_url = \
+            box_url_tree.xpath('//div[@class="team road "]/a/@href|//div[@class="team road winner"]/a/@href')[0]
+            home_team_key = re.findall(r'clubcode=(.*?)&', home_team_url)[0]
+            away_team_key = re.findall(r'clubcode=(.*?)&', away_team_url)[0]
             home_team_id = get_team_id(home_team_key)
             away_team_id = get_team_id(away_team_key)
             box_api_res = requests.get(box_api_url, headers=headers)
@@ -60,8 +62,8 @@ def match_end(gamecode):
                     match['match_time'] = match_time
                     match['home_score'] = home_score
                     match['away_score'] = away_score
-                    match['home_scores'] = str(home_scores).replace(']','') + ', ' + str(home_score) + ']'
-                    match['away_scores'] = str(away_scores).replace(']','') + ', ' + str(away_score) + ']'
+                    match['home_scores'] = str(home_scores).replace(']', '') + ', ' + str(home_score) + ']'
+                    match['away_scores'] = str(away_scores).replace(']', '') + ', ' + str(away_score) + ']'
                     match['status_id'] = status_id
                     match['match_id'] = int(str(match_id) + '0000') + int(gamecode)
                     BleaguejpBasketballMatch.upsert(
@@ -71,6 +73,7 @@ def match_end(gamecode):
                     )
                     logger.info(match)
     spx_dev_session.close()
+
 
 data = {
     'sport_id': 2,
@@ -87,13 +90,8 @@ data = {
     }
 }
 
+
 def run():
     while True:
         match_end()
         time.sleep(7200)
-
-
-
-
-
-

@@ -4,18 +4,19 @@ from apps.NBL.tools import *
 import traceback
 from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
+
 logger = LogMgr.get('nbl_basketball_match_live')
 
 
 def match_live():
     headers = {
         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
-                }
-    competitionId_list = [2254,9224,21029,18527,24346]
+    }
+    competitionId_list = [2254, 9224, 21029, 18527, 24346]
     for competitionId in competitionId_list:
         match_url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/%s/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl' % (
-                        competitionId)
-        res = requests.get(match_url,headers=headers)
+            competitionId)
+        res = requests.get(match_url, headers=headers)
         match_dict = json.loads(res.text)
         try:
             for data in match_dict['data']:
@@ -52,7 +53,8 @@ def match_live():
                             home_p4_score = 0
                         if home_score != home_p1_score + home_p2_score + home_p3_score + home_p4_score:
                             home_p5_score = game_dict['tm']['1']['ot_score']
-                            home_scores = [home_p1_score, home_p2_score, home_p3_score, home_p4_score, home_p5_score, home_score]
+                            home_scores = [home_p1_score, home_p2_score, home_p3_score, home_p4_score, home_p5_score,
+                                           home_score]
                         else:
                             home_scores = [home_p1_score, home_p2_score, home_p3_score, home_p4_score, home_score]
                         away_p1_score = game_dict['tm']['2']['p1_score']
@@ -64,7 +66,8 @@ def match_live():
                             away_p4_score = 0
                         if away_score != away_p1_score + away_p2_score + away_p3_score + away_p4_score:
                             away_p5_score = game_dict['tm']['2']['ot_score']
-                            away_scores = [away_p1_score, away_p2_score, away_p3_score, away_p4_score, away_p5_score, away_score]
+                            away_scores = [away_p1_score, away_p2_score, away_p3_score, away_p4_score, away_p5_score,
+                                           away_score]
                         else:
                             away_scores = [away_p1_score, away_p2_score, away_p3_score, away_p4_score, away_score]
                     else:
@@ -100,7 +103,7 @@ def match_live():
                     'home_scores': str(home_scores),
                     'away_scores': str(away_scores),
                     'sport_id': sport_id,
-                    }
+                }
                 spx_dev_session = MysqlSvr.get('spider_zl')
                 BleagueNblBasketballMatch.upsert(
                     spx_dev_session,
@@ -109,13 +112,11 @@ def match_live():
                 )
                 logger.info(id)
         except:
-            dingding_alter(traceback.format_exc()+str(id))
+            dingding_alter(traceback.format_exc() + str(id))
             logger.error(traceback.format_exc())
-
 
 
 def run():
     while True:
         match_live()
         time.sleep(3600)
-

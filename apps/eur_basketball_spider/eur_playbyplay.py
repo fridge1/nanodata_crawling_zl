@@ -8,9 +8,8 @@ from apps.eur_basketball_spider.tools import *
 import time
 import queue
 from common.libs.log import LogMgr
+
 logger = LogMgr.get('eur_basketball_playbyplay_live')
-
-
 
 
 class EurLeagueSpider_playbyplay(object):
@@ -20,14 +19,15 @@ class EurLeagueSpider_playbyplay(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
 
-    def start_requests_2(self,data_queue,gamecode):
+    def start_requests_2(self, data_queue, gamecode):
         headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
         while True:
             time.sleep(10)
             try:
-                localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
+                localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(
+                    gamecode)
                 localtion_json_res = requests.get(localtion_url, headers=self.headers)
                 url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
                 logger.info(url)
@@ -39,7 +39,7 @@ class EurLeagueSpider_playbyplay(object):
                     localtion_json_dict = json.loads(localtion_json_res.text)
                     localtion_info_dict = {}
                     for row in localtion_json_dict['Rows']:
-                        localtion_info_dict[row['NUM_ANOT']] = (row['COORD_X'],row['COORD_Y'],row['TEAM'])
+                        localtion_info_dict[row['NUM_ANOT']] = (row['COORD_X'], row['COORD_Y'], row['TEAM'])
                     key_list = []
                     for a in playbyplay_json_dict.keys():
                         key_list.append(a)
@@ -56,8 +56,9 @@ class EurLeagueSpider_playbyplay(object):
                                 try:
                                     playbyplay['id'] = get_player_id_key(playbyplay_info['PLAYER_ID'][1:].strip())
                                 except:
-                                    player_url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % str(playbyplay_info['PLAYER_ID'][1:].strip())
-                                    player={}
+                                    player_url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % str(
+                                        playbyplay_info['PLAYER_ID'][1:].strip())
+                                    player = {}
                                     player_res = requests.get(player_url, headers=headers)
                                     if player_res.status_code == 200:
                                         player_tree = tree_parse(player_res)
@@ -69,12 +70,14 @@ class EurLeagueSpider_playbyplay(object):
                                         player['key'] = re.findall(r'pcode=(.*?)&', player_url)[0]
                                         print(player['key'])
                                         try:
-                                            player['logo'] = player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
+                                            player['logo'] = \
+                                            player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
                                         except:
                                             player['logo'] = ''
                                             print('没有该球员的图片...')
                                         try:
-                                            player['shirt_number'] = player_tree.xpath('//span[@class="dorsal"]/text()')[0]
+                                            player['shirt_number'] = \
+                                            player_tree.xpath('//span[@class="dorsal"]/text()')[0]
                                         except:
                                             player['shirt_number'] = 0
                                         try:
@@ -84,21 +87,23 @@ class EurLeagueSpider_playbyplay(object):
                                         except:
                                             player['position'] = ''
                                         if 'Height' in \
-                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
-                                                        ':')[0]:
+                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[
+                                                    0].split(
+                                                    ':')[0]:
                                             player['height'] = float(
-                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
+                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[
+                                                    0].split(
                                                     ':')[-1]) * 100
                                             time_birthday = \
-                                            player_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0]
+                                                player_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0]
                                             player['birthday'], player['age'] = time_stamp(time_birthday)
                                             player['nationality'] = \
-                                            player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
-                                                0].split(':')[-1]
+                                                player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
+                                                    0].split(':')[-1]
                                         else:
                                             player['height'] = 0
                                             time_birthday = \
-                                            player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
+                                                player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
                                             player['birthday'], player['age'] = time_stamp(time_birthday)
                                             player['nationality'] = \
                                                 player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
@@ -121,7 +126,7 @@ class EurLeagueSpider_playbyplay(object):
                                             'position': player['position'],
                                         }
                                         spx_dev_session = MysqlSvr.get('spider_zl')
-                                        _,row = BleaguejpBasketballPlayer.upsert(
+                                        _, row = BleaguejpBasketballPlayer.upsert(
                                             spx_dev_session,
                                             'key',
                                             data
@@ -169,7 +174,7 @@ class EurLeagueSpider_playbyplay(object):
                                         else:
                                             local_x = local_x
                                         if local_y > 32:
-                                            local_y = local_y -32
+                                            local_y = local_y - 32
                                         else:
                                             local_y = local_y
                                     else:
@@ -216,7 +221,7 @@ class EurLeagueSpider_playbyplay(object):
                                     shooting_play = 1
                                     scoring_play = 1
                                     score_value = 3
-                                elif '3FGA' in playbyplay_info['PLAYTYPE'] :
+                                elif '3FGA' in playbyplay_info['PLAYTYPE']:
                                     coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
                                     if coordinate[2] in away_team:
                                         local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
@@ -241,7 +246,7 @@ class EurLeagueSpider_playbyplay(object):
                                     score_value = 0
                                     local_x = -1
                                     local_y = -1
-                                elif 'FTM' in playbyplay_info['PLAYTYPE'] :
+                                elif 'FTM' in playbyplay_info['PLAYTYPE']:
                                     shooting_play = 1
                                     scoring_play = 1
                                     score_value = 1
@@ -270,8 +275,8 @@ class EurLeagueSpider_playbyplay(object):
                                     'home_score': playbyplay['POINTS_A'],
                                     'away_score': playbyplay['POINTS_B'],
                                     'belong': belong,
-                                    'location_x' : int(local_y),
-                                    'location_y' : int(local_x),
+                                    'location_x': int(local_y),
+                                    'location_y': int(local_x),
                                     'period': playbyplay['period'],
                                     'period_time': playbyplay['time_info'],
                                     'text': text,
@@ -279,7 +284,7 @@ class EurLeagueSpider_playbyplay(object):
                                     'scoring_play': scoring_play,
                                     'score_value': score_value,
                                     'text_en': playbyplay['words_text'],
-                                    'player_ids' : [playbyplay['id']]
+                                    'player_ids': [playbyplay['id']]
                                 }
                                 if playbyplay['words_text']:
                                     playbyplay_list.append(data)
@@ -297,4 +302,3 @@ class EurLeagueSpider_playbyplay(object):
             except:
                 dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())
-

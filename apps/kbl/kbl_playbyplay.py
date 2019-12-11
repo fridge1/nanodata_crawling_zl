@@ -5,9 +5,8 @@ import asyncio
 from apps.send_error_msg import dingding_alter
 import traceback
 from common.libs.log import LogMgr
+
 logger = LogMgr.get('kbl_basketball_pbp_box_live')
-
-
 
 
 class PbpBoxLive(object):
@@ -19,22 +18,20 @@ class PbpBoxLive(object):
         self.player_id_list = get_player_id()
         # self.first_id_list = self.get_first_id_list()
 
-
-
-    async def kbl_playbyplay(self,game_id,match_id):
+    async def kbl_playbyplay(self, game_id, match_id):
         try:
             url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(game_id)
             period_list = {
-                'Q1':1,
-                'Q2':2,
-                'Q3':3,
-                'Q4':4,
-                'X1':5,
-                'X2':6,
-                'X3':7,
-                'X4':8,
+                'Q1': 1,
+                'Q2': 2,
+                'Q3': 3,
+                'Q4': 4,
+                'X1': 5,
+                'X2': 6,
+                'X3': 7,
+                'X4': 8,
             }
-            res = requests.get(url,headers=self.headers).json()
+            res = requests.get(url, headers=self.headers).json()
             away_team_code = res['away_team']
             home_team_code = res['home_team']
             player_list = []
@@ -67,10 +64,6 @@ class PbpBoxLive(object):
                     player_box = res['player_avg_record']['game'][player_rec]
                     for player_id in player_box:
                         player_boxer = {}
-                        # if player_id in self.first_id_list:
-                        #     player_boxer['first_publish'] = 1
-                        # else:
-                        #     player_boxer['first_publish'] = 0
                         if player_id in line_up_id:
                             player_boxer['on_ground'] = 1
                         else:
@@ -93,7 +86,8 @@ class PbpBoxLive(object):
                         if player_id in self.player_id_list:
                             player_boxer['player_id'] = int(player_id)
                         else:
-                            player_boxer['player_id'] = upsert_player_id(player_id, box_list[0], box_list[2], box_list[3],
+                            player_boxer['player_id'] = upsert_player_id(player_id, box_list[0], box_list[2],
+                                                                         box_list[3],
                                                                          box_list[1])
                         player_boxer['two_points_goals'] = int(box_list[6])
                         player_boxer['two_points_total'] = int(box_list[7])
@@ -105,7 +99,8 @@ class PbpBoxLive(object):
                         player_boxer['field'] = player_boxer['two_points_total'] + player_boxer['three_point_field']
                         player_boxer['offensive_rebounds'] = int(box_list[14])
                         player_boxer['defensive_rebounds'] = int(box_list[15])
-                        player_boxer['rebounds'] = player_boxer['offensive_rebounds'] + player_boxer['defensive_rebounds']
+                        player_boxer['rebounds'] = player_boxer['offensive_rebounds'] + player_boxer[
+                            'defensive_rebounds']
                         player_boxer['assists'] = int(box_list[16])
                         player_boxer['steals'] = int(box_list[17])
                         player_boxer['blocks'] = int(box_list[18])
@@ -200,7 +195,7 @@ class PbpBoxLive(object):
                                     home_score += 0
                                     away_score += 0
                                 text_no_name = playbyplay_info.split(',')[-1].split(' ')[-1]
-                                text = player_name_zh + ' '+ translate(text_no_name)
+                                text = player_name_zh + ' ' + translate(text_no_name)
                                 type = 0
                                 playbyplay_dict['id'] = int(match_id)
                                 playbyplay_dict['type'] = type
@@ -223,8 +218,7 @@ class PbpBoxLive(object):
         except:
             dingding_alter(traceback.format_exc())
 
-
-    async def get_first_id_list(self,game_id):
+    async def get_first_id_list(self, game_id):
         url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(game_id)
         res = requests.get(url, headers=self.headers).json()
         away_team_code = res['away_team']
@@ -233,18 +227,7 @@ class PbpBoxLive(object):
             logger.info('未开赛......%s' % game_id)
         else:
             first_id_list = []
-            for team_id in [away_team_code,home_team_code]:
+            for team_id in [away_team_code, home_team_code]:
                 for value in res['line_up'][team_id].values():
                     first_id_list.append(value)
             return first_id_list
-
-
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,15 @@
-#coding:utf-8
+# coding:utf-8
 import re
 import pandas as pd
 
+words = {'Assist ': '助攻', 'Begin Period': '比赛开始', 'Bench Foul ': '板凳犯规', 'Block ': '盖帽', 'Coach Foul ': '教练犯规',
+         'Def Rebound ': '防守篮板', 'End Game': '比赛结束', 'End Period': '本节结束', 'Foul Drawn ': '累计犯规',
+         'Free Throw In ': '罚球命中', 'Missed Free Throw ': '罚球不中', 'Missed Three Pointer ': '3分不中',
+         'Missed Two Pointer ': '2分不中', 'Off Rebound ': '前场篮板', 'Offensive Foul ': '进攻犯规', 'Shot Rejected ': '投篮被盖',
+         'Steal ': '抢断', 'Technical Foul ': '技术犯规', 'Three Pointer ': '三分命中', 'Time Out ': '暂停', 'Turnover ': '失误',
+         'TV Time Out ': '官方 暂停', 'Two Pointer ': '2分命中', 'Unsportsmanlike Foul  ': '违体犯规', 'Layup Made': '上篮得分',
+         'Missed Layup': '上篮不中', 'Foul ': '犯规', 'Out': '下场', 'In': '上场', 'Tip Off': '跳球', 'Tech Foul Coach': '教练技术犯规'}
 
-words = {'Assist ': '助攻', 'Begin Period': '比赛开始', 'Bench Foul ': '板凳犯规', 'Block ': '盖帽', 'Coach Foul ': '教练犯规', 'Def Rebound ': '防守篮板', 'End Game': '比赛结束', 'End Period': '本节结束', 'Foul Drawn ': '累计犯规', 'Free Throw In ': '罚球命中', 'Missed Free Throw ': '罚球不中', 'Missed Three Pointer ': '3分不中', 'Missed Two Pointer ': '2分不中', 'Off Rebound ': '前场篮板', 'Offensive Foul ': '进攻犯规', 'Shot Rejected ': '投篮被盖', 'Steal ': '抢断', 'Technical Foul ': '技术犯规', 'Three Pointer ': '三分命中', 'Time Out ': '暂停', 'Turnover ': '失误', 'TV Time Out ': '官方 暂停', 'Two Pointer ': '2分命中', 'Unsportsmanlike Foul  ': '违体犯规', 'Layup Made': '上篮得分', 'Missed Layup': '上篮不中', 'Foul ': '犯规', 'Out': '下场', 'In': '上场', 'Tip Off': '跳球', 'Tech Foul Coach': '教练技术犯规'}
 
 def translate(text):
     text = text
@@ -35,4 +41,4 @@ def translate(text):
     #     if name_en in text:
     #         text = text.replace(name_en, name_cn.replace('-', '·'))
     #
-    return text.replace('\t', '').strip().replace(',',' ')
+    return text.replace('\t', '').strip().replace(',', ' ')

@@ -17,7 +17,9 @@ from apps.eur_basketball_spider.tools import match_id_list
 
 def now():
     return int(time.time() * 1000)
-#设置日志
+
+
+# 设置日志
 logger = LogMgr.get('EurBasketballFeedSvr_feed_svr')
 
 
@@ -25,10 +27,12 @@ class EurBasketballFeedSvr(object):
     data = dict()
     topic = ''
     cnt = 0
-    def __init__(self):    #初始化一个队列   一个连接
+
+    def __init__(self):  # 初始化一个队列   一个连接
         self.data_queue_svr = queue.Queue()
         self.nc = STAN()
-    #启动方法
+
+    # 启动方法
     async def start(self, topic, servers=None, user=None, password=None):
         self.topic = topic
         self.nc = await NatsSvr.get_stan('hub.nats')
@@ -38,14 +42,14 @@ class EurBasketballFeedSvr(object):
     async def start_feed(self):
         gamecode_list = match_id_list
         for i in gamecode_list:
-            threading.Thread(target=EurLeagueSpider_playbyplay().start_requests_2, args=(self.data_queue_svr,i)).start()
-            threading.Thread(target=EurLeagueSpider_boxscore().start_requests,args=(self.data_queue_svr,i)).start()
+            threading.Thread(target=EurLeagueSpider_playbyplay().start_requests_2,
+                             args=(self.data_queue_svr, i)).start()
+            threading.Thread(target=EurLeagueSpider_boxscore().start_requests, args=(self.data_queue_svr, i)).start()
         while True:
             data = self.data_queue_svr.get()
             print('get_data+++++++')
             await self.pub_time_data(self.topic, data)
             await asyncio.sleep(0.1)
-
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic
@@ -65,7 +69,7 @@ class EurBasketballFeedSvr(object):
                 await self.pub_restart_data(msg.reply)
                 await asyncio.sleep(1)
         except Exception:
-            #将异常信息记录到log日志中
+            # 将异常信息记录到log日志中
             logger.error(traceback.format_exc())
 
     async def pub_time_data(self, topic, match_data):

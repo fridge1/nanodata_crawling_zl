@@ -1,4 +1,4 @@
-import time,datetime
+import time, datetime
 from datetime import date
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.orm_tableStruct_basketball import *
@@ -9,24 +9,23 @@ from PIL import Image
 import pymysql
 
 
-
-
 def age_timeStamp(birthday):
     time_format = datetime.datetime.strptime(birthday, '%Y-%m-%d')
     timeArray = time.strptime(birthday, "%Y-%m-%d")
     timeStamp = int(time.mktime(timeArray))
     today = date.today()
     age = today.year - time_format.year - ((today.month, today.day) < (time_format.month, time_format.day))
-    return timeStamp,age
+    return timeStamp, age
 
 
 def get_player_id(player_en):
     try:
         spx_dev_session = MysqlSvr.get('spider_zl')
-        return spx_dev_session.query(BleagueNblBasketballPlayer).filter(BleagueNblBasketballPlayer.name_en==player_en).all()[0].id
+        return \
+        spx_dev_session.query(BleagueNblBasketballPlayer).filter(BleagueNblBasketballPlayer.name_en == player_en).all()[
+            0].id
     except:
         return 0
-
 
 
 def get_team_id():
@@ -36,12 +35,11 @@ def get_team_id():
     return data_dict
 
 
-
 def change_bjtime(date):
     time_format = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d %H:%M:%S')
     timeArray1 = datetime.datetime.strptime(timeArray, '%Y-%m-%d %H:%M:%S')
-    bj_time = (timeArray1+datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S")
+    bj_time = (timeArray1 + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S")
     bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d %H:%M:%S')
     timeStamp = int(time.mktime(bj_time1.timetuple()))
     return timeStamp
@@ -54,8 +52,6 @@ def get_nbl_nana_player_name_zh():
     return data_dict
 
 
-
-
 def get_nbl_nana_player_name_zh_1():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
@@ -63,8 +59,7 @@ def get_nbl_nana_player_name_zh_1():
     return data_dict
 
 
-
-def download_img(img_url,name,content):
+def download_img(img_url, name, content):
     res = requests.get(img_url)
     byte_stream = io.BytesIO(res.content)
     roiImg = Image.open(byte_stream)
@@ -98,9 +93,8 @@ def update_stage_id():
     results = cur.fetchall()
     for result in results:
         update_id = 'update nbl_league_basketball_match set stage_id=%s where season_id=%s;'
-        cur.execute(update_id,(result[0],result[1]))
+        cur.execute(update_id, (result[0], result[1]))
     conn.commit()
-
 
 
 def get_player_id_update():
@@ -113,8 +107,5 @@ def get_player_id_update():
 def get_player_id_position_update():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
-    data_dict = {row.name_en.lower():(row.id,row.position) for row in rows}
+    data_dict = {row.name_en.lower(): (row.id, row.position) for row in rows}
     return data_dict
-
-
-

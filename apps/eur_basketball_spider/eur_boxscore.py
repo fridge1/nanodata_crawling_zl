@@ -6,8 +6,8 @@ from apps.eur_basketball_spider.tools import *
 from orm_connection.eur_basketball import *
 from orm_connection.orm_session import MysqlSvr
 from common.libs.log import LogMgr
-logger = LogMgr.get('eur_basketball_boxscore_live')
 
+logger = LogMgr.get('eur_basketball_boxscore_live')
 
 
 class EurLeagueSpider_boxscore(object):
@@ -17,13 +17,13 @@ class EurLeagueSpider_boxscore(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
 
-
-    def start_requests(self,data_queue,gamecode):
+    def start_requests(self, data_queue, gamecode):
         while True:
             time.sleep(10)
             try:
                 seasoncode = 2019
-                url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp='%(gamecode,seasoncode)
+                url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (
+                gamecode, seasoncode)
                 logger.info(url)
                 boxscore_api_res = requests.get(url, headers=self.headers)
                 if boxscore_api_res.text == '':
@@ -35,15 +35,17 @@ class EurLeagueSpider_boxscore(object):
                     player_stats_list = []
                     belong = 1
                     for index in boxscore_player:
-                        BkMatchTeamStats={}
+                        BkMatchTeamStats = {}
                         BkMatchTeamStats['belong'] = belong
                         name_en = index['Team']
                         BkMatchTeamStats['team_id'] = get_team_id(name_en)
                         BkMatchTeamStats['team_name'] = name_en
                         BkMatchTeamStats['three_point_goals'] = int(index['totr']['FieldGoalsMade3'])
                         BkMatchTeamStats['three_point_field'] = int(index['totr']['FieldGoalsAttempted3'])
-                        BkMatchTeamStats['goals'] = int(index['totr']['FieldGoalsMade2']) + BkMatchTeamStats['three_point_goals']
-                        BkMatchTeamStats['field'] = int(index['totr']['FieldGoalsAttempted2']) + BkMatchTeamStats['three_point_field']
+                        BkMatchTeamStats['goals'] = int(index['totr']['FieldGoalsMade2']) + BkMatchTeamStats[
+                            'three_point_goals']
+                        BkMatchTeamStats['field'] = int(index['totr']['FieldGoalsAttempted2']) + BkMatchTeamStats[
+                            'three_point_field']
                         BkMatchTeamStats['free_throw_goals'] = index['totr']['FreeThrowsMade']
                         BkMatchTeamStats['free_throw_field'] = index['totr']['FreeThrowsAttempted']
                         BkMatchTeamStats['offensive_rebounds'] = index['totr']['OffensiveRebounds']
@@ -61,7 +63,7 @@ class EurLeagueSpider_boxscore(object):
                     for i in range(2):
                         for home_player in boxscore_json_dict['Stats'][i]['PlayersStats']:
                             player = {}
-                            player['belong'] = i+1
+                            player['belong'] = i + 1
                             player['player_name'] = translate_player_name(home_player['Player'])
                             player_key = home_player['Player_ID'][1:]
                             id = get_player_id_upsert(player_key)
@@ -87,14 +89,15 @@ class EurLeagueSpider_boxscore(object):
                                     player['shirt_number'] = 0
                                 try:
                                     position = \
-                                    player_tree.xpath('//div[@class="summary-first"]/span[last()]/span[last()]/text()')[
-                                        0]
+                                        player_tree.xpath(
+                                            '//div[@class="summary-first"]/span[last()]/span[last()]/text()')[
+                                            0]
                                     player['position'] = position.encode('utf-8').decode('utf-8')[0]
                                 except:
                                     player['position'] = ''
                                 if 'Height' in \
                                         player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
-                                                ':')[0]:
+                                            ':')[0]:
                                     player['height'] = float(
                                         player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(
                                             ':')[-1]) * 100
@@ -102,8 +105,9 @@ class EurLeagueSpider_boxscore(object):
                                         0]
                                     player['birthday'], player['age'] = time_stamp(time_birthday)
                                     player['nationality'] = \
-                                    player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(
-                                        ':')[-1]
+                                        player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[
+                                            0].split(
+                                            ':')[-1]
                                 else:
                                     player['height'] = 0
                                     time_birthday = player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[
@@ -136,7 +140,8 @@ class EurLeagueSpider_boxscore(object):
                                     'key',
                                     data
                                 )
-                            player['player_id'],player['shirt_number'] = get_player_id(player_key,player['player_name'])
+                            player['player_id'], player['shirt_number'] = get_player_id(player_key,
+                                                                                        player['player_name'])
                             times = home_player['Minutes']
                             if times != 'DNP':
                                 player['enter_ground'] = 1
@@ -154,7 +159,7 @@ class EurLeagueSpider_boxscore(object):
                             player['three_point_goals'] = home_player['FieldGoalsMade3']
                             player['three_point_field'] = home_player['FieldGoalsAttempted3']
                             player['goals'] = int(player['two_points_goals']) + int(player['three_point_goals'])
-                            player['field'] = int(player['two_points_total']) + int(player['three_point_field'] )
+                            player['field'] = int(player['two_points_total']) + int(player['three_point_field'])
                             player['free_throw_goals'] = home_player['FreeThrowsMade']
                             player['free_throw_field'] = home_player['FreeThrowsAttempted']
                             player['offensive_rebounds'] = home_player['OffensiveRebounds']
@@ -176,39 +181,39 @@ class EurLeagueSpider_boxscore(object):
                             else:
                                 player['on_ground'] = 0
                             player_data = {
-                                'belong':int(player['belong']),
-                                'player_id':int(player['player_id']),
-                                'player_name':player['player_name'],
-                                'minutes':int(player['minutes']),
-                                'goals':int(player['goals']),
-                                'field':int(player['field']),
-                                'three_point_goals':int(player['three_point_goals']),
-                                'three_point_field':int(player['three_point_field']),
-                                'free_throw_goals':int(player['free_throw_goals']),
-                                'free_throw_field':int(player['free_throw_field']),
-                                'offensive_rebounds':int(player['offensive_rebounds']),
-                                'defensive_rebounds':int(player['defensive_rebounds']),
-                                'rebounds':int(player['rebounds']),
-                                'assists':int(player['assists']),
-                                'steals':int(player['steals']),
-                                'blocks':int(player['blocks']),
-                                'turnovers':int(player['turnovers']),
-                                'personal_fouls':int(player['personal_fouls']),
-                                'score_difference':int(player['score_difference']),
-                                'point':int(player['point']),
-                                'first_publish':int(player['first_publish']),
-                                'enter_ground':int(player['enter_ground']),
-                                'on_ground':int(player['on_ground']),
-                                'shirt_number':int(player['shirt_number']),
+                                'belong': int(player['belong']),
+                                'player_id': int(player['player_id']),
+                                'player_name': player['player_name'],
+                                'minutes': int(player['minutes']),
+                                'goals': int(player['goals']),
+                                'field': int(player['field']),
+                                'three_point_goals': int(player['three_point_goals']),
+                                'three_point_field': int(player['three_point_field']),
+                                'free_throw_goals': int(player['free_throw_goals']),
+                                'free_throw_field': int(player['free_throw_field']),
+                                'offensive_rebounds': int(player['offensive_rebounds']),
+                                'defensive_rebounds': int(player['defensive_rebounds']),
+                                'rebounds': int(player['rebounds']),
+                                'assists': int(player['assists']),
+                                'steals': int(player['steals']),
+                                'blocks': int(player['blocks']),
+                                'turnovers': int(player['turnovers']),
+                                'personal_fouls': int(player['personal_fouls']),
+                                'score_difference': int(player['score_difference']),
+                                'point': int(player['point']),
+                                'first_publish': int(player['first_publish']),
+                                'enter_ground': int(player['enter_ground']),
+                                'on_ground': int(player['on_ground']),
+                                'shirt_number': int(player['shirt_number']),
                             }
                             player_stats_list.append(player_data)
                     match_id = int(str(13) + '0000') + int(gamecode)
                     match_data_boxscore = {'match': {'id': int(match_id),
-                                            'basketball_items': {
-                                                'player_stat': {
-                                                    'items': player_stats_list},
-                                                'team_stat': {'items': team_stats_list}
-                                            }}}
+                                                     'basketball_items': {
+                                                         'player_stat': {
+                                                             'items': player_stats_list},
+                                                         'team_stat': {'items': team_stats_list}
+                                                     }}}
                     if player_stats_list:
                         data_queue.put(match_data_boxscore)
                         logger.info('球员技术统计推送完成。。。 %s' % str(gamecode))
@@ -218,12 +223,3 @@ class EurLeagueSpider_boxscore(object):
             except:
                 dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())
-
-
-
-
-
-
-
-
-

@@ -7,20 +7,20 @@ import json
 import re
 import threading
 from common.libs.log import LogMgr
+
 logger = LogMgr.get('eur_basketball_player_stat_end')
 
 
-
-def player_stat_end(season_id,gamecode):
+def player_stat_end(season_id, gamecode):
     spx_dev_session = MysqlSvr.get('spider_zl')
-    play_stat_id = seasons[str(season_id)+'-'+str(season_id+1)]
+    play_stat_id = seasons[str(season_id) + '-' + str(season_id + 1)]
     while True:
         headers = {
-            'user_agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+            'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
         }
         code = re.findall(r'gamecode=(.*?)&', gamecode)[0]
-        box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (code,season_id)
-        box_api_res = requests.get(box_api_url,headers=headers)
+        box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (code, season_id)
+        box_api_res = requests.get(box_api_url, headers=headers)
         if box_api_res.text == '':
             print('比赛未开赛...')
             # break
@@ -29,7 +29,7 @@ def player_stat_end(season_id,gamecode):
             for index in range(2):
                 for player_box in box_api_dict['Stats'][index]['PlayersStats']:
                     sport_id = 2
-                    match_id = int(str(seasons[str(season_id)+'-'+str(season_id+1)]) + '0000') + int(code)
+                    match_id = int(str(seasons[str(season_id) + '-' + str(season_id + 1)]) + '0000') + int(code)
                     team_key = player_box['Team']
                     team_id = get_team_id(team_key)
                     player_key = player_box['Player_ID'][1:]
@@ -81,42 +81,42 @@ def player_stat_end(season_id,gamecode):
                     personal_fouls = int(player_box['FoulsCommited'])
                     plus_minus = int(player_box['Valuation'])
                     data = {
-                        'id' : int(str(play_stat_id)+str(code)+str(player_id)),
-                        'sport_id' : sport_id,
-                        'match_id' : match_id,
-                        'team_id' : team_id,
-                        'player_id' : player_id,
-                        'position' : position,
-                        'first' : first,
-                        'points' : points,
-                        'free_throws_scored' : free_throws_scored,
-                        'free_throws_total' : free_throws_total,
-                        'free_throws_accuracy' : free_throws_accuracy,
-                        'two_points_scored' : two_points_scored,
-                        'two_points_total' : two_points_total,
-                        'two_points_accuracy' : two_points_accuracy,
-                        'three_points_scored' : three_points_scored,
-                        'three_points_total' : three_points_total,
-                        'three_points_accuracy' : three_points_accuracy,
-                        'field_goals_scored' : field_goals_scored,
-                        'field_goals_total' : field_goals_total,
-                        'field_goals_accuracy' : field_goals_accuracy,
-                        'defensive_rebounds' : defensive_rebounds,
-                        'offensive_rebounds' : offensive_rebounds,
-                        'rebounds' : rebounds,
-                        'assists' : assists,
-                        'turnovers' : turnovers,
-                        'steals' : steals,
-                        'blocks' : blocks,
-                        'personal_fouls' : personal_fouls,
-                        'plus_minus' : plus_minus,
+                        'id': int(str(play_stat_id) + str(code) + str(player_id)),
+                        'sport_id': sport_id,
+                        'match_id': match_id,
+                        'team_id': team_id,
+                        'player_id': player_id,
+                        'position': position,
+                        'first': first,
+                        'points': points,
+                        'free_throws_scored': free_throws_scored,
+                        'free_throws_total': free_throws_total,
+                        'free_throws_accuracy': free_throws_accuracy,
+                        'two_points_scored': two_points_scored,
+                        'two_points_total': two_points_total,
+                        'two_points_accuracy': two_points_accuracy,
+                        'three_points_scored': three_points_scored,
+                        'three_points_total': three_points_total,
+                        'three_points_accuracy': three_points_accuracy,
+                        'field_goals_scored': field_goals_scored,
+                        'field_goals_total': field_goals_total,
+                        'field_goals_accuracy': field_goals_accuracy,
+                        'defensive_rebounds': defensive_rebounds,
+                        'offensive_rebounds': offensive_rebounds,
+                        'rebounds': rebounds,
+                        'assists': assists,
+                        'turnovers': turnovers,
+                        'steals': steals,
+                        'blocks': blocks,
+                        'personal_fouls': personal_fouls,
+                        'plus_minus': plus_minus,
                     }
                     BleaguejpBasketballPlayerStats.upsert(
                         spx_dev_session,
                         'id',
                         data
                     )
-                    print('player_img:',data)
+                    print('player_img:', data)
             minutes_team = box_api_dict['Stats'][0]['totr']['Minutes']
             if minutes_team == '200:00':
                 break
@@ -135,7 +135,7 @@ def player_stat_run():
         # seasons_id = [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019]
         seasons_id = [2019]
         for season_id in seasons_id:
-            res = requests.get(url % str(season_id),headers=headers)
+            res = requests.get(url % str(season_id), headers=headers)
             res_tree = tree_parse(res)
             typecode_urls = res_tree.xpath('//div[@class="game-center-selector"]/div[2]/select/option/@value')
             for typecode_url in typecode_urls:
@@ -145,9 +145,10 @@ def player_stat_run():
                 for round_url in round_urls:
                     round_res = requests.get(start_url + round_url, headers=headers)
                     round_res_tree = tree_parse(round_res)
-                    gamecode_urls = round_res_tree.xpath('//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
+                    gamecode_urls = round_res_tree.xpath(
+                        '//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                     for gamecode in gamecode_urls:
-                        threading.Thread(target=player_stat_end,args=(season_id, gamecode)).start()
+                        threading.Thread(target=player_stat_end, args=(season_id, gamecode)).start()
                         # player_stat_end(season_id, gamecode)
     except Exception as e:
         logger.error(e)

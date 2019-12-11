@@ -36,7 +36,6 @@ class KblBasketballFeedSvr(object):
         self.data_queue_svr = queue.Queue()
         self.nc = STAN()
 
-
     async def start(self, topic):
         self.topic = topic
         self.nc = await NatsSvr.get_stan('hub.nats')
@@ -50,12 +49,11 @@ class KblBasketballFeedSvr(object):
             for key in match_id_dict.keys():
                 game_id = key
                 match_id = match_id_dict[key]
-                box,pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id)
+                box, pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id)
                 await self.pub_time_data(self.topic, box)
                 logger.info('技术统计推送成功%s' % game_id)
                 await self.pub_time_data(self.topic, pbp)
                 logger.info('文字直播推送成功%s' % game_id)
-
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic

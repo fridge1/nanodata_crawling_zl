@@ -1,14 +1,14 @@
 import requests
-from apps.eur_basketball_spider.tools import tree_parse,time_stamp,manager_name,translate_dict,team_name,get_manager_id_upsert,get_team_id
+from apps.eur_basketball_spider.tools import tree_parse, time_stamp, manager_name, translate_dict, team_name, \
+    get_manager_id_upsert, get_team_id
 import re
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
 import schedule
 import time
 from common.libs.log import LogMgr
+
 logger = LogMgr.get('eur_basketball_player_coach_team')
-
-
 
 
 def get_coach_info(season_id):
@@ -17,11 +17,11 @@ def get_coach_info(season_id):
     }
     start_url = 'https://www.euroleague.net'
     team_map_url = 'https://www.euroleague.net/competition/teams?seasoncode=E%s' % season_id
-    teams_res = requests.get(team_map_url,headers=headers)
+    teams_res = requests.get(team_map_url, headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="RoasterName"]/a/@href')
     for team_url in team_list:
-        team_url_res = requests.get(start_url + team_url,headers=headers)
+        team_url_res = requests.get(start_url + team_url, headers=headers)
         team_url_tree = tree_parse(team_url_res)
         coach_url = team_url_tree.xpath('//div[contains(@class,"item")]/div[@class="img"]/a/@href')[-1]
         if 'showcoach' in coach_url:
@@ -43,7 +43,8 @@ def get_coach_info(season_id):
             time_birthday = coach_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
             coach['birthday'], coach['age'] = time_stamp(time_birthday)
             try:
-                coach['nationality'] = coach_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0].split(':')[-1]
+                coach['nationality'] = coach_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0].split(':')[
+                    -1]
             except:
                 coach['nationality'] = ''
             data = {
@@ -53,8 +54,8 @@ def get_coach_info(season_id):
                 'birthday': coach['birthday'],
                 'age': coach['age'],
                 'nationality': coach['nationality'],
-                'name_zh' : coach['name_zh'],
-                'logo' : coach['logo'],
+                'name_zh': coach['name_zh'],
+                'logo': coach['logo'],
             }
             spx_dev_session = MysqlSvr.get('spider_zl')
             BleaguejpBasketballManager.upsert(
@@ -62,8 +63,7 @@ def get_coach_info(season_id):
                 'key',
                 data
             )
-            logger.info('coach:',data)
-
+            logger.info('coach:', data)
 
 
 def get_team_info(season_id):
@@ -73,21 +73,21 @@ def get_team_info(season_id):
     start_url = 'https://www.euroleague.net'
     team_map_url = 'https://www.euroleague.net/competition/teams?seasoncode=E%s' % season_id
     print(team_map_url)
-    teams_res = requests.get(team_map_url,headers=headers)
+    teams_res = requests.get(team_map_url, headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="teams"]/div[@class="item"]')
     for team_info in team_list:
-        team={}
+        team = {}
         team['logo'] = team_info.xpath('./div[@class="RoasterImage"]/a/img/@src')[0]
         team['name_en'] = team_info.xpath('./div[@class="RoasterName"]/a/text()')[0]
         team_url = team_info.xpath('./div[@class="RoasterName"]/a/@href')[0]
-        team_url_res = requests.get(start_url+team_url,headers=headers)
+        team_url_res = requests.get(start_url + team_url, headers=headers)
         team_url_tree = tree_parse(team_url_res)
         coach_url = team_url_tree.xpath('//div[contains(@class,"item")]/div[@class="img"]/a/@href')[-1]
         if 'showcoach' in coach_url:
             coach_key = re.findall(r'pcode=(.*?)&', coach_url)[0]
         else:
-            coach_key=''
+            coach_key = ''
         team['sport_id'] = 2
         team['manager_id'] = get_manager_id_upsert(coach_key)
         try:
@@ -95,7 +95,7 @@ def get_team_info(season_id):
         except:
             team['name_zh'] = ''
         team['gender'] = 0
-        print('team:',team)
+        print('team:', team)
         spx_dev_session = MysqlSvr.get('spider_zl')
         BleaguejpBasketballTeam.upsert(
             spx_dev_session,
@@ -107,7 +107,7 @@ def get_team_info(season_id):
 
 def get_player_info(season_id):
     headers = {
-        'user_agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
+        'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
     }
 
     start_url = 'https://www.euroleague.net'
@@ -120,22 +120,23 @@ def get_player_info(season_id):
         # print(team_info)
         team_url = team_info.xpath('./div[@class="RoasterName"]/a/@href')[0]
         team_key = re.findall(r'clubcode=(.*?)&', team_url)[0]
-        player_list_res = requests.get(start_url+team_url,headers=headers)
-        print(start_url+team_url)
+        player_list_res = requests.get(start_url + team_url, headers=headers)
+        print(start_url + team_url)
         player_list_tree = tree_parse(player_list_res)
-        player_urls = player_list_tree.xpath('//div[@class="wp-module"]/div[@class="item nbl_player"]/div[@class="img"]/a/@href')
+        player_urls = player_list_tree.xpath(
+            '//div[@class="wp-module"]/div[@class="item nbl_player"]/div[@class="img"]/a/@href')
         print(player_urls)
         for player_url in player_urls:
-            player={}
-            print(start_url+player_url)
-            player_res = requests.get(start_url+player_url,headers=headers)
+            player = {}
+            print(start_url + player_url)
+            player_res = requests.get(start_url + player_url, headers=headers)
             player_tree = tree_parse(player_res)
             player['sport_id'] = 2
             try:
                 player['name_en'] = player_tree.xpath('//div[@class="name"]/text()')[0]
             except:
                 player['name_en'] = ''
-            player['key'] = re.findall(r'pcode=(.*?)&',player_url)[0]
+            player['key'] = re.findall(r'pcode=(.*?)&', player_url)[0]
             print(player['key'])
             try:
                 player['logo'] = player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
@@ -152,16 +153,18 @@ def get_player_info(season_id):
             except:
                 player['position'] = ''
             if 'Height' in player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(':')[0]:
-                player['height'] = float(player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(':')[-1])*100
+                player['height'] = float(
+                    player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0].split(':')[-1]) * 100
                 time_birthday = player_tree.xpath('//div[@class="summary-second"]/span[2]/text()')[0]
-                player['birthday'],player['age'] = time_stamp(time_birthday)
-                player['nationality'] = player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(':')[-1]
+                player['birthday'], player['age'] = time_stamp(time_birthday)
+                player['nationality'] = \
+                player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(':')[-1]
             else:
                 player['height'] = 0
                 time_birthday = player_tree.xpath('//div[@class="summary-second"]/span[1]/text()')[0]
                 player['birthday'], player['age'] = time_stamp(time_birthday)
                 player['nationality'] = \
-                player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(':')[-1]
+                    player_tree.xpath('//div[@class="summary-second"]/span[last()]/text()')[0].split(':')[-1]
             try:
                 player['team_id'] = get_team_id(team_key)
             except:
@@ -170,11 +173,11 @@ def get_player_info(season_id):
                 player['name_zh'] = translate_dict[player['name_en']]
             except:
                 player['name_zh'] = ''
-            print('player_img:',player)
+            print('player_img:', player)
             data = {
                 'key': player['key'],
                 'name_en': player['name_en'],
-                'name_zh' : player['name_zh'],
+                'name_zh': player['name_zh'],
                 'sport_id': player['sport_id'],
                 'age': player['age'],
                 'birthday': player['birthday'],
@@ -182,7 +185,7 @@ def get_player_info(season_id):
                 'height': player['height'],
                 'shirt_number': player['shirt_number'],
                 'position': player['position'],
-                'team_id' : player['team_id'],
+                'team_id': player['team_id'],
             }
             spx_dev_session = MysqlSvr.get('spider_zl')
             BleaguejpBasketballPlayer.upsert(
@@ -211,4 +214,3 @@ def timing_run():
     while True:
         schedule.run_pending()
         time.sleep(600)
-
