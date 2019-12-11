@@ -24,7 +24,8 @@ def start_kbl_basketball_match(opts):
     asyncio.run(GetMatchObj().run())
 
 def kbl_basketball_player_team_stat(opts):
-    asyncio.run(PlayerTeamStats().run())
+    PTS = PlayerTeamStats()
+    asyncio.run(PTS.run())
 
 
 
