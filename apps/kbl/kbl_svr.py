@@ -43,13 +43,14 @@ class KblBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-
+        match_id_dict = get_match_id_start()
+        first_id_dict = await PbpBoxLive().get_first_id_list(list(match_id_dict.keys()))
         while True:
             match_id_dict = get_match_id_start()
             for key in match_id_dict.keys():
                 game_id = key
                 match_id = match_id_dict[key]
-                box, pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id)
+                box, pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id,first_id_dict)
                 await self.pub_time_data(self.topic, box)
                 logger.info('技术统计推送成功%s' % game_id)
                 await self.pub_time_data(self.topic, pbp)

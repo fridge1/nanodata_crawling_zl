@@ -18,7 +18,7 @@ class PbpBoxLive(object):
         self.player_id_list = get_player_id()
         # self.first_id_list = self.get_first_id_list()
 
-    async def kbl_playbyplay(self, game_id, match_id):
+    async def kbl_playbyplay(self, game_id, match_id, first_id_dict):
         try:
             url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(game_id)
             period_list = {
@@ -64,6 +64,11 @@ class PbpBoxLive(object):
                     player_box = res['player_avg_record']['game'][player_rec]
                     for player_id in player_box:
                         player_boxer = {}
+                        first_id_list = first_id_dict[game_id]
+                        if player_id in first_id_list:
+                            player_boxer['first_publish'] = 1
+                        else:
+                            player_boxer['first_publish'] = 0
                         if player_id in line_up_id:
                             player_boxer['on_ground'] = 1
                         else:
@@ -218,16 +223,19 @@ class PbpBoxLive(object):
         except:
             dingding_alter(traceback.format_exc())
 
-    async def get_first_id_list(self, game_id):
-        url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(game_id)
-        res = requests.get(url, headers=self.headers).json()
-        away_team_code = res['away_team']
-        home_team_code = res['home_team']
-        if res['line_up']['status'] == 0:
-            logger.info('未开赛......%s' % game_id)
-        else:
-            first_id_list = []
-            for team_id in [away_team_code, home_team_code]:
-                for value in res['line_up'][team_id].values():
-                    first_id_list.append(value)
-            return first_id_list
+    async def get_first_id_list(self, game_id_list):
+        first_id_dict = {}
+        for game_id in game_id_list:
+            url = 'https://sports.news.naver.com/ajax/game/relayData.nhn?gameId=%s' % str(game_id)
+            res = requests.get(url, headers=self.headers).json()
+            away_team_code = res['away_team']
+            home_team_code = res['home_team']
+            if res['line_up']['status'] == 0:
+                logger.info('未开赛......%s' % game_id)
+            else:
+                first_id_list = []
+                for team_id in [away_team_code, home_team_code]:
+                    for value in res['line_up'][team_id].values():
+                        first_id_list.append(value)
+                    first_id_dict[game_id] = first_id_list
+        return first_id_dict
