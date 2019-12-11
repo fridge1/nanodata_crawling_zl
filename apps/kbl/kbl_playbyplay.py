@@ -87,7 +87,10 @@ class PbpBoxLive(object):
                             player_boxer['minutes'] = 1
                         else:
                             player_boxer['minutes'] = int(box_list[4])
-                        player_boxer['enter_ground'] = 1
+                        if player_boxer['minutes'] == 0:
+                            player_boxer['enter_ground'] = 0
+                        else:
+                            player_boxer['enter_ground'] = 1
                         if player_id in self.player_id_list:
                             player_boxer['player_id'] = int(player_id)
                         else:
