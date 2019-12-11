@@ -98,7 +98,7 @@ class PlayerTeamStats(object):
                             'key',
                             player_stat_dict
                         )
-                        logger.info('player_stat_dict:', player_stat_dict)
+                        logger.info('player_stat_dict: %s' % player_stat_dict)
         except:
             logger.error(traceback.format_exc())
             dingding_alter(traceback.format_exc())
@@ -157,7 +157,7 @@ class PlayerTeamStats(object):
                         'key',
                         team_stat_dict
                     )
-                    logger.info('team_stat_dict:', team_stat_dict)
+                    logger.info('team_stat_dict: %s' % team_stat_dict)
         except:
             logger.error(traceback.format_exc())
             dingding_alter(traceback.format_exc())
