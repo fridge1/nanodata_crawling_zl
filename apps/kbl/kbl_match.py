@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 import requests
 from apps.kbl.tools import tree_parse,season_id_dict,change_match_bjtime
+from apps.send_error_msg import dingding_alter
 import re
+import traceback
 import asyncio
 import time
 from orm_connection.kbl_basketball import BleagueNblBasketballMatch
 from orm_connection.orm_session import MysqlSvr
+from common.libs.log import LogMgr
+logger = LogMgr.get('kbl_basketball_match')
 
 
 
@@ -82,7 +86,7 @@ class GetMatchObj():
             'key',
             data
         )
-        print(data)
+        logger.info(game_id)
 
 
 
@@ -103,15 +107,19 @@ class GetMatchObj():
         month = re.findall(r'\d+',next_url_date[0])[1]
         date = time.strftime('%Y%m%d', time.localtime(time.time()))
         next_url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=%s&month=%s&year=%s&teamCode=&category=kbl' % (date,month,year)
-        print(next_url)
+        logger.info(next_url)
         await self.get_match_info_async(next_url)
 
 
 
     async def run(self):
-        while True:
-            url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=20191206&month=11&year=2008&teamCode=&category=kbl'
-            await self.get_match_info_async(url)
-            time.sleep(7200)
+        try:
+            while True:
+                url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=20191206&month=11&year=2008&teamCode=&category=kbl'
+                await self.get_match_info_async(url)
+                time.sleep(7200)
+        except:
+            logger.error(traceback.format_exc())
+            dingding_alter(traceback.format_exc())
 
 
