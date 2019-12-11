@@ -17,7 +17,7 @@ class PbpBoxLive(object):
         }
         self.match_id_dict = get_match_id_start()
         self.player_id_list = get_player_id()
-        self.first_id_list = self.get_first_id_list()
+        # self.first_id_list = self.get_first_id_list()
 
 
 
@@ -67,10 +67,10 @@ class PbpBoxLive(object):
                     player_box = res['player_avg_record']['game'][player_rec]
                     for player_id in player_box:
                         player_boxer = {}
-                        if player_id in self.first_id_list:
-                            player_boxer['first_publish'] = 1
-                        else:
-                            player_boxer['first_publish'] = 0
+                        # if player_id in self.first_id_list:
+                        #     player_boxer['first_publish'] = 1
+                        # else:
+                        #     player_boxer['first_publish'] = 0
                         if player_id in line_up_id:
                             player_boxer['on_ground'] = 1
                         else:
