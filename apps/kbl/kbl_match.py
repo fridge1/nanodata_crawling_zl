@@ -4,6 +4,7 @@ from apps.kbl.tools import tree_parse, season_id_dict, change_match_bjtime
 from apps.send_error_msg import dingding_alter
 import re
 import traceback
+import datetime
 import asyncio
 import time
 from orm_connection.kbl_basketball import BleagueNblBasketballMatch
@@ -110,9 +111,12 @@ class GetMatchObj():
     async def run(self):
         try:
             while True:
-                url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=20191206&month=11&year=2019&teamCode=&category=kbl'
+                current = datetime.datetime.now().strftime('%Y%m%d')
+                year = current[:4]
+                month = current[4:6]
+                url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=%s&month=%s&year=%s&teamCode=&category=kbl' % (current,month,year)
                 await self.get_match_info_async(url)
-                time.sleep(10800)
+                time.sleep(600)
         except:
             logger.error(traceback.format_exc())
             dingding_alter(traceback.format_exc())
