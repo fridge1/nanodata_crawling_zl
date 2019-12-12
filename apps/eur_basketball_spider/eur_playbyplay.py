@@ -18,6 +18,8 @@ class EurLeagueSpider_playbyplay(object):
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
+        self.get_player_id_key = get_player_id_key()
+
 
     def start_requests_2(self, data_queue, gamecode):
         headers = {
@@ -54,7 +56,7 @@ class EurLeagueSpider_playbyplay(object):
                             for playbyplay_info in playbyplay_json_dict[key]:
                                 playbyplay = {}
                                 try:
-                                    playbyplay['id'] = get_player_id_key(playbyplay_info['PLAYER_ID'][1:].strip())
+                                    playbyplay['id'] = self.get_player_id_key[playbyplay_info['PLAYER_ID'][1:].strip()]
                                 except:
                                     player_url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % str(
                                         playbyplay_info['PLAYER_ID'][1:].strip())

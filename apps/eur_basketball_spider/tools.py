@@ -1342,14 +1342,11 @@ def get_team_id_name(team_key):
     return row.id
 
 
-def get_player_id_key(player_en):
-    try:
-        spx_dev_session = MysqlSvr.get('spider_zl')
-        return \
-            spx_dev_session.query(BleaguejpBasketballPlayer).filter(BleaguejpBasketballPlayer.key == player_en).all()[
-                0].id
-    except:
-        return 0
+def get_player_id_key():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
+    data_dict = {row.key: row.id for row in rows}
+    return data_dict
 
 
 def get_match_id():
