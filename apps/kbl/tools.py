@@ -171,7 +171,11 @@ def upsert_player_id(id, name_en, team_id, shirt_number, position):
 
 def get_match_id_start():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id == 1).all()
+    b = time.strftime("%Y-%m-%d 23:59:59", time.localtime())
+    bj_time2 = datetime.datetime.strptime(b, '%Y-%m-%d %H:%M:%S')
+    timeStamp1 = int(time.mktime(bj_time2.timetuple()))
+    rows = spx_dev_session.query(BleagueNblBasketballMatch).filter(BleagueNblBasketballMatch.status_id == 1,
+                                                                   BleagueNblBasketballMatch.match_time <= timeStamp1).all()
     data_dict = {row.key: row.id for row in rows}
     return data_dict
 

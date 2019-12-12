@@ -47,14 +47,13 @@ class KblBasketballFeedSvr(object):
         first_id_dict = await PbpBoxLive().get_first_id_list(list(match_id_dict.keys()))
         while True:
             match_id_dict = get_match_id_start()
-            for key in list(match_id_dict.keys()):
-                game_id = key
-                match_id = match_id_dict[key]
-                box, pbp = await PbpBoxLive().kbl_playbyplay(game_id, match_id,first_id_dict)
-                await self.pub_time_data(self.topic, box)
-                logger.info('技术统计推送成功%s' % game_id)
-                await self.pub_time_data(self.topic, pbp)
-                logger.info('文字直播推送成功%s' % game_id)
+            coro = [asyncio.create_task(PbpBoxLive().kbl_playbyplay(key, values,first_id_dict)) for key,values in match_id_dict.items()]
+            datas = await asyncio.gather(*coro)
+            for data in datas:
+                await self.pub_time_data(self.topic, data[0])
+                logger.info('技术统计推送成功%s...')
+                await self.pub_time_data(self.topic, data[1])
+                logger.info('文字直播推送成功%s...')
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic
