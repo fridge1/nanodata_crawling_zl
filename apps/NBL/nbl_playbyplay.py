@@ -13,6 +13,7 @@ logger = LogMgr.get('nbl_basketball_pbp_box_live')
 class pbp_box(object):
     def __init__(self):
         self.team_id_get = get_team_id()
+        self.get_match_id_start = get_match_id_start()
 
     def pbp_box_live(self, data_queue, match_id):
         while True:
@@ -298,15 +299,9 @@ class pbp_box(object):
 
     def get_match_id(self, data_queue):
         try:
-            url = 'https://api.nbl.com.au/_/custom/api/genius?route=competitions/24346/matches&matchType=REGULAR&limit=200&fields=matchId,matchStatus,matchTimeUTC,competitors,roundNumber,venue,ticketURL&liveapidata=false&filter[owner]=nbl'
-            headers = {
-                'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
-            }
-            res = requests.get(url, headers=headers)
-            match_dict = json.loads(res.text)
-            for id_time in match_dict['data'][::-1]:
-                match_id = id_time['matchId']
-                threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, match_id)).start()
+            for key,value in self.get_match_id_start.items():
+                if key <= time.time():
+                    threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
