@@ -16,7 +16,6 @@ class PbpBoxLive(object):
         }
         self.match_id_dict = get_match_id_start()
         self.player_id_list = get_player_id()
-        # self.first_id_list = self.get_first_id_list()
 
     async def kbl_playbyplay(self, game_id, match_id, first_id_dict):
         try:
