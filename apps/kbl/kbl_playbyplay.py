@@ -200,7 +200,10 @@ class PbpBoxLive(object):
                                     home_score += 0
                                     away_score += 0
                                 text_no_name = playbyplay_info.split(',')[-1].split(' ')[-1]
-                                text = player_name_zh + ' ' + translate(text_no_name)
+                                if res['live_text']['quarter'] == 'end':
+                                    text = '比赛结束'
+                                else:
+                                    text = player_name_zh + ' ' + translate(text_no_name)
                                 type = 0
                                 playbyplay_dict['id'] = int(match_id)
                                 playbyplay_dict['type'] = type
