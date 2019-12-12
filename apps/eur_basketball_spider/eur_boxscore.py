@@ -218,7 +218,7 @@ class EurLeagueSpider_boxscore(object):
                         data_queue.put(match_data_boxscore)
                         logger.info('球员技术统计推送完成。。。 %s' % str(gamecode))
                         minutes_team = boxscore_json_dict['Stats'][0]['totr']['Minutes']
-                        if minutes_team and minutes_team == '200:00' or '225:00':
+                        if minutes_team == '225:00' or minutes_team == '200:00':
                             break
             except:
                 dingding_alter(traceback.format_exc())
