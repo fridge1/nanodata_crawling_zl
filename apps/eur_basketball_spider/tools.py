@@ -10,8 +10,6 @@ from PIL import Image
 import requests
 import json
 
-match_id_list = [109, 110, 111, 112, 113]
-# match_id_list = [114, 115, 116, 117, 118, 119, 121, 126, 123, 125, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 139, 140, 141, 142, 143, 144, 146, 147, 148, 149, 150, 152, 153, 154, 155, 157, 158, 159, 160, 162, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 176, 177, 178, 180, 182, 183, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 202, 203, 204, 205, 206, 207, 208, 210, 211, 212, 213, 215, 216, 217, 218, 219, 220, 221, 222, 224, 225, 231, 227, 228, 229, 230, 232, 233, 234, 235, 236, 237, 239, 240, 241, 242, 243, 244, 245, 247, 248, 249, 250, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 294, 295, 296, 297, 298, 300, 301, 302, 303, 304, 306]
 manager_name = {'PASCUAL, XAVI': '哈维·帕斯夸尔', 'PASHUTIN, EVGENY': '帕什丁·叶夫根尼', 'MESSINA, ETTORE': '埃托尔·梅西纳',
                 'GAVRILOVIC, ANDRIJA': '安德里亚·加夫里洛维奇', 'ITOUDIS, DIMITRIS': '迪米特里奥斯·伊托迪斯', 'RADONJIC, DEJAN': '德扬·拉多尼奇',
                 'PLAZA, JOAN': '霍安·普拉萨', 'KURTINAITIS, RIMAS': '里马斯·库尔蒂奈蒂斯', 'ERNAK, SELCUK': '塞尔库克·恩纳克',
@@ -1351,3 +1349,14 @@ def get_player_id_key(player_en):
         spx_dev_session.query(BleaguejpBasketballPlayer).filter(BleaguejpBasketballPlayer.key == player_en).all()[0].id
     except:
         return 0
+
+
+def get_match_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    b = time.strftime("%Y-%m-%d 23:59:59", time.localtime())
+    bj_time2 = datetime.datetime.strptime(b, '%Y-%m-%d %H:%M:%S')
+    timeStamp1 = int(time.mktime(bj_time2.timetuple()))
+    rows = spx_dev_session.query(BleaguejpBasketballMatch).filter(BleaguejpBasketballMatch.status_id == 1,
+                                                                   BleaguejpBasketballMatch.match_time <= timeStamp1).all()
+    data_list = [int(str(row.id)) for row in rows]
+    return data_list
