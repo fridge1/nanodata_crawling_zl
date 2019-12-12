@@ -300,7 +300,7 @@ class EurLeagueSpider_playbyplay(object):
                                     'player_ids': [playbyplay['id']]
                                 }
                                 # if playbyplay['words_text']:
-                                #     playbyplay_list.append(data)
+                                playbyplay_list.append(data)
                         period += 1
                     match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),
                                                        'basketball_items': {
