@@ -166,7 +166,7 @@ class EurLeagueSpider_playbyplay(object):
                                 else:
                                     belong = 0
                                 if '2FGM' in playbyplay_info['PLAYTYPE']:
-                                    coordinate = localtion_info_dict[int(playbyplay_info['NUMBEROFPLAY'])]
+                                    coordinate = localtion_info_dict[str(playbyplay_info['NUMBEROFPLAY'])]
                                     if coordinate[2] in away_team:
                                         local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
                                         local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
@@ -185,7 +185,7 @@ class EurLeagueSpider_playbyplay(object):
                                     scoring_play = 1
                                     score_value = 2
                                 elif '2FGA' in playbyplay_info['PLAYTYPE']:
-                                    coordinate = localtion_info_dict[int(playbyplay_info['NUMBEROFPLAY'])]
+                                    coordinate = localtion_info_dict[str(playbyplay_info['NUMBEROFPLAY'])]
                                     if coordinate[2] in away_team:
                                         local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
                                         local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
@@ -204,7 +204,7 @@ class EurLeagueSpider_playbyplay(object):
                                     scoring_play = 0
                                     score_value = 0
                                 elif '3FGM' in playbyplay_info['PLAYTYPE']:
-                                    coordinate = localtion_info_dict[int(playbyplay_info['NUMBEROFPLAY'])]
+                                    coordinate = localtion_info_dict[str(playbyplay_info['NUMBEROFPLAY'])]
                                     if coordinate[2] in away_team:
                                         local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
                                         local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
@@ -223,7 +223,7 @@ class EurLeagueSpider_playbyplay(object):
                                     scoring_play = 1
                                     score_value = 3
                                 elif '3FGA' in playbyplay_info['PLAYTYPE']:
-                                    coordinate = localtion_info_dict[int(playbyplay_info['NUMBEROFPLAY'])]
+                                    coordinate = localtion_info_dict[str(playbyplay_info['NUMBEROFPLAY'])]
                                     if coordinate[2] in away_team:
                                         local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
                                         local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
