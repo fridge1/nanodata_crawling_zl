@@ -50,6 +50,7 @@ class KblBasketballFeedSvr(object):
             coro = [asyncio.create_task(PbpBoxLive().kbl_playbyplay(key, values,first_id_dict)) for key,values in match_id_dict.items()]
             datas = await asyncio.gather(*coro)
             for data in datas:
+                print(data[0])
                 await self.pub_time_data(self.topic, data[0])
                 logger.info('技术统计推送成功%s...')
                 await self.pub_time_data(self.topic, data[1])

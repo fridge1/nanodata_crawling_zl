@@ -223,3 +223,4 @@ class EurLeagueSpider_boxscore(object):
             except:
                 dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())
+                continue
