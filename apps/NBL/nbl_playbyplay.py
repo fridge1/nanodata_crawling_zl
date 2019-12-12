@@ -14,6 +14,7 @@ class pbp_box(object):
     def __init__(self):
         self.team_id_get = get_team_id()
         self.get_match_id_start = get_match_id_start()
+        self.get_player_id = get_player_id()
 
     def pbp_box_live(self, data_queue, match_id):
         while True:
@@ -116,7 +117,7 @@ class pbp_box(object):
                                 player['belong'] = int(key)
                                 player_name = pbp_dict['tm'][key]['pl'][player_key]['firstName'] + ' ' + \
                                               pbp_dict['tm'][key]['pl'][player_key]['familyName']
-                                player['player_id'] = get_player_id(player_name)
+                                player['player_id'] = int(self.get_player_id[player_name.lower()])
                                 player['player_name'] = player_name
                                 minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
                                 minute = minutes.split(':')[0]
@@ -189,7 +190,7 @@ class pbp_box(object):
                         except:
                             player_name = ''
                         if player_name:
-                            player_ids = int(get_player_id(player_name))
+                            player_ids = int(self.get_player_id[player_name.lower()])
                         else:
                             player_ids = 0
                         period_time = pbp_info['gt']
