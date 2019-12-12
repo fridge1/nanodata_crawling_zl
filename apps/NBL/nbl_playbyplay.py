@@ -14,7 +14,7 @@ class pbp_box(object):
     def __init__(self):
         self.team_id_get = get_team_id()
 
-    def pbp_box_live(self, data_queue, match_id, match_time):
+    def pbp_box_live(self, data_queue, match_id):
         while True:
             headers = {
                 'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
@@ -304,8 +304,7 @@ class pbp_box(object):
             match_dict = json.loads(res.text)
             for id_time in match_dict['data'][::-1]:
                 match_id = id_time['matchId']
-                match_time = change_bjtime(id_time['matchTimeUTC'])
-                threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, match_id, match_time)).start()
+                threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, match_id)).start()
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
