@@ -152,8 +152,7 @@ class EurLeagueSpider_playbyplay(object):
                                     playbyplay['POINTS_B'])
                                 if playbyplay_info['PLAYINFO'] and playbyplay_info['PLAYER']:
                                     name_zh = translate_player_name(playbyplay_info['PLAYER'])
-                                    playbyplay['words_text'] = playbyplay_info['PLAYER'] + ' ' + playbyplay_info[
-                                        'PLAYINFO']
+                                    playbyplay['words_text'] = playbyplay_info['PLAYINFO']
                                     text = str(name_zh) + ' ' + str(translate(playbyplay['words_text']))
                                 else:
                                     playbyplay['words_text'] = playbyplay_info['PLAYINFO']
