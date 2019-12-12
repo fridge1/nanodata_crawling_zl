@@ -1311,6 +1311,12 @@ def get_team_id(team_name):
     return row.id
 
 
+def get_team_id_box():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleaguejpBasketballTeam).all()
+    data_dict = {row.name_en: row.id for row in rows}
+    return data_dict
+
 def translate_player_name(text):
     if text in translate_dict.keys():
         text_en = translate_dict[text]

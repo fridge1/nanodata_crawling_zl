@@ -16,6 +16,7 @@ class EurLeagueSpider_boxscore(object):
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
+        self.get_team_id = get_team_id_box()
 
     def start_requests(self, data_queue, gamecode):
         while True:
@@ -38,7 +39,7 @@ class EurLeagueSpider_boxscore(object):
                         BkMatchTeamStats = {}
                         BkMatchTeamStats['belong'] = belong
                         name_en = index['Team']
-                        BkMatchTeamStats['team_id'] = get_team_id(name_en)
+                        BkMatchTeamStats['team_id'] = self.get_team_id[name_en]
                         BkMatchTeamStats['team_name'] = name_en
                         BkMatchTeamStats['three_point_goals'] = int(index['totr']['FieldGoalsMade3'])
                         BkMatchTeamStats['three_point_field'] = int(index['totr']['FieldGoalsAttempted3'])

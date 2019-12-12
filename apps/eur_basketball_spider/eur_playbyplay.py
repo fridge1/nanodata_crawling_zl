@@ -166,93 +166,81 @@ class EurLeagueSpider_playbyplay(object):
                                 else:
                                     belong = 0
                                 if '2FGM' in playbyplay_info['PLAYTYPE']:
-                                    try:
-                                        coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
-                                        if coordinate[2] in away_team:
-                                            local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
-                                            local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
-                                            if local_x > 49:
-                                                local_x = local_x - 49
-                                            else:
-                                                local_x = local_x
-                                            if local_y > 32:
-                                                local_y = local_y - 32
-                                            else:
-                                                local_y = local_y
+                                    coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
+                                    if coordinate[2] in away_team:
+                                        local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
+                                        local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
+                                        if local_x > 49:
+                                            local_x = local_x - 49
                                         else:
-                                            local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
-                                            local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
-                                        shooting_play = 1
-                                        scoring_play = 1
-                                        score_value = 2
-                                    except:
-                                        print('匹配动作。。。')
+                                            local_x = local_x
+                                        if local_y > 32:
+                                            local_y = local_y - 32
+                                        else:
+                                            local_y = local_y
+                                    else:
+                                        local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
+                                        local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
+                                    shooting_play = 1
+                                    scoring_play = 1
+                                    score_value = 2
                                 elif '2FGA' in playbyplay_info['PLAYTYPE']:
-                                    try:
-                                        coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
-                                        if coordinate[2] in away_team:
-                                            local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
-                                            local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
-                                            if local_x > 49:
-                                                local_x = local_x - 49
-                                            else:
-                                                local_x = local_x
-                                            if local_y > 32:
-                                                local_y = local_y - 32
-                                            else:
-                                                local_y = local_y
+                                    coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
+                                    if coordinate[2] in away_team:
+                                        local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
+                                        local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
+                                        if local_x > 49:
+                                            local_x = local_x - 49
                                         else:
-                                            local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
-                                            local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
-                                        shooting_play = 1
-                                        scoring_play = 0
-                                        score_value = 0
-                                    except:
-                                        print('匹配动作。。。')
+                                            local_x = local_x
+                                        if local_y > 32:
+                                            local_y = local_y - 32
+                                        else:
+                                            local_y = local_y
+                                    else:
+                                        local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
+                                        local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
+                                    shooting_play = 1
+                                    scoring_play = 0
+                                    score_value = 0
                                 elif '3FGM' in playbyplay_info['PLAYTYPE']:
-                                    try:
-                                        coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
-                                        if coordinate[2] in away_team:
-                                            local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
-                                            local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
-                                            if local_x > 49:
-                                                local_x = local_x - 49
-                                            else:
-                                                local_x = local_x
-                                            if local_y > 32:
-                                                local_y = local_y - 32
-                                            else:
-                                                local_y = local_y
+                                    coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
+                                    if coordinate[2] in away_team:
+                                        local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
+                                        local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
+                                        if local_x > 49:
+                                            local_x = local_x - 49
                                         else:
-                                            local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
-                                            local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
-                                        shooting_play = 1
-                                        scoring_play = 1
-                                        score_value = 3
-                                    except:
-                                        print('匹配动作。。。')
+                                            local_x = local_x
+                                        if local_y > 32:
+                                            local_y = local_y - 32
+                                        else:
+                                            local_y = local_y
+                                    else:
+                                        local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
+                                        local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
+                                    shooting_play = 1
+                                    scoring_play = 1
+                                    score_value = 3
                                 elif '3FGA' in playbyplay_info['PLAYTYPE']:
-                                    try:
-                                        coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
-                                        if coordinate[2] in away_team:
-                                            local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
-                                            local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
-                                            if local_x > 49:
-                                                local_x = local_x - 49
-                                            else:
-                                                local_x = local_x
-                                            if local_y > 32:
-                                                local_y = local_y - 32
-                                            else:
-                                                local_y = local_y
+                                    coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
+                                    if coordinate[2] in away_team:
+                                        local_y = (coordinate[0] * (-416) / 1500 + 218) * 32 / 300
+                                        local_x = (800 - ((coordinate[1] * 776 / 2800) + 56)) * 49 / 500
+                                        if local_x > 49:
+                                            local_x = local_x - 49
                                         else:
-                                            local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
-                                            local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
-                                        shooting_play = 1
-                                        scoring_play = 0
-                                        score_value = 0
-                                    except:
-                                        print('匹配动作。。。')
+                                            local_x = local_x
+                                        if local_y > 32:
+                                            local_y = local_y - 32
+                                        else:
+                                            local_y = local_y
+                                    else:
+                                        local_y = 49 - (coordinate[0] * (416) / 1500 + 218) * 32 / 300
+                                        local_x = ((coordinate[1] * 776 / 2800) + 56) * 49 / 500
+                                    shooting_play = 1
+                                    scoring_play = 0
+                                    score_value = 0
                                 elif 'FTA' in playbyplay_info['PLAYTYPE']:
                                     shooting_play = 1
                                     scoring_play = 0
