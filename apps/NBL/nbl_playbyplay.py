@@ -306,9 +306,7 @@ class pbp_box(object):
             match_dict = json.loads(res.text)
             for id_time in match_dict['data'][::-1]:
                 match_id = id_time['matchId']
-                match_time = change_bjtime(id_time['matchTimeUTC'])
-                if match_time <= time.time():
-                    threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, match_id)).start()
+                threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, match_id)).start()
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
