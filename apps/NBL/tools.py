@@ -19,13 +19,10 @@ def age_timeStamp(birthday):
 
 
 def get_player_id(player_en):
-    try:
-        spx_dev_session = MysqlSvr.get('spider_zl')
-        return \
-        spx_dev_session.query(BleagueNblBasketballPlayer).filter(BleagueNblBasketballPlayer.name_en == player_en).all()[
-            0].id
-    except:
-        return 0
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueNblBasketballPlayer).all()
+    data_dict = {row.name_en: row.id for row in rows}
+    return data_dict
 
 
 def get_team_id():

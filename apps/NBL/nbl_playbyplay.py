@@ -290,8 +290,7 @@ class pbp_box(object):
                     if playbyplay_list[-1]['text'] == '比赛结束':
                         break
                     else:
-                        time.sleep(5)
-                        logger.info('休息5秒再请求....')
+                        logger.info('再次请求....')
             except:
                 dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())
