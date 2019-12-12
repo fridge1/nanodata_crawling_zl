@@ -38,7 +38,6 @@ class pbp_box(object):
                         try:
                             BkMatchTeamStats = {}
                             BkMatchTeamStats['belong'] = int(key)
-                            print(pbp_dict['tm'][key]['name'])
                             BkMatchTeamStats['team_id'] = self.team_id_get[str(pbp_dict['tm'][key]['name'])]
                             BkMatchTeamStats['team_name'] = pbp_dict['tm'][key]['name']
                             try:
@@ -117,7 +116,6 @@ class pbp_box(object):
                                 player_name = pbp_dict['tm'][key]['pl'][player_key]['firstName'] + ' ' + \
                                               pbp_dict['tm'][key]['pl'][player_key]['familyName']
                                 player['player_id'] = get_player_id(player_name)
-                                print(player['player_id'])
                                 player['player_name'] = player_name
                                 minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
                                 minute = minutes.split(':')[0]
