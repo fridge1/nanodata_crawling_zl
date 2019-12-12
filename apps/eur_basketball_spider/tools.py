@@ -1359,5 +1359,5 @@ def get_match_id():
     timeStamp1 = int(time.mktime(bj_time2.timetuple()))
     rows = spx_dev_session.query(BleaguejpBasketballMatch).filter(BleaguejpBasketballMatch.status_id == 1,
                                                                   BleaguejpBasketballMatch.match_time <= timeStamp1).all()
-    data_list = [int(str(row.id)) for row in rows]
+    data_list = [int(str(row.id)[2:]) for row in rows]
     return data_list
