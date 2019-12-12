@@ -1,4 +1,5 @@
 from spx_msg.svr.mysql_svr import MysqlSvr
+import os
 import time
 
 class AppCtx(object):
