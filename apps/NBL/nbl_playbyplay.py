@@ -63,7 +63,8 @@ class pbp_box(object):
                             except:
                                 BkMatchTeamStats['three_point_goals'] = 0
                             try:
-                                BkMatchTeamStats['three_point_field'] = pbp_dict['tm'][key]['tot_sThreePointersAttempted']
+                                BkMatchTeamStats['three_point_field'] = pbp_dict['tm'][key][
+                                    'tot_sThreePointersAttempted']
                             except:
                                 BkMatchTeamStats['three_point_field'] = 0
                             try:
@@ -128,14 +129,16 @@ class pbp_box(object):
                                     player['minutes'] = int(minute)
                                 player['goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade'])
                                 player['field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted'])
-                                player['two_points_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
+                                player['two_points_goals'] = int(
+                                    pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
                                 player['two_points_total'] = int(
                                     pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
                                 player['three_point_goals'] = int(
                                     pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
                                 player['three_point_field'] = int(
                                     pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
-                                player['free_throw_goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
+                                player['free_throw_goals'] = int(
+                                    pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
                                 player['free_throw_field'] = int(
                                     pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
                                 player['offensive_rebounds'] = int(
@@ -213,8 +216,9 @@ class pbp_box(object):
                                         shooting_play = pbp_info['scoring']
                                         score_value = 0
                                         scoring_play = 0
-                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + pbp_info[
-                                            'actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
+                                        word_text = pbp_info['firstName'] + ' ' + pbp_info['familyName'] + ',' + \
+                                                    pbp_info[
+                                                        'actionType'] + ' ' + pbp_info['subType'] + ' ' + 'missed'
                                     elif pbp_info['success'] == 1:
                                         shooting_play = pbp_info['scoring']
                                         if 'f' not in pbp_info['actionType'][0]:
@@ -300,7 +304,7 @@ class pbp_box(object):
 
     def get_match_id(self, data_queue):
         try:
-            for key,value in self.get_match_id_start.items():
+            for key, value in self.get_match_id_start.items():
                 if key <= time.time():
                     threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
         except:

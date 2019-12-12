@@ -71,13 +71,13 @@ class EurLeagueSpider_playbyplay(object):
                                         print(player['key'])
                                         try:
                                             player['logo'] = \
-                                            player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
+                                                player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
                                         except:
                                             player['logo'] = ''
                                             print('没有该球员的图片...')
                                         try:
                                             player['shirt_number'] = \
-                                            player_tree.xpath('//span[@class="dorsal"]/text()')[0]
+                                                player_tree.xpath('//span[@class="dorsal"]/text()')[0]
                                         except:
                                             player['shirt_number'] = 0
                                         try:

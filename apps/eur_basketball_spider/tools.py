@@ -1346,7 +1346,8 @@ def get_player_id_key(player_en):
     try:
         spx_dev_session = MysqlSvr.get('spider_zl')
         return \
-        spx_dev_session.query(BleaguejpBasketballPlayer).filter(BleaguejpBasketballPlayer.key == player_en).all()[0].id
+            spx_dev_session.query(BleaguejpBasketballPlayer).filter(BleaguejpBasketballPlayer.key == player_en).all()[
+                0].id
     except:
         return 0
 
@@ -1357,6 +1358,6 @@ def get_match_id():
     bj_time2 = datetime.datetime.strptime(b, '%Y-%m-%d %H:%M:%S')
     timeStamp1 = int(time.mktime(bj_time2.timetuple()))
     rows = spx_dev_session.query(BleaguejpBasketballMatch).filter(BleaguejpBasketballMatch.status_id == 1,
-                                                                   BleaguejpBasketballMatch.match_time <= timeStamp1).all()
+                                                                  BleaguejpBasketballMatch.match_time <= timeStamp1).all()
     data_list = [int(str(row.id)) for row in rows]
     return data_list
