@@ -305,8 +305,7 @@ class pbp_box(object):
     def get_match_id(self, data_queue):
         try:
             for key, value in self.get_match_id_start.items():
-                if key <= time.time():
-                    threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
+                threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())

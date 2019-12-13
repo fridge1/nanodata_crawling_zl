@@ -38,6 +38,7 @@ class NblBasketballScore(object):
     async def start_feed(self):
         match_id_list = get_match_id_score()
         while True:
+            time.sleep(2)
             coro = [asyncio.create_task(GetScores().get_scores(game_id)) for game_id in match_id_list]
             data = await asyncio.gather(*coro)
             for i in data:
@@ -45,7 +46,6 @@ class NblBasketballScore(object):
                     logger.info(i)
                     await self.pub_time_data(self.topic, i)
                     logger.info('球队分数推送成功...')
-                    time.sleep(5)
                 else:
                     logger.info('比赛未开赛。。。')
 
