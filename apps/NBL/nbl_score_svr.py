@@ -42,8 +42,10 @@ class NblBasketballScore(object):
             data = await asyncio.gather(*coro)
             for i in data:
                 if i != 0:
+                    logger.info(i)
                     await self.pub_time_data(self.topic, i)
                     logger.info('球队分数推送成功...')
+                    time.sleep(5)
                 else:
                     logger.info('比赛未开赛。。。')
 
