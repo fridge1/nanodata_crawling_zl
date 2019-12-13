@@ -52,9 +52,9 @@ class KblBasketballFeedSvr(object):
             for data in datas:
                 print(data[0])
                 await self.pub_time_data(self.topic, data[0])
-                logger.info('技术统计推送成功%s...')
+                logger.info('技术统计推送成功...')
                 await self.pub_time_data(self.topic, data[1])
-                logger.info('文字直播推送成功%s...')
+                logger.info('文字直播推送成功...')
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic

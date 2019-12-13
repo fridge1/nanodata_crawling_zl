@@ -200,10 +200,7 @@ class PbpBoxLive(object):
                                     home_score += 0
                                     away_score += 0
                                 text_no_name = playbyplay_info.split(',')[-1].split(' ')[-1]
-                                if res['live_text']['quarter'] == 'end':
-                                    text = '比赛结束'
-                                else:
-                                    text = player_name_zh + ' ' + translate(text_no_name)
+                                text = player_name_zh + ' ' + translate(text_no_name)
                                 type = 0
                                 playbyplay_dict['id'] = int(match_id)
                                 playbyplay_dict['type'] = type
@@ -221,7 +218,7 @@ class PbpBoxLive(object):
                                                            'period': int(period_total),
                                                            'items': playbyplay_list}
                                                    }}}
-                logger.info('数据返回成功。。。')
+                logger.info('数据返回成功。。。%s' % game_id)
                 return match_data_boxscore, match_data_playbyplay
         except:
             dingding_alter(traceback.format_exc())
