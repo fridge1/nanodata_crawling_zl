@@ -32,7 +32,7 @@ class GetScores(object):
                                 status_id = 9
                             data = {
                                 'sport_id': 2,
-                                'site': 'bt',
+                                'site': 'nbl',
                                 'matches': {
                                     game_id: {
                                         'score': {
