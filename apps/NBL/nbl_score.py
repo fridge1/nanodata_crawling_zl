@@ -16,13 +16,58 @@ class GetScores(object):
                         player_stat = json.loads(response)
                         try:
                             scores_info = player_stat['pbp'][0]
-                            home_scores = scores_info['s1']
-                            away_scores = scores_info['s2']
+                            try:
+                                home_p1_score = player_stat['tm']['1']['p1_score']
+                            except:
+                                home_p1_score = 0
+                            try:
+                                home_p2_score = player_stat['tm']['1']['p2_score']
+                            except:
+                                home_p2_score = 0
+                            try:
+                                home_p3_score = player_stat['tm']['1']['p3_score']
+                            except:
+                                home_p3_score = 0
+                            try:
+                                home_p4_score = player_stat['tm']['1']['p4_score']
+                            except:
+                                home_p4_score = 0
+                            try:
+                                home_p5_score = player_stat['tm']['1']['p4_score']
+                            except:
+                                home_p5_score = 0
+
+                            try:
+                                away_p1_score = player_stat['tm']['2']['p1_score']
+                            except:
+                                away_p1_score = 0
+                            try:
+                                away_p2_score = player_stat['tm']['2']['p2_score']
+                            except:
+                                away_p2_score = 0
+                            try:
+                                away_p3_score = player_stat['tm']['2']['p3_score']
+                            except:
+                                away_p3_score = 0
+                            try:
+                                away_p4_score = player_stat['tm']['2']['p4_score']
+                            except:
+                                away_p4_score = 0
+                            try:
+                                away_p5_score = player_stat['tm']['2']['p4_score']
+                            except:
+                                away_p5_score = 0
+
+                            home_scores = [home_p1_score,home_p2_score,home_p3_score,home_p4_score,home_p5_score]
+                            away_scores = [away_p1_score,away_p2_score,away_p3_score,away_p4_score,away_p5_score]
                             if player_stat['inOT'] != 0:
                                 period = scores_info['period'] + 4
                             else:
                                 period = scores_info['period']
                             match_time = scores_info['gt']
+                            minutes = match_time.split(':')[0]
+                            second = match_time.split(':')[1]
+                            seconds = int(minutes) * 60 + int(second)
                             if period < 5:
                                 if match_time == '00:00':
                                     status_id = 2 * period + 1
@@ -36,7 +81,7 @@ class GetScores(object):
                                 'matches': {
                                     game_id: {
                                         'score': {
-                                            'tmr': {'ticking': 0, 'coundown': 1, 'addtime': 0, 'second': match_time},
+                                            'tmr': {'ticking': 0, 'coundown': 1, 'addtime': 0, 'second': seconds},
                                             'status_id': status_id,
                                             'home_scores': home_scores,
                                             'away_scores': away_scores,

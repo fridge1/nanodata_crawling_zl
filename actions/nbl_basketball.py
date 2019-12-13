@@ -42,3 +42,5 @@ nbl_basketball_actions = {
     'nbl_player_stats' : nbl_player_stats,
     'start_nbl_basketball_score_svr' : start_nbl_basketball_score_svr,
 }
+
+
