@@ -39,7 +39,7 @@ class EurLeagueSpider_boxscore(object):
                         BkMatchTeamStats = {}
                         BkMatchTeamStats['belong'] = belong
                         name_en = index['Team']
-                        BkMatchTeamStats['team_id'] = self.get_team_id[name_en]
+                        BkMatchTeamStats['team_id'] = self.get_team_id[name_en.lower()]
                         BkMatchTeamStats['team_name'] = name_en
                         BkMatchTeamStats['three_point_goals'] = int(index['totr']['FieldGoalsMade3'])
                         BkMatchTeamStats['three_point_field'] = int(index['totr']['FieldGoalsAttempted3'])
