@@ -5,6 +5,7 @@ from apps.NBL import nbl_match
 from apps.NBL import nbl_spider
 from apps.NBL.nbl_player_stat import player_stats
 from apps.NBL.nbl_score_svr import NblBasketballScore
+from apps.NBL.nbl_score_client import NblBasketballScoreClient
 
 
 
@@ -20,6 +21,10 @@ def start_nbl_basketball_client(opts):
 def start_nbl_basketball_score_svr(opts):
     topic = 'bk.score.live'
     asyncio.run(NblBasketballScore().start(topic))
+
+def start_nbl_basketball__score_client(opts):
+    topic = 'bk.score.live'
+    asyncio.run(NblBasketballScoreClient().start(topic))
 
 def start_nbl_basketball_match(opts):
     nbl_match.run()
@@ -41,6 +46,7 @@ nbl_basketball_actions = {
     'nbl_player_team_info' : nbl_player_team_info,
     'nbl_player_stats' : nbl_player_stats,
     'start_nbl_basketball_score_svr' : start_nbl_basketball_score_svr,
+    'start_nbl_basketball__score_client' : start_nbl_basketball__score_client,
 }
 
 

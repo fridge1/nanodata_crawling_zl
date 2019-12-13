@@ -33,7 +33,7 @@ class GetScores(object):
                             except:
                                 home_p4_score = 0
                             try:
-                                home_p5_score = player_stat['tm']['1']['p4_score']
+                                home_p5_score = player_stat['tm']['1']['p5_score']
                             except:
                                 home_p5_score = 0
 
@@ -54,7 +54,7 @@ class GetScores(object):
                             except:
                                 away_p4_score = 0
                             try:
-                                away_p5_score = player_stat['tm']['2']['p4_score']
+                                away_p5_score = player_stat['tm']['2']['p5_score']
                             except:
                                 away_p5_score = 0
 
