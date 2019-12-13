@@ -116,8 +116,8 @@ class pbp_box(object):
                             for player_key in player_keys:
                                 player = {}
                                 player['belong'] = int(key)
-                                player_name = pbp_dict['tm'][key]['pl'][player_key]['firstName'] + ' ' + \
-                                              pbp_dict['tm'][key]['pl'][player_key]['familyName']
+                                player_name = pbp_dict['tm'][key]['pl'][player_key]['internationalFirstName'] + ' ' + \
+                                              pbp_dict['tm'][key]['pl'][player_key]['internationalFamilyName']
                                 player['player_id'] = int(self.get_player_id[player_name.lower()])
                                 player['player_name'] = player_name
                                 minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
@@ -192,9 +192,9 @@ class pbp_box(object):
                             player_name = pbp_info['firstName'] + ' ' + pbp_info['familyName']
                         except:
                             player_name = ''
-                        if player_name:
+                        try:
                             player_ids = int(self.get_player_id[player_name.lower()])
-                        else:
+                        except:
                             player_ids = 0
                         period_time = pbp_info['gt']
                         if player_name:

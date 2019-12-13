@@ -36,8 +36,7 @@ class NblBasketballScore(object):
         await self.start_feed()
 
     async def start_feed(self):
-        # match_id_list = get_match_id_score()
-        match_id_list = [1307453]
+        match_id_list = get_match_id_score()
         while True:
             coro = [asyncio.create_task(GetScores().get_scores(game_id)) for game_id in match_id_list]
             data = await asyncio.gather(*coro)
