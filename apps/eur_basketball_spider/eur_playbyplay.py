@@ -70,13 +70,11 @@ class EurLeagueSpider_playbyplay(object):
                                         except:
                                             player['name_en'] = ''
                                         player['key'] = re.findall(r'pcode=(.*?)&', player_url)[0]
-                                        print(player['key'])
                                         try:
                                             player['logo'] = \
                                                 player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
                                         except:
                                             player['logo'] = ''
-                                            print('没有该球员的图片...')
                                         try:
                                             player['shirt_number'] = \
                                                 player_tree.xpath('//span[@class="dorsal"]/text()')[0]
@@ -114,7 +112,6 @@ class EurLeagueSpider_playbyplay(object):
                                             player['name_zh'] = translate_dict[player['name_en']]
                                         except:
                                             player['name_zh'] = ''
-                                        print('player_img:', player)
                                         data = {
                                             'key': player['key'],
                                             'name_en': player['name_en'],
@@ -287,7 +284,6 @@ class EurLeagueSpider_playbyplay(object):
                                     'text_en': playbyplay['words_text'],
                                     'player_ids': [playbyplay['id']]
                                 }
-                                # if playbyplay['words_text']:
                                 playbyplay_list.append(data)
                         period += 1
                     match_data_playbyplay = {'match': {'id': int(str(13) + '0000') + int(gamecode),

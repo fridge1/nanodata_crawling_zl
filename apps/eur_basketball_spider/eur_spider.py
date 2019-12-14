@@ -115,9 +115,7 @@ def get_player_info(season_id):
     teams_res = requests.get(team_map_url, headers=headers)
     teams_tree = tree_parse(teams_res)
     team_list = teams_tree.xpath('//div[@class="teams"]/div[@class="item"]')
-    # print(team_list)
     for team_info in team_list:
-        # print(team_info)
         team_url = team_info.xpath('./div[@class="RoasterName"]/a/@href')[0]
         team_key = re.findall(r'clubcode=(.*?)&', team_url)[0]
         player_list_res = requests.get(start_url + team_url, headers=headers)
@@ -137,12 +135,10 @@ def get_player_info(season_id):
             except:
                 player['name_en'] = ''
             player['key'] = re.findall(r'pcode=(.*?)&', player_url)[0]
-            print(player['key'])
             try:
                 player['logo'] = player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
             except:
                 player['logo'] = ''
-                print('没有该球员的图片...')
             try:
                 player['shirt_number'] = player_tree.xpath('//span[@class="dorsal"]/text()')[0]
             except:
@@ -173,7 +169,6 @@ def get_player_info(season_id):
                 player['name_zh'] = translate_dict[player['name_en']]
             except:
                 player['name_zh'] = ''
-            print('player_img:', player)
             data = {
                 'key': player['key'],
                 'name_en': player['name_en'],
@@ -193,7 +188,6 @@ def get_player_info(season_id):
                 'key',
                 data
             )
-            print(data)
             logger.info(data)
 
 

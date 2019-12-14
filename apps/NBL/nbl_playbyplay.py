@@ -120,42 +120,101 @@ class pbp_box(object):
                                               pbp_dict['tm'][key]['pl'][player_key]['internationalFamilyName']
                                 player['player_id'] = int(self.get_player_id[player_name.lower()])
                                 player['player_name'] = player_name
-                                minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
-                                minute = minutes.split(':')[0]
-                                second = minutes.split(':')[1]
+                                try:
+                                    minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
+                                    minute = minutes.split(':')[0]
+                                    second = minutes.split(':')[1]
+                                except:
+                                    minutes = '0:00'
+                                    minute = 0
+                                    second = 0
                                 if int(second) >= 30:
                                     player['minutes'] = int(minute) + 1
                                 else:
                                     player['minutes'] = int(minute)
-                                player['goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade'])
-                                player['field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted'])
-                                player['two_points_goals'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
-                                player['two_points_total'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
-                                player['three_point_goals'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
-                                player['three_point_field'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
-                                player['free_throw_goals'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
-                                player['free_throw_field'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
-                                player['offensive_rebounds'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive'])
-                                player['defensive_rebounds'] = int(
-                                    pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive'])
-                                player['rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsTotal'])
-                                player['assists'] = int(pbp_dict['tm'][key]['pl'][player_key]['sAssists'])
-                                player['steals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sSteals'])
-                                player['blocks'] = int(pbp_dict['tm'][key]['pl'][player_key]['sBlocks'])
-                                player['turnovers'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTurnovers'])
-                                player['personal_fouls'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFoulsPersonal'])
-                                player['point'] = int(pbp_dict['tm'][key]['pl'][player_key]['sPoints'])
-                                player['first_publish'] = int(pbp_dict['tm'][key]['pl'][player_key]['starter'])
-                                if pbp_dict['tm'][key]['pl'][player_key]['sMinutes'] == '0:00':
+                                try:
+                                    player['goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade'])
+                                except:
+                                    player['goals'] = 0
+                                try:
+                                    player['field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted'])
+                                except:
+                                    player['field'] = 0
+                                try:
+                                    player['two_points_goals'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
+                                except:
+                                    player['two_points_goals'] = 0
+                                try:
+                                    player['two_points_total'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
+                                except:
+                                    player['two_points_total'] = 0
+                                try:
+                                    player['three_point_goals'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
+                                except:
+                                    player['three_point_goals'] = 0
+                                try:
+                                    player['three_point_field'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
+                                except:
+                                    player['three_point_field'] = 0
+                                try:
+                                    player['free_throw_goals'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
+                                except:
+                                    player['free_throw_goals'] = 0
+                                try:
+                                    player['free_throw_field'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
+                                except:
+                                    player['free_throw_field'] = 0
+                                try:
+                                    player['offensive_rebounds'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive'])
+                                except:
+                                    player['offensive_rebounds'] = 0
+                                try:
+                                    player['defensive_rebounds'] = int(
+                                        pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive'])
+                                except:
+                                    player['defensive_rebounds'] = 0
+                                try:
+                                    player['rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsTotal'])
+                                except:
+                                    player['rebounds'] = 0
+                                try:
+                                    player['assists'] = int(pbp_dict['tm'][key]['pl'][player_key]['sAssists'])
+                                except:
+                                    player['assists'] = 0
+                                try:
+                                    player['steals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sSteals'])
+                                except:
+                                    player['steals'] = 0
+                                try:
+                                    player['blocks'] = int(pbp_dict['tm'][key]['pl'][player_key]['sBlocks'])
+                                except:
+                                    player['blocks'] = 0
+                                try:
+                                    player['turnovers'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTurnovers'])
+                                except:
+                                    player['turnovers'] = 0
+                                try:
+                                    player['personal_fouls'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFoulsPersonal'])
+                                except:
+                                    player['personal_fouls'] = 0
+                                try:
+                                    player['point'] = int(pbp_dict['tm'][key]['pl'][player_key]['sPoints'])
+                                except:
+                                    player['point'] = 0
+                                try:
+                                    player['first_publish'] = int(pbp_dict['tm'][key]['pl'][player_key]['starter'])
+                                except:
+                                    player['first_publish'] = 0
+                                if minutes == '0:00':
                                     player['enter_ground'] = 0
-                                elif pbp_dict['tm'][key]['pl'][player_key]['sMinutes'] != '0:00':
+                                elif minutes != '0:00':
                                     player['enter_ground'] = 1
                                 else:
                                     player['enter_ground'] = 0
@@ -163,13 +222,19 @@ class pbp_box(object):
                                     player['on_ground'] = 1
                                 else:
                                     player['on_ground'] = 0
-                                player['shirt_number'] = int(pbp_dict['tm'][key]['pl'][player_key]['shirtNumber'])
+                                try:
+                                    player['shirt_number'] = int(pbp_dict['tm'][key]['pl'][player_key]['shirtNumber'])
+                                except:
+                                    player['shirt_number'] = 0
                                 player_stats_list.append(player)
                         except:
                             logger.error(traceback.format_exc())
-                        for pbp_shot in pbp_dict['tm'][key]['shot']:
-                            shot_location = (pbp_shot['y'], pbp_shot['x'])
-                            actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
+                        try:
+                            for pbp_shot in pbp_dict['tm'][key]['shot']:
+                                shot_location = (pbp_shot['y'], pbp_shot['x'])
+                                actionNumber_shot_dict[pbp_shot['actionNumber']] = shot_location
+                        except:
+                            actionNumber_shot_dict = {}
                     for pbp_info in pbp_dict['pbp'][::-1]:
                         period = pbp_info['period']
                         if pbp_dict['inOT'] != 0:
@@ -292,10 +357,13 @@ class pbp_box(object):
                                                        }}}
                     data_queue.put(match_data_playbyplay)
                     logger.info('球员技术文字直播推送完成... %s' % str(match_id))
-                    if playbyplay_list[-1]['text'] == '比赛结束':
-                        break
-                    else:
-                        time.sleep(5)
+                    try:
+                        if playbyplay_list[-1]['text'] == '比赛结束':
+                            break
+                        else:
+                            logger.info('休息5s再次请求....')
+                    except:
+                        logger.info('未找到赛节状态。。。')
                         logger.info('休息5s再次请求....')
             except:
                 dingding_alter(traceback.format_exc())
