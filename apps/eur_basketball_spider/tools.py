@@ -1348,7 +1348,7 @@ def get_match_id():
 def get_player_shirt_number():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
-    data_dict = {row.key: row.shirt_number for row in rows}
+    data_dict = {row.key.strip(): row.shirt_number for row in rows}
     return data_dict
 
 
