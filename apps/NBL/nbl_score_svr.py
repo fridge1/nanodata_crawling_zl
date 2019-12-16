@@ -43,6 +43,7 @@ class NblBasketballScore(object):
                     logger.info('球队分数推送成功...')
                 else:
                     logger.info('比赛未开赛。。。')
+            time.sleep(5)
 
 
     async def pub_time_data(self, topic, match_data):
