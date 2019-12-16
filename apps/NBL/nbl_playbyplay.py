@@ -30,10 +30,13 @@ class pbp_box(object):
                     time.sleep(10)
                 else:
                     pbp_dict = json.loads(pbp_res.text)
+                    if pbp_dict['inOT'] != 0:
+                        period_total = pbp_dict['period']
+                    else:
+                        period_total = pbp_dict['period'] + 4
                     player_stats_list = []
                     team_stats_list = []
                     playbyplay_list = []
-                    period_total = pbp_dict['period']
                     actionNumber_shot_dict = {}
                     keys = pbp_dict['tm'].keys()
                     for key in keys:
@@ -236,9 +239,10 @@ class pbp_box(object):
                         except:
                             actionNumber_shot_dict = {}
                     for pbp_info in pbp_dict['pbp'][::-1]:
-                        period = pbp_info['period']
-                        if pbp_dict['inOT'] != 0:
+                        if 'OVERTIME' in pbp_info['periodType']:
                             period = pbp_info['period'] + 4
+                        else:
+                            period = pbp_info['period']
                         type = 0
                         home_score = pbp_info['s1']
                         away_score = pbp_info['s2']
@@ -361,10 +365,10 @@ class pbp_box(object):
                         if playbyplay_list[-1]['text'] == '比赛结束':
                             break
                         else:
+                            time.sleep(5)
                             logger.info('休息5s再次请求....')
                     except:
                         logger.info('未找到赛节状态。。。')
-                        logger.info('休息5s再次请求....')
             except:
                 dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())
@@ -372,7 +376,8 @@ class pbp_box(object):
 
     def get_match_id(self, data_queue):
         try:
-            for key, value in self.get_match_id_start.items():
+            # for key, value in self.get_match_id_start.items():
+            for value in [1307458]:
                 threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
         except:
             dingding_alter(traceback.format_exc())

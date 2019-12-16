@@ -1,7 +1,6 @@
 from aiohttp import ClientSession
 import aiohttp
 import json
-import traceback
 
 
 class GetScores(object):
@@ -60,6 +59,8 @@ class GetScores(object):
 
                             home_scores = [home_p1_score,home_p2_score,home_p3_score,home_p4_score,home_p5_score]
                             away_scores = [away_p1_score,away_p2_score,away_p3_score,away_p4_score,away_p5_score]
+                            home_scores_total = sum(home_scores)
+                            away_scores_total = sum(away_scores)
                             if player_stat['inOT'] != 0:
                                 period = scores_info['period'] + 4
                             else:
@@ -75,6 +76,8 @@ class GetScores(object):
                                     status_id = 2 * period
                             else:
                                 status_id = 9
+                            if seconds == 0 and period >= 4 and home_scores_total != away_scores_total:
+                                status_id = 10
                             data = {
                                 'sport_id': 2,
                                 'site': 'nbl',

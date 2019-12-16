@@ -132,7 +132,6 @@ def player_stat_run():
         }
         start_url = 'https://www.euroleague.net/'
         url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        # seasons_id = [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019]
         seasons_id = [2019]
         for season_id in seasons_id:
             res = requests.get(url % str(season_id), headers=headers)
@@ -149,7 +148,6 @@ def player_stat_run():
                         '//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                     for gamecode in gamecode_urls:
                         threading.Thread(target=player_stat_end, args=(season_id, gamecode)).start()
-                        # player_stat_end(season_id, gamecode)
     except Exception as e:
         logger.error(e)
 
