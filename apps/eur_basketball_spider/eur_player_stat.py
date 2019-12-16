@@ -150,6 +150,7 @@ def player_stat_run():
                         threading.Thread(target=player_stat_end, args=(season_id, gamecode)).start()
     except Exception as e:
         logger.error(e)
+        dingding_alter(traceback.format_exc())
 
 
 if __name__ == '__main__':

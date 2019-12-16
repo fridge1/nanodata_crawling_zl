@@ -5,7 +5,6 @@ from apps.NBL import nbl_match
 from apps.NBL import nbl_spider
 from apps.NBL.nbl_player_stat import player_stats
 from apps.NBL.nbl_score_svr import NblBasketballScore
-# from apps.NBL.nbl_score_client import NblBasketballScoreClient
 
 
 
@@ -46,7 +45,6 @@ nbl_basketball_actions = {
     'nbl_player_team_info' : nbl_player_team_info,
     'nbl_player_stats' : nbl_player_stats,
     'start_nbl_basketball_score_svr' : start_nbl_basketball_score_svr,
-    # 'start_nbl_basketball__score_client' : start_nbl_basketball__score_client,
 }
 
 

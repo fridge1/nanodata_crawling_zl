@@ -17,6 +17,8 @@ class EurLeagueSpider_boxscore(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
         self.get_team_id = get_team_id_box()
+        self.get_player_id = get_player_id_key()
+        self.get_player_shirt_number = get_player_shirt_number()
 
     def start_requests(self, data_queue, gamecode):
         while True:
@@ -41,24 +43,22 @@ class EurLeagueSpider_boxscore(object):
                         name_en = index['Team']
                         BkMatchTeamStats['team_id'] = self.get_team_id[name_en.lower()]
                         BkMatchTeamStats['team_name'] = name_en
-                        BkMatchTeamStats['three_point_goals'] = int(index['totr']['FieldGoalsMade3'])
-                        BkMatchTeamStats['three_point_field'] = int(index['totr']['FieldGoalsAttempted3'])
-                        BkMatchTeamStats['goals'] = int(index['totr']['FieldGoalsMade2']) + BkMatchTeamStats[
-                            'three_point_goals']
-                        BkMatchTeamStats['field'] = int(index['totr']['FieldGoalsAttempted2']) + BkMatchTeamStats[
-                            'three_point_field']
-                        BkMatchTeamStats['free_throw_goals'] = index['totr']['FreeThrowsMade']
-                        BkMatchTeamStats['free_throw_field'] = index['totr']['FreeThrowsAttempted']
-                        BkMatchTeamStats['offensive_rebounds'] = index['totr']['OffensiveRebounds']
-                        BkMatchTeamStats['defensive_rebounds'] = index['totr']['DefensiveRebounds']
-                        BkMatchTeamStats['rebounds'] = index['totr']['TotalRebounds']
-                        BkMatchTeamStats['assists'] = index['totr']['Assistances']
-                        BkMatchTeamStats['steals'] = index['totr']['Steals']
-                        BkMatchTeamStats['blocks'] = index['totr']['BlocksFavour']
-                        BkMatchTeamStats['turnovers'] = index['totr']['Turnovers']
-                        BkMatchTeamStats['personal_fouls'] = index['totr']['FoulsCommited']
-                        BkMatchTeamStats['point'] = index['totr']['Points']
-                        BkMatchTeamStats['score_difference'] = index['totr']['Valuation']
+                        BkMatchTeamStats['three_point_goals'] = safe_get(index,'totr.FieldGoalsMade3')
+                        BkMatchTeamStats['three_point_field'] = safe_get(index,'totr.three_point_field')
+                        BkMatchTeamStats['goals'] = safe_get(index,'totr.FieldGoalsMade2') + BkMatchTeamStats['three_point_goals']
+                        BkMatchTeamStats['field'] = safe_get(index,'totr.FieldGoalsAttempted2') + BkMatchTeamStats['three_point_field']
+                        BkMatchTeamStats['free_throw_goals'] = safe_get(index,'totr.FreeThrowsMade')
+                        BkMatchTeamStats['free_throw_field'] = safe_get(index,'totr.FreeThrowsAttempted')
+                        BkMatchTeamStats['offensive_rebounds'] = safe_get(index,'totr.OffensiveRebounds')
+                        BkMatchTeamStats['defensive_rebounds'] = safe_get(index,'totr.DefensiveRebounds')
+                        BkMatchTeamStats['rebounds'] = safe_get(index,'totr.TotalRebounds')
+                        BkMatchTeamStats['assists'] = safe_get(index,'totr.Assistances')
+                        BkMatchTeamStats['steals'] = safe_get(index,'totr.Steals')
+                        BkMatchTeamStats['blocks'] = safe_get(index,'totr.BlocksFavour')
+                        BkMatchTeamStats['turnovers'] = safe_get(index,'totr.Turnovers')
+                        BkMatchTeamStats['personal_fouls'] = safe_get(index,'totr.FoulsCommited')
+                        BkMatchTeamStats['point'] = safe_get(index,'totr.Points')
+                        BkMatchTeamStats['score_difference'] = safe_get(index,'totr.Valuation')
                         team_stats_list.append(BkMatchTeamStats)
                         belong += 1
                     for i in range(2):
@@ -67,8 +67,8 @@ class EurLeagueSpider_boxscore(object):
                             player['belong'] = i + 1
                             player['player_name'] = translate_player_name(home_player['Player'])
                             player_key = home_player['Player_ID'][1:]
-                            id = get_player_id_upsert(player_key)
-                            if not id:
+                            id = safe_get(self.get_player_id,player_key.strip())
+                            if id == 0:
                                 url = 'https://www.euroleague.net/competition/players/showplayer?pcode=%s&seasoncode=E2019' % player_key
                                 player_res = requests.get(url, headers=self.headers)
                                 player_tree = tree_parse(player_res)
@@ -78,12 +78,11 @@ class EurLeagueSpider_boxscore(object):
                                 except:
                                     player['name_en'] = ''
                                 player['key'] = player_key
-                                print(player['key'])
                                 try:
                                     player['logo'] = player_tree.xpath('//div[@class="player_img-img"]/img/@src')[0]
                                 except:
                                     player['logo'] = ''
-                                    print('没有该球员的图片...')
+                                    logger.info('没有该球员的图片...')
                                 try:
                                     player['shirt_number'] = player_tree.xpath('//span[@class="dorsal"]/text()')[0]
                                 except:
@@ -121,7 +120,6 @@ class EurLeagueSpider_boxscore(object):
                                     player['name_zh'] = translate_dict[player['name_en']]
                                 except:
                                     player['name_zh'] = ''
-                                print('player_img:', player)
                                 data = {
                                     'key': player['key'],
                                     'name_en': player['name_en'],
@@ -133,7 +131,6 @@ class EurLeagueSpider_boxscore(object):
                                     'height': player['height'],
                                     'shirt_number': player['shirt_number'],
                                     'position': player['position'],
-                                    # 'team_id': player_img['team_id'],
                                 }
                                 spx_dev_session = MysqlSvr.get('spider_zl')
                                 BleaguejpBasketballPlayer.upsert(
@@ -141,8 +138,8 @@ class EurLeagueSpider_boxscore(object):
                                     'key',
                                     data
                                 )
-                            player['player_id'], player['shirt_number'] = get_player_id(player_key,
-                                                                                        player['player_name'])
+                            player['player_id'] = self.get_player_id[player_key.strip()]
+                            player['shirt_number'] = self.get_player_shirt_number[player_key.strip()]
                             times = home_player['Minutes']
                             if times != 'DNP':
                                 player['enter_ground'] = 1
@@ -156,25 +153,26 @@ class EurLeagueSpider_boxscore(object):
                                 player['enter_ground'] = 0
                                 player['minutes'] = 0
                             player['two_points_goals'] = home_player['FieldGoalsMade2']
-                            player['two_points_total'] = home_player['FieldGoalsAttempted2']
-                            player['three_point_goals'] = home_player['FieldGoalsMade3']
-                            player['three_point_field'] = home_player['FieldGoalsAttempted3']
+                            player['two_points_goals'] = safe_get(home_player,'FieldGoalsMade2')
+                            player['two_points_total'] = safe_get(home_player,'FieldGoalsAttempted2')
+                            player['three_point_goals'] = safe_get(home_player,'FieldGoalsMade3')
+                            player['three_point_field'] = safe_get(home_player,'FieldGoalsAttempted3')
                             player['goals'] = int(player['two_points_goals']) + int(player['three_point_goals'])
                             player['field'] = int(player['two_points_total']) + int(player['three_point_field'])
-                            player['free_throw_goals'] = home_player['FreeThrowsMade']
-                            player['free_throw_field'] = home_player['FreeThrowsAttempted']
-                            player['offensive_rebounds'] = home_player['OffensiveRebounds']
-                            player['defensive_rebounds'] = home_player['DefensiveRebounds']
-                            player['rebounds'] = home_player['TotalRebounds']
-                            player['assists'] = home_player['Assistances']
-                            player['steals'] = home_player['Steals']
-                            player['blocks'] = home_player['BlocksFavour']
-                            player['turnovers'] = home_player['Turnovers']
-                            player['personal_fouls'] = home_player['FoulsCommited']
-                            player['score_difference'] = home_player['Valuation']
-                            player['point'] = home_player['Points']
-                            player['first_publish'] = home_player['IsStarter']
-                            first = home_player['IsPlaying']
+                            player['free_throw_goals'] = safe_get(home_player,'FreeThrowsMade')
+                            player['free_throw_field'] = safe_get(home_player,'FreeThrowsAttempted')
+                            player['offensive_rebounds'] = safe_get(home_player,'OffensiveRebounds')
+                            player['defensive_rebounds'] = safe_get(home_player,'DefensiveRebounds')
+                            player['rebounds'] = safe_get(home_player,'TotalRebounds')
+                            player['assists'] = safe_get(home_player,'Assistances')
+                            player['steals'] = safe_get(home_player,'Steals')
+                            player['blocks'] = safe_get(home_player,'BlocksFavour')
+                            player['turnovers'] = safe_get(home_player,'Turnovers')
+                            player['personal_fouls'] = safe_get(home_player,'FoulsCommited')
+                            player['score_difference'] = safe_get(home_player,'Valuation')
+                            player['point'] = safe_get(home_player,'Points')
+                            player['first_publish'] = safe_get(home_player,'IsStarter')
+                            first = safe_get(home_player,'IsPlaying')
                             if first == 1:
                                 player['on_ground'] = 0
                             elif first == 0:

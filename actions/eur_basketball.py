@@ -2,7 +2,8 @@ import asyncio
 
 from apps.eur_basketball_spider.eur_client import EurBasketballFeedClient
 from apps.eur_basketball_spider.eur_svr import EurBasketballFeedSvr
-from apps.eur_basketball_spider import eur_spider, eur_match, eur_player_stat, eur_team_stat
+from apps.eur_basketball_spider import eur_spider, eur_player_stat, eur_team_stat
+from apps.eur_basketball_spider.eur_match import GetMatchInfo
 
 servers = ["nats://hub.nats.namincs.com:4222"]
 user = 'nana'
@@ -18,17 +19,13 @@ def start_eur_basketball_client(opts):
     topic = 'euro.bk.live'
     asyncio.run(EurBasketballFeedClient().start(topic=topic, servers=servers, user=user, password=password))
 
-# def send_eur_basketball_svr(opts):
-#     topic = 'bk.score.live'
-#     asyncio.run(EurBasketballFeedSvr().start(topic=topic, servers=servers, user=user, password=password))
-
 
 def eur_player_team_manager_info(opts):
     eur_spider.run()
 
 
 def eur_match_info(opts):
-    eur_match.run()
+    GetMatchInfo().run()
 
 
 def eur_player_stat_info(opts):

@@ -1235,19 +1235,6 @@ def download_img(img_url, name, content):
         f.write(imgByteArr)
 
 
-def get_player_id(player_key, player_en):
-    spx_dev_session = MysqlSvr.get('spider_zl')
-    player_data = {
-        'key': player_key,
-        'name_zh': player_en,
-    }
-    _, row = BleaguejpBasketballPlayer.upsert(
-        spx_dev_session,
-        'key',
-        player_data
-    )
-    return row.id, row.shirt_number
-
 
 def get_player_id_upsert(player_key):
     spx_dev_session = MysqlSvr.get('spider_zl')
@@ -1298,17 +1285,11 @@ def get_player_position_upsert(player_key):
     return row.position
 
 
-def get_team_id(team_name):
+def get_team_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    team_data = {
-        'key': team_name,
-    }
-    _, row = BleaguejpBasketballTeam.upsert(
-        spx_dev_session,
-        'key',
-        team_data
-    )
-    return row.id
+    rows = spx_dev_session.query(BleaguejpBasketballTeam).all()
+    data_dict = {row.key.lower(): row.id for row in rows}
+    return data_dict
 
 
 def get_team_id_box():
@@ -1351,9 +1332,8 @@ def get_team_id_name(team_key):
 def get_player_id_key():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
-    data_dict = {row.key: row.id for row in rows}
+    data_dict = {row.key.strip(): row.id for row in rows}
     return data_dict
-
 
 def get_match_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
@@ -1364,3 +1344,28 @@ def get_match_id():
                                                                   BleaguejpBasketballMatch.match_time <= timeStamp1).all()
     data_list = [int(str(row.id)[2:]) for row in rows]
     return data_list
+
+def get_player_shirt_number():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
+    data_dict = {row.key: row.shirt_number for row in rows}
+    return data_dict
+
+
+
+def safe_get(obj, key, default=0):
+    keys = key.split('.')
+
+    def _get(_obj, _keys):
+        if not _obj or not _keys or not isinstance(_obj, dict):
+            return default
+
+        if len(_keys) == 1:
+            return _obj.get(_keys[0], default)
+        else:
+            return _get(_obj.get(_keys[0]), _keys[1:])
+
+    return _get(obj, keys)
+
+
+
