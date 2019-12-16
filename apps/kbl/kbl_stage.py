@@ -8,7 +8,8 @@ for year in years_list:
     sport_id = 2
     season = str(year) + '-' + str(year + 1)
     season_id = \
-    spx_dev_session.query(BleagueNblBasketballSeason).filter(BleagueNblBasketballSeason.season == season).all()[0].id
+        spx_dev_session.query(BleagueNblBasketballSeason).filter(BleagueNblBasketballSeason.season == season).all()[
+            0].id
     name_zh = season + '赛季'
     has_player_stats = 1
     has_team_stats = 1

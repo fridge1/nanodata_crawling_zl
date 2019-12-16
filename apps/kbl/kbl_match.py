@@ -5,7 +5,6 @@ from apps.send_error_msg import dingding_alter
 import re
 import traceback
 import datetime
-import asyncio
 import time
 from orm_connection.kbl_basketball import BleagueNblBasketballMatch
 from orm_connection.orm_session import MysqlSvr
@@ -114,7 +113,7 @@ class GetMatchObj():
                     year = current[:4]
                     month = current[4:6]
                     url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=%s&month=%s&year=%s&teamCode=&category=kbl' % (
-                    current, month, year)
+                        current, month, year)
                     await self.get_match_info_async(url)
                     time.sleep(600)
             except:

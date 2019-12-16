@@ -47,7 +47,8 @@ class KblBasketballFeedSvr(object):
         first_id_dict = await PbpBoxLive().get_first_id_list(list(match_id_dict.keys()))
         while True:
             match_id_dict = get_match_id_start()
-            coro = [asyncio.create_task(PbpBoxLive().kbl_playbyplay(key, values,first_id_dict)) for key,values in match_id_dict.items()]
+            coro = [asyncio.create_task(PbpBoxLive().kbl_playbyplay(key, values, first_id_dict)) for key, values in
+                    match_id_dict.items()]
             datas = await asyncio.gather(*coro)
             for data in datas:
                 await self.pub_time_data(self.topic, data[0])

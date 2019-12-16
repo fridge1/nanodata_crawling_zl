@@ -169,5 +169,3 @@ class PlayerTeamStats(object):
             task2 = asyncio.create_task(self.jiexi_team_stat())
             coro = [task1, task2]
             await asyncio.gather(*coro)
-
-
