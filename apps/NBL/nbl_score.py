@@ -1,6 +1,7 @@
 from aiohttp import ClientSession
 import aiohttp
 import json
+from apps.NBL.tools import safe_get
 
 
 class GetScores(object):
@@ -15,48 +16,16 @@ class GetScores(object):
                         player_stat = json.loads(response)
                         try:
                             scores_info = player_stat['pbp'][0]
-                            try:
-                                home_p1_score = player_stat['tm']['1']['p1_score']
-                            except:
-                                home_p1_score = 0
-                            try:
-                                home_p2_score = player_stat['tm']['1']['p2_score']
-                            except:
-                                home_p2_score = 0
-                            try:
-                                home_p3_score = player_stat['tm']['1']['p3_score']
-                            except:
-                                home_p3_score = 0
-                            try:
-                                home_p4_score = player_stat['tm']['1']['p4_score']
-                            except:
-                                home_p4_score = 0
-                            try:
-                                home_p5_score = player_stat['tm']['1']['p5_score']
-                            except:
-                                home_p5_score = 0
-
-                            try:
-                                away_p1_score = player_stat['tm']['2']['p1_score']
-                            except:
-                                away_p1_score = 0
-                            try:
-                                away_p2_score = player_stat['tm']['2']['p2_score']
-                            except:
-                                away_p2_score = 0
-                            try:
-                                away_p3_score = player_stat['tm']['2']['p3_score']
-                            except:
-                                away_p3_score = 0
-                            try:
-                                away_p4_score = player_stat['tm']['2']['p4_score']
-                            except:
-                                away_p4_score = 0
-                            try:
-                                away_p5_score = player_stat['tm']['2']['p5_score']
-                            except:
-                                away_p5_score = 0
-
+                            home_p1_score = safe_get(player_stat,'tm.1.p1_score')
+                            home_p2_score = safe_get(player_stat,'tm.1.p2_score')
+                            home_p3_score = safe_get(player_stat,'tm.1.p3_score')
+                            home_p4_score = safe_get(player_stat,'tm.1.p4_score')
+                            home_p5_score = safe_get(player_stat,'tm.1.p5_score')
+                            away_p1_score = safe_get(player_stat,'tm.2.p1_score')
+                            away_p2_score = safe_get(player_stat,'tm.2.p2_score')
+                            away_p3_score = safe_get(player_stat,'tm.2.p3_score')
+                            away_p4_score = safe_get(player_stat,'tm.2.p4_score')
+                            away_p5_score = safe_get(player_stat,'tm.2.p5_score')
                             home_scores = [home_p1_score,home_p2_score,home_p3_score,home_p4_score,home_p5_score]
                             away_scores = [away_p1_score,away_p2_score,away_p3_score,away_p4_score,away_p5_score]
                             home_scores_total = sum(home_scores)

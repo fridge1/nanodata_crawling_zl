@@ -1,12 +1,10 @@
 import asyncio
 import queue
 import time
-import traceback
 from stan.aio.client import Client as STAN
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
-from pb.nana.biz.base_pb2 import Request, Result
 from pb.nana.biz.sport import match_pb2
 from apps.NBL.nbl_score import GetScores
 from apps.NBL.tools import get_match_id_score

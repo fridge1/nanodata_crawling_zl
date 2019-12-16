@@ -128,3 +128,18 @@ def get_match_id_score():
                                                                    BleagueNblBasketballMatch.match_time <= timeStamp1).all()
     data_list = [row.id for row in rows]
     return data_list
+
+
+def safe_get(obj, key, default=0):
+    keys = key.split('.')
+
+    def _get(_obj, _keys):
+        if not _obj or not _keys or not isinstance(_obj, dict):
+            return default
+
+        if len(_keys) == 1:
+            return _obj.get(_keys[0], default)
+        else:
+            return _get(_obj.get(_keys[0]), _keys[1:])
+
+    return _get(obj, keys)
