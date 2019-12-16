@@ -97,36 +97,19 @@ def team_stat_end(season_id, gamecode):
                 )
                 count += 1
                 logger.info(data)
-        minutes_team = box_api_dict['Live']
-        if minutes_team == False:
-            break
-        else:
-            continue
+            minutes_team = box_api_dict['Live']
+            if minutes_team == False:
+                break
+            else:
+                continue
 
 
 def team_stat_run():
     try:
-        headers = {
-            'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
-        }
-        start_url = 'https://www.euroleague.net/'
-        url = 'https://www.euroleague.net/main/results?seasoncode=E%s'
-        seasons_id = [2019]
-        for season_id in seasons_id:
-            res = requests.get(url % str(season_id), headers=headers)
-            res_tree = tree_parse(res)
-            typecode_urls = res_tree.xpath('//div[@class="game-center-selector"]/div[2]/select/option/@value')
-            for typecode_url in typecode_urls:
-                typecode_res = requests.get(start_url + typecode_url, headers=headers)
-                typecode_res_tree = tree_parse(typecode_res)
-                round_urls = typecode_res_tree.xpath('//div[@class="game-center-selector"]/div[3]/select/option/@value')
-                for round_url in round_urls:
-                    round_res = requests.get(start_url + round_url, headers=headers)
-                    round_res_tree = tree_parse(round_res)
-                    gamecode_urls = round_res_tree.xpath(
-                        '//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
-                    for gamecode in gamecode_urls:
-                        threading.Thread(target=team_stat_end, args=(season_id, gamecode)).start()
-                        # team_stat_end(season_id, gamecode)
-    except Exception as e:
-        logger.error(e)
+        season_id = 2019
+        gamecode_urls = get_match_id()
+        for gamecode in gamecode_urls:
+            threading.Thread(target=team_stat_end, args=(season_id, gamecode)).start()
+    except:
+        logger.error(traceback.format_exc())
+        dingding_alter(traceback.format_exc())

@@ -1,9 +1,10 @@
 import asyncio
 from apps.eur_basketball_spider.eur_client import EurBasketballFeedClient
 from apps.eur_basketball_spider.eur_svr import EurBasketballFeedSvr
-from apps.eur_basketball_spider import eur_player_stat, eur_team_stat
+from apps.eur_basketball_spider import eur_team_stat
 from apps.eur_basketball_spider.eur_match import GetMatchInfo
 from apps.eur_basketball_spider.eur_spider import GetPlayerTeamCoachInfo
+from apps.eur_basketball_spider.eur_player_stat import GetPlayerStat
 
 servers = ["nats://hub.nats.namincs.com:4222"]
 user = 'nana'
@@ -29,7 +30,7 @@ def eur_match_info(opts):
 
 
 def eur_player_stat_info(opts):
-    eur_player_stat.player_stat_run()
+    GetPlayerStat().player_stat_run()
 
 
 def eur_team_stat_info(opt):

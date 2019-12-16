@@ -32,9 +32,7 @@ class GetMatchObj():
         else:
             season = str(int(date[:4]) - 1) + '-' + str(int(date[:4]))
         date_time = date + ' ' + url_api_res['kick_off'].replace(' ', '')
-        print(date_time)
         match_time = change_match_bjtime(date_time)
-        print(match_time)
         season_id = season_id_dict[season]
         stage_id = season_id
         sport_id = 2
@@ -104,19 +102,22 @@ class GetMatchObj():
         month = re.findall(r'\d+', next_url_date[0])[1]
         date = time.strftime('%Y%m%d', time.localtime(time.time()))
         next_url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=%s&month=%s&year=%s&teamCode=&category=kbl' % (
-        date, month, year)
+            date, month, year)
         logger.info(next_url)
         await self.get_match_info_async(next_url)
 
     async def run(self):
-        try:
-            while True:
-                current = datetime.datetime.now().strftime('%Y%m%d')
-                year = current[:4]
-                month = current[4:6]
-                url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=%s&month=%s&year=%s&teamCode=&category=kbl' % (current,month,year)
-                await self.get_match_info_async(url)
-                time.sleep(600)
-        except:
-            logger.error(traceback.format_exc())
-            dingding_alter(traceback.format_exc())
+        while True:
+            try:
+                while True:
+                    current = datetime.datetime.now().strftime('%Y%m%d')
+                    year = current[:4]
+                    month = current[4:6]
+                    url = 'https://sports.news.naver.com/basketball/schedule/index.nhn?date=%s&month=%s&year=%s&teamCode=&category=kbl' % (
+                    current, month, year)
+                    await self.get_match_info_async(url)
+                    time.sleep(600)
+            except:
+                logger.error(traceback.format_exc())
+                dingding_alter(traceback.format_exc())
+                continue
