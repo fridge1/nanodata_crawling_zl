@@ -8,7 +8,7 @@ class GetScores(object):
     async def get_scores(self, game_id):
         url = 'https://www.fibalivestats.com/data/%s/data.json' % str(game_id)
         conn = aiohttp.TCPConnector(verify_ssl=False)
-        async with ClientSession(connector=conn) as session:
+        async with ClientSession(connector=conn,timeout=10) as session:
             try:
                 async with session.get(url) as response:
                     if response.status == 200:
