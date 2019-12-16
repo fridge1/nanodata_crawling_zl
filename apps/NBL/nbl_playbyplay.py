@@ -24,7 +24,7 @@ class pbp_box(object):
                 }
                 url = 'https://www.fibalivestats.com/data/%s/data.json' % str(match_id)
                 logger.info(url)
-                pbp_res = requests.get(url, headers=headers)
+                pbp_res = requests.get(url, headers=headers,timeout=30)
                 if pbp_res.status_code != 200:
                     logger.info('比赛未开赛.... %s' % str(match_id))
                     time.sleep(10)
