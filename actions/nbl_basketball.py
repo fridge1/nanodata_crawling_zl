@@ -21,10 +21,6 @@ def start_nbl_basketball_score_svr(opts):
     topic = 'bk.score.live'
     asyncio.run(NblBasketballScore().start(topic))
 
-# def start_nbl_basketball__score_client(opts):
-#     topic = 'bk.score.live'
-#     asyncio.run(NblBasketballScoreClient().start(topic))
-
 def start_nbl_basketball_match(opts):
     nbl_match.run()
 

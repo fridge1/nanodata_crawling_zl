@@ -2,14 +2,8 @@ import asyncio
 import queue
 import time
 import traceback
-import threading
-
-import requests
-
 from apps.kbl.kbl_playbyplay import PbpBoxLive
 from stan.aio.client import Client as STAN
-
-from apps.kbl.tools import tree_parse
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr

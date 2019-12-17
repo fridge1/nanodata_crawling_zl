@@ -45,75 +45,23 @@ class pbp_box(object):
                             BkMatchTeamStats['belong'] = int(key)
                             BkMatchTeamStats['team_id'] = self.team_id_get[str(pbp_dict['tm'][key]['name'])]
                             BkMatchTeamStats['team_name'] = pbp_dict['tm'][key]['name']
-                            try:
-                                BkMatchTeamStats['goals'] = pbp_dict['tm'][key]['tot_sFieldGoalsMade']
-                            except:
-                                BkMatchTeamStats['goals'] = 0
-                            try:
-                                BkMatchTeamStats['field'] = pbp_dict['tm'][key]['tot_sFieldGoalsAttempted']
-                            except:
-                                BkMatchTeamStats['field'] = 0
-                            try:
-                                BkMatchTeamStats['two_points_goals'] = pbp_dict['tm'][key]['tot_sTwoPointersMade']
-                            except:
-                                BkMatchTeamStats['two_points_goals'] = 0
-                            try:
-                                BkMatchTeamStats['two_points_total'] = pbp_dict['tm'][key]['tot_sTwoPointersAttempted']
-                            except:
-                                BkMatchTeamStats['two_points_total'] = 0
-                            try:
-                                BkMatchTeamStats['three_point_goals'] = pbp_dict['tm'][key]['tot_sThreePointersMade']
-                            except:
-                                BkMatchTeamStats['three_point_goals'] = 0
-                            try:
-                                BkMatchTeamStats['three_point_field'] = pbp_dict['tm'][key][
-                                    'tot_sThreePointersAttempted']
-                            except:
-                                BkMatchTeamStats['three_point_field'] = 0
-                            try:
-                                BkMatchTeamStats['free_throw_goals'] = pbp_dict['tm'][key]['tot_sFreeThrowsMade']
-                            except:
-                                BkMatchTeamStats['free_throw_goals'] = 0
-                            try:
-                                BkMatchTeamStats['free_throw_field'] = pbp_dict['tm'][key]['tot_sFreeThrowsAttempted']
-                            except:
-                                BkMatchTeamStats['free_throw_field'] = 0
-                            try:
-                                BkMatchTeamStats['offensive_rebounds'] = pbp_dict['tm'][key]['tot_sReboundsOffensive']
-                            except:
-                                BkMatchTeamStats['offensive_rebounds'] = 0
-                            try:
-                                BkMatchTeamStats['defensive_rebounds'] = pbp_dict['tm'][key]['tot_sReboundsDefensive']
-                            except:
-                                BkMatchTeamStats['defensive_rebounds'] = 0
-                            try:
-                                BkMatchTeamStats['rebounds'] = pbp_dict['tm'][key]['tot_sReboundsTotal']
-                            except:
-                                BkMatchTeamStats['rebounds'] = 0
-                            try:
-                                BkMatchTeamStats['assists'] = pbp_dict['tm'][key]['tot_sAssists']
-                            except:
-                                BkMatchTeamStats['assists'] = 0
-                            try:
-                                BkMatchTeamStats['steals'] = pbp_dict['tm'][key]['tot_sSteals']
-                            except:
-                                BkMatchTeamStats['steals'] = 0
-                            try:
-                                BkMatchTeamStats['blocks'] = pbp_dict['tm'][key]['tot_sBlocks']
-                            except:
-                                BkMatchTeamStats['blocks'] = 0
-                            try:
-                                BkMatchTeamStats['turnovers'] = pbp_dict['tm'][key]['tot_sTurnovers']
-                            except:
-                                BkMatchTeamStats['turnovers'] = 0
-                            try:
-                                BkMatchTeamStats['personal_fouls'] = pbp_dict['tm'][key]['tot_sFoulsPersonal']
-                            except:
-                                BkMatchTeamStats['personal_fouls'] = 0
-                            try:
-                                BkMatchTeamStats['point'] = pbp_dict['tm'][key]['tot_sPoints']
-                            except:
-                                BkMatchTeamStats['point'] = 0
+                            BkMatchTeamStats['goals'] = int(safe_get(pbp_dict,'tm.%s.tot_sFieldGoalsMade' % key))
+                            BkMatchTeamStats['field'] = int(safe_get(pbp_dict,'tm.%s.tot_sFieldGoalsAttempted' % key))
+                            BkMatchTeamStats['two_points_goals'] = int(safe_get(pbp_dict,'tm.%s.tot_sTwoPointersMade' % key))
+                            BkMatchTeamStats['two_points_total'] = int(safe_get(pbp_dict,'tm.%s.tot_sTwoPointersAttempted' % key))
+                            BkMatchTeamStats['three_point_goals'] = int(safe_get(pbp_dict,'tm.%s.tot_sThreePointersMade' % key))
+                            BkMatchTeamStats['three_point_field'] = int(safe_get(pbp_dict,'tm.%s.tot_sThreePointersAttempted' % key))
+                            BkMatchTeamStats['free_throw_goals'] = int(safe_get(pbp_dict,'tm.%s.tot_sFreeThrowsMade' % key))
+                            BkMatchTeamStats['free_throw_field'] = int(safe_get(pbp_dict,'tm.%s.tot_sFreeThrowsAttempted' % key))
+                            BkMatchTeamStats['offensive_rebounds'] = int(safe_get(pbp_dict,'tm.%s.tot_sReboundsOffensive' % key))
+                            BkMatchTeamStats['defensive_rebounds'] = int(safe_get(pbp_dict,'tm.%s.tot_sReboundsDefensive' % key))
+                            BkMatchTeamStats['rebounds'] = int(safe_get(pbp_dict,'tm.%s.tot_sReboundsTotal' % key))
+                            BkMatchTeamStats['assists'] = int(safe_get(pbp_dict,'tm.%s.tot_sAssists' % key))
+                            BkMatchTeamStats['steals'] = int(safe_get(pbp_dict,'tm.%s.tot_sSteals' % key))
+                            BkMatchTeamStats['blocks'] = int(safe_get(pbp_dict,'tm.%s.tot_sBlocks' % key))
+                            BkMatchTeamStats['turnovers'] = int(safe_get(pbp_dict,'tm.%s.tot_sTurnovers' % key))
+                            BkMatchTeamStats['personal_fouls'] = int(safe_get(pbp_dict,'tm.%s.tot_sFoulsPersonal' % key))
+                            BkMatchTeamStats['point'] = int(safe_get(pbp_dict,'tm.%s.tot_sPoints' % key))
                             team_stats_list.append(BkMatchTeamStats)
                             player_keys = pbp_dict['tm'][key]['pl'].keys()
                             for player_key in player_keys:
@@ -135,86 +83,25 @@ class pbp_box(object):
                                     player['minutes'] = int(minute) + 1
                                 else:
                                     player['minutes'] = int(minute)
-                                try:
-                                    player['goals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsMade'])
-                                except:
-                                    player['goals'] = 0
-                                try:
-                                    player['field'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFieldGoalsAttempted'])
-                                except:
-                                    player['field'] = 0
-                                try:
-                                    player['two_points_goals'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersMade'])
-                                except:
-                                    player['two_points_goals'] = 0
-                                try:
-                                    player['two_points_total'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sTwoPointersAttempted'])
-                                except:
-                                    player['two_points_total'] = 0
-                                try:
-                                    player['three_point_goals'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sThreePointersMade'])
-                                except:
-                                    player['three_point_goals'] = 0
-                                try:
-                                    player['three_point_field'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sThreePointersAttempted'])
-                                except:
-                                    player['three_point_field'] = 0
-                                try:
-                                    player['free_throw_goals'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsMade'])
-                                except:
-                                    player['free_throw_goals'] = 0
-                                try:
-                                    player['free_throw_field'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sFreeThrowsAttempted'])
-                                except:
-                                    player['free_throw_field'] = 0
-                                try:
-                                    player['offensive_rebounds'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sReboundsOffensive'])
-                                except:
-                                    player['offensive_rebounds'] = 0
-                                try:
-                                    player['defensive_rebounds'] = int(
-                                        pbp_dict['tm'][key]['pl'][player_key]['sReboundsDefensive'])
-                                except:
-                                    player['defensive_rebounds'] = 0
-                                try:
-                                    player['rebounds'] = int(pbp_dict['tm'][key]['pl'][player_key]['sReboundsTotal'])
-                                except:
-                                    player['rebounds'] = 0
-                                try:
-                                    player['assists'] = int(pbp_dict['tm'][key]['pl'][player_key]['sAssists'])
-                                except:
-                                    player['assists'] = 0
-                                try:
-                                    player['steals'] = int(pbp_dict['tm'][key]['pl'][player_key]['sSteals'])
-                                except:
-                                    player['steals'] = 0
-                                try:
-                                    player['blocks'] = int(pbp_dict['tm'][key]['pl'][player_key]['sBlocks'])
-                                except:
-                                    player['blocks'] = 0
-                                try:
-                                    player['turnovers'] = int(pbp_dict['tm'][key]['pl'][player_key]['sTurnovers'])
-                                except:
-                                    player['turnovers'] = 0
-                                try:
-                                    player['personal_fouls'] = int(pbp_dict['tm'][key]['pl'][player_key]['sFoulsPersonal'])
-                                except:
-                                    player['personal_fouls'] = 0
-                                try:
-                                    player['point'] = int(pbp_dict['tm'][key]['pl'][player_key]['sPoints'])
-                                except:
-                                    player['point'] = 0
-                                try:
-                                    player['first_publish'] = int(pbp_dict['tm'][key]['pl'][player_key]['starter'])
-                                except:
-                                    player['first_publish'] = 0
+                                player['goals'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sFieldGoalsMade' % (key,player_key)))
+                                player['field'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sFieldGoalsAttempted' % (key,player_key)))
+                                player['two_points_goals'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sTwoPointersMade' % (key,player_key)))
+                                player['two_points_total'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sTwoPointersAttempted' % (key,player_key)))
+                                player['three_point_goals'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sThreePointersMade' % (key,player_key)))
+                                player['three_point_field'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sThreePointersAttempted' % (key,player_key)))
+                                player['free_throw_goals'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sFreeThrowsMade' % (key,player_key)))
+                                player['free_throw_field'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sFreeThrowsAttempted' % (key,player_key)))
+                                player['offensive_rebounds'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sReboundsOffensive' % (key,player_key)))
+                                player['defensive_rebounds'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sReboundsDefensive' % (key,player_key)))
+                                player['rebounds'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sReboundsTotal' % (key,player_key)))
+                                player['assists'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sAssists' % (key,player_key)))
+                                player['steals'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sSteals' % (key,player_key)))
+                                player['blocks'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sBlocks' % (key,player_key)))
+                                player['turnovers'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sTurnovers' % (key,player_key)))
+                                player['personal_fouls'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sFoulsPersonal' % (key,player_key)))
+                                player['point'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.sPoints' % (key,player_key)))
+                                player['first_publish'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.starter' % (key,player_key)))
+                                player['shirt_number'] = int(safe_get(pbp_dict,'tm.%s.pl.%s.shirtNumber' % (key,player_key)))
                                 if minutes == '0:00':
                                     player['enter_ground'] = 0
                                 elif minutes != '0:00':
@@ -225,10 +112,6 @@ class pbp_box(object):
                                     player['on_ground'] = 1
                                 else:
                                     player['on_ground'] = 0
-                                try:
-                                    player['shirt_number'] = int(pbp_dict['tm'][key]['pl'][player_key]['shirtNumber'])
-                                except:
-                                    player['shirt_number'] = 0
                                 player_stats_list.append(player)
                         except:
                             logger.error(traceback.format_exc())

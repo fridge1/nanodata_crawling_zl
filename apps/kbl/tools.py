@@ -227,3 +227,18 @@ translate_pbp_dict = {'000': '없음', '001': '없음', '002': '比赛中断', '
                       'EBF': '엘보우 파울', 'FRF': '三秒违例', 'FTF': '违体', 'PCF': '펀칭 파울', 'PNF': '犯规', 'TCF': '技术犯规',
                       'XXX': '없음', '104': '부상', '106': '퇴장', '000_0': '없음', '101_0': '없음', '104_0': '없음', '106_0': '없음',
                       '106_1': '5次犯规', '106_2': '디스퀄리파잉', '106_3': '기타 퇴장'}
+
+
+def safe_get(obj, key, default=0):
+    keys = key.split('.')
+
+    def _get(_obj, _keys):
+        if not _obj or not _keys or not isinstance(_obj, dict):
+            return default
+
+        if len(_keys) == 1:
+            return _obj.get(_keys[0], default)
+        else:
+            return _get(_obj.get(_keys[0]), _keys[1:])
+
+    return _get(obj, keys)
