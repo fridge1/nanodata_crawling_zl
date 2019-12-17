@@ -3,7 +3,7 @@ from orm_connection.orm_base import *
 from sqlalchemy.orm import sessionmaker
 
 
-# engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
+engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
 
 
 prefix = 'acb_league_basketball_'
@@ -794,9 +794,29 @@ class BleagueBasketballGameText(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+# 裁判表
+class BleagueAcbBasketballReferee(BaseModel):
+    __tablename__ = prefix + 'referee'
+
+    # id和外部表id
+    id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(100), nullable=False, server_default='', default='', index=True)
+    # 字段
+    name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文名称')
+    name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
+    name_zht = Column(String(255), nullable=False, server_default='', default='', comment='繁体名称')
+    logo = Column(String(255), nullable=False, server_default='', default='', comment='logo')
+    age = Column(Integer, nullable=False, server_default='0', default=0, comment='年龄')
+    birthday = Column(Integer, nullable=False, server_default='0', default=0, comment='生日')
+    matchs = Column(Integer, nullable=False, server_default='0', default=0, comment='执法场次')
+    # 通用字段
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
 
 
 
-# BaseModel.metadata.create_all(engine)
+
+
+BaseModel.metadata.create_all(engine)

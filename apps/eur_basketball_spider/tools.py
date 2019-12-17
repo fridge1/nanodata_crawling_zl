@@ -4,7 +4,6 @@ import datetime, time
 from datetime import date
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
-import pandas as pd
 import io
 from PIL import Image
 import requests

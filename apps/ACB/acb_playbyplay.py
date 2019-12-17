@@ -13,8 +13,7 @@ class pbp_box(object):
     def __init__(self):
         self.team_id_get = {'RETABET BILBAO BASKET':1,'SAN PABLO BURGOS':2}
         self.get_match_id_start = get_match_id_start()
-        self.get_player_id = {'jean-pierre tokoto':1,'jonathan rousselle':2,'earl clark':3,'jaylon brown':4,'bruno fitipaldo':5,'sergio rodríguez':6,
-                              }
+        self.get_player_id = get_player_id()
 
     def pbp_box_live(self, data_queue, match_id):
         while True:

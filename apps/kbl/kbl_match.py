@@ -35,7 +35,7 @@ class GetMatchObj():
         season_id = season_id_dict[season]
         stage_id = season_id
         sport_id = 2
-        if url_api_res['line_up']['status'] == 0:
+        if 'end' not in url_api_res['live_text']['quarter']:
             home_team_id = url_api_res['home_team']
             away_team_id = url_api_res['away_team']
             status = 1

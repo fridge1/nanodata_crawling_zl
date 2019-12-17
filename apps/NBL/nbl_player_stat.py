@@ -1,8 +1,6 @@
-import requests
 import json
 import traceback
 import threading
-from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
 import time
 from apps.send_error_msg import dingding_alter
