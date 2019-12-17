@@ -1,4 +1,3 @@
-import requests
 import json
 from apps.NBL.tools import *
 import traceback
@@ -40,32 +39,26 @@ def match_live():
                     game_res = requests.get(game_url, headers=headers)
                     if game_res.status_code == 200:
                         game_dict = json.loads(game_res.text)
-                        home_score = game_dict['tm']['1']['tot_sPoints']
-                        away_score = game_dict['tm']['2']['tot_sPoints']
-                        home_half_score = game_dict['tm']['1']['p1_score'] + game_dict['tm']['1']['p2_score']
-                        away_half_score = game_dict['tm']['2']['p1_score'] + game_dict['tm']['2']['p2_score']
-                        home_p1_score = game_dict['tm']['1']['p1_score']
-                        home_p2_score = game_dict['tm']['1']['p2_score']
-                        home_p3_score = game_dict['tm']['1']['p3_score']
-                        try:
-                            home_p4_score = game_dict['tm']['1']['p4_score']
-                        except:
-                            home_p4_score = 0
+                        home_score = safe_get(game_dict, 'tm.1.tot_sPoints')
+                        away_score = safe_get(game_dict, 'tm.2.tot_sPoints')
+                        home_half_score = safe_get(game_dict, 'tm.1.p1_score') + safe_get(game_dict, 'tm.1.p2_score')
+                        away_half_score = safe_get(game_dict, 'tm.2.p1_score') + safe_get(game_dict, 'tm.2.p2_score')
+                        home_p1_score = safe_get(game_dict, 'tm.1.p1_score')
+                        home_p2_score = safe_get(game_dict, 'tm.1.p2_score')
+                        home_p3_score = safe_get(game_dict, 'tm.1.p3_score')
+                        home_p4_score = safe_get(game_dict, 'tm.1.p4_score')
                         if home_score != home_p1_score + home_p2_score + home_p3_score + home_p4_score:
-                            home_p5_score = game_dict['tm']['1']['ot_score']
+                            home_p5_score = safe_get(game_dict, 'tm.1.ot_score')
                             home_scores = [home_p1_score, home_p2_score, home_p3_score, home_p4_score, home_p5_score,
                                            home_score]
                         else:
                             home_scores = [home_p1_score, home_p2_score, home_p3_score, home_p4_score, home_score]
-                        away_p1_score = game_dict['tm']['2']['p1_score']
-                        away_p2_score = game_dict['tm']['2']['p2_score']
-                        away_p3_score = game_dict['tm']['2']['p3_score']
-                        try:
-                            away_p4_score = game_dict['tm']['2']['p4_score']
-                        except:
-                            away_p4_score = 0
+                        away_p1_score = safe_get(game_dict, 'tm.2.p1_score')
+                        away_p2_score = safe_get(game_dict, 'tm.2.p2_score')
+                        away_p3_score = safe_get(game_dict, 'tm.2.p3_score')
+                        away_p4_score = safe_get(game_dict, 'tm.2.p4_score')
                         if away_score != away_p1_score + away_p2_score + away_p3_score + away_p4_score:
-                            away_p5_score = game_dict['tm']['2']['ot_score']
+                            away_p5_score = safe_get(game_dict, 'tm.2.ot_score')
                             away_scores = [away_p1_score, away_p2_score, away_p3_score, away_p4_score, away_p5_score,
                                            away_score]
                         else:
