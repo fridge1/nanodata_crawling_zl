@@ -5,6 +5,8 @@ from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
 from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
+from orm_connection.orm_session import MysqlSvr
+from orm_connection.acb_basketball import BleagueAcbBasketballPlayer,BleagueAcbBasketballTeam
 
 logger = LogMgr.get('acb_basketball_pbp_box_live')
 
@@ -14,6 +16,7 @@ class pbp_box(object):
         self.team_id_get = {'RETABET BILBAO BASKET':1,'SAN PABLO BURGOS':2}
         self.get_match_id_start = get_match_id_start()
         self.get_player_id = get_player_id()
+        self.session = MysqlSvr.get('spider_zl')
 
     def pbp_box_live(self, data_queue, match_id):
         while True:
@@ -68,7 +71,7 @@ class pbp_box(object):
                                 player['belong'] = int(key)
                                 player_name = pbp_dict['tm'][key]['pl'][player_key]['internationalFirstName'] + ' ' + \
                                               pbp_dict['tm'][key]['pl'][player_key]['internationalFamilyName']
-                                player['player_id'] = int(self.get_player_id[player_name.lower()])
+                                player['player_id'] = int(self.get_player_id[player_name])
                                 player['player_name'] = player_name
                                 try:
                                     minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
@@ -233,6 +236,7 @@ class pbp_box(object):
                                                              'items': player_stats_list},
                                                          'team_stat': {'items': team_stats_list}
                                                      }}}
+                    print(json.dumps(match_data_boxscore))
                     data_queue.put(match_data_boxscore)
                     logger.info('球员技术统计推送完成... %s' % str(match_id))
                     match_data_playbyplay = {'match': {'id': int(match_id),
@@ -241,6 +245,7 @@ class pbp_box(object):
                                                                'period': period_total,
                                                                'items': playbyplay_list}
                                                        }}}
+                    print(json.dumps(match_data_playbyplay))
                     data_queue.put(match_data_playbyplay)
                     logger.info('球员技术文字直播推送完成... %s' % str(match_id))
                     try:

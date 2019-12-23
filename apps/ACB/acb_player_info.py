@@ -1,11 +1,19 @@
 import requests
-from apps.ACB.tools import tree_parse
+from apps.ACB.tools import tree_parse,change_match_bjtime
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.acb_basketball import BleagueAcbBasketballPlayer
+import re
 import asyncio
 
 
 def team_upsert(team_url):
+    position_dict = {
+        'Ala-pívot' : 'C',
+        'Escolta' : 'SG',
+        'Alero' : 'SF',
+        'Pívot' : 'F',
+        'Base' : 'PG',
+    }
     headers = {
         'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
     }
@@ -17,31 +25,26 @@ def team_upsert(team_url):
     player_url_list = team_tree.xpath('//div[@class="grid_plantilla principal"]/article/div[@class="foto"]/a/@href')
     for player_url in player_url_list:
         player_info['id'] = player_url.split('/')[-1].split('-')[0]
-        player_res = requests.get('http://www.acb.com/jugador/temporada-a-temporada/id/%s', headers=headers)
+        player_res = requests.get('http://www.acb.com/jugador/temporada-a-temporada/id/%s' % player_info['id'], headers=headers)
+        print('http://www.acb.com/jugador/temporada-a-temporada/id/%s' % player_info['id'])
         player_tree = tree_parse(player_res)
         player_info['name_en'] = player_tree.xpath('//div[@class="datos_secundarios roboto_condensed"]/span/text()')[0]
         player_info['short_name_en'] = \
         player_tree.xpath('//div[@class="f-l-a-100 contenedora_datos_basicos"]/h1/text()')[0]
-        player_info['logo'] = player_tree.xpath('//div[@class="foto"]/img/@src')[0]
+        player_info['logo'] = 'http:' + player_tree.xpath('//div[@class="foto"]/img/@src')[0]
         player_info['shirt_number'] = \
         player_tree.xpath('//div[@class="datos_basicos dorsal roboto_condensed"]/span/text()')[0]
-        player_info['position'] = \
-        player_tree.xpath('//div[@class="datos_basicos posicion roboto_condensed"]/span/text()')[0]
-        player_info['height'] = player_tree.xpath('//div[@class="datos_basicos altura roboto_condensed"]/span/text()')[
-            0]
-        player_info['city'] = player_tree.xpath(
-            '//div[@class="datos_secundarios lugar_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[
-            0]
+        position = player_tree.xpath('//div[@class="datos_basicos posicion roboto_condensed"]/span/text()')[0]
+        player_info['position'] = position_dict[position]
+        height = player_tree.xpath('//div[@class="datos_basicos altura roboto_condensed"]/span/text()')[0]
+        player_info['height'] = float(height.replace(',','.').replace('m','').strip()) * 100
+        player_info['city'] = player_tree.xpath('//div[@class="datos_secundarios lugar_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
         born_time = player_tree.xpath('//div[@class="datos_secundarios fecha_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
-        date = born_time.split(' ')
+        born = born_time.split(' ')[0]
+        player_info['birthday'],player_info['age'] = change_match_bjtime(born)
+        player_info['nationality'] = player_tree.xpath('//div[@class="datos_secundarios nacionalidad roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
         player_info['team_id'] = int(team_url.split('/')[-1])
         player_info['sport_id'] = 2
-        try:
-            player_info['manager_id'] = team_tree.xpath(
-                '//article[@class="caja_miembro_plantilla caja_entrenador_principal"]/div[@class="foto"]/a/@href')[
-                0].split('/')[-1].split('-')[0]
-        except:
-            player_info['manager_id'] = 0
         BleagueAcbBasketballPlayer.upsert(
             session,
             'id',
