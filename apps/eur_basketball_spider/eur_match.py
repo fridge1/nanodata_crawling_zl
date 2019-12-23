@@ -13,13 +13,11 @@ from common.libs.log import LogMgr
 logger = LogMgr.get('eur_basketball_match_live')
 
 
-
 class GetMatchInfo(object):
     def __init__(self):
         self.get_team_id = get_team_id()
 
-
-    def match_end(self,sport_id, season_id, typecode, round_num, season, gamecode):
+    def match_end(self, sport_id, season_id, typecode, round_num, season, gamecode):
         headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
         }
@@ -28,7 +26,8 @@ class GetMatchInfo(object):
         while True:
             time.sleep(10)
             match = {}
-            box_url = 'https://www.euroleague.net/main/results/showgame?gamecode=%s&seasoncode=E%s' % (gamecode, season_id)
+            box_url = 'https://www.euroleague.net/main/results/showgame?gamecode=%s&seasoncode=E%s' % (
+            gamecode, season_id)
             box_url_res = requests.get(box_url, headers=headers)
             if box_url_res.status_code == 200:
                 box_url_tree = tree_parse(box_url_res)
@@ -37,9 +36,10 @@ class GetMatchInfo(object):
                 box_api_url = 'https://live.euroleague.net/api/Boxscore?gamecode=%s&seasoncode=E%s&disp=' % (
                     gamecode, season_id)
                 home_team_url = \
-                box_url_tree.xpath('//div[@class="team local "]/a/@href|//div[@class="team local winner"]/a/@href')[0]
+                    box_url_tree.xpath('//div[@class="team local "]/a/@href|//div[@class="team local winner"]/a/@href')[
+                        0]
                 away_team_url = \
-                box_url_tree.xpath('//div[@class="team road "]/a/@href|//div[@class="team road winner"]/a/@href')[0]
+                    box_url_tree.xpath('//div[@class="team road "]/a/@href|//div[@class="team road winner"]/a/@href')[0]
                 home_team_key = re.findall(r'clubcode=(.*?)&', home_team_url)[0]
                 away_team_key = re.findall(r'clubcode=(.*?)&', away_team_url)[0]
                 home_team_id = self.get_team_id[home_team_key.lower()]
@@ -140,7 +140,6 @@ class GetMatchInfo(object):
                         break
         spx_dev_session.close()
 
-
     def match_run(self):
         try:
             headers = {
@@ -159,7 +158,8 @@ class GetMatchInfo(object):
                     typecode = re.findall(r'phasetypecode=(.*?)&', typecode_url)[0]
                     typecode_res = requests.get(start_url + typecode_url, headers=headers)
                     typecode_res_tree = tree_parse(typecode_res)
-                    round_urls = typecode_res_tree.xpath('//div[@class="game-center-selector"]/div[3]/select/option/@value')
+                    round_urls = typecode_res_tree.xpath(
+                        '//div[@class="game-center-selector"]/div[3]/select/option/@value')
                     for round_url in round_urls:
                         round_num = re.findall(r'gamenumber=(.*?)&', round_url)[0]
                         round_res = requests.get(start_url + round_url, headers=headers)
@@ -173,7 +173,6 @@ class GetMatchInfo(object):
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
-
 
     def run(self):
         while True:
