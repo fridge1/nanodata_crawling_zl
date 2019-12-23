@@ -1,11 +1,9 @@
-from apps.eur_basketball_spider.tools import *
 from apps.eur_basketball_spider.eur_playbyplay import *
 from orm_connection.eur_basketball import *
 from orm_connection.orm_session import MysqlSvr
 import requests
 import json
 import re
-import threading
 from common.libs.log import LogMgr
 
 logger = LogMgr.get('eur_basketball_team_stat_end')
@@ -109,7 +107,7 @@ def team_stat_run():
         season_id = 2019
         gamecode_urls = get_match_id()
         for gamecode in gamecode_urls:
-            threading.Thread(target=team_stat_end, args=(season_id, gamecode)).start()
+            team_stat_end(season_id, gamecode)
     except:
         logger.error(traceback.format_exc())
         dingding_alter(traceback.format_exc())

@@ -1,7 +1,5 @@
-import requests
 import traceback
 from apps.send_error_msg import dingding_alter
-import json
 from apps.eur_basketball_spider.eur_tools import translate
 import re
 from apps.eur_basketball_spider.tools import *

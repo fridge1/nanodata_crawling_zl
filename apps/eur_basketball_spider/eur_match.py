@@ -5,7 +5,6 @@ import json
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.eur_basketball import *
 import time
-import threading
 import traceback
 from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr

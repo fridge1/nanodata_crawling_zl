@@ -4,7 +4,6 @@ from orm_connection.orm_session import MysqlSvr
 import requests
 import json
 import re
-import threading
 from common.libs.log import LogMgr
 
 logger = LogMgr.get('eur_basketball_player_stat_end')
@@ -131,8 +130,7 @@ class GetPlayerStat(object):
             try:
                 season_id = 2019
                 for gamecode in self.gamecode_urls:
-                    print(gamecode)
-                    threading.Thread(target=self.player_stat_end, args=(season_id, gamecode)).start()
+                    self.player_stat_end(season_id, gamecode)
                 time.sleep(5)
             except:
                 logger.error(traceback.format_exc())

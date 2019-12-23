@@ -2,7 +2,6 @@ import asyncio
 import queue
 import time
 import traceback
-# from spx_msg.schema.comm import match_pb2
 from stan.aio.client import Client as STAN
 import threading
 
