@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="nami_spider" uploadOnCheckin="d1830c55-1a1c-40dc-a79c-e76082cb0faf">
-    <serverData>
-      <paths name="nami_spider">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/root/test" />
-          </mappings>
-        </serverdata>
-      </paths>
-    </serverData>
+  <component name="PublishConfigData" uploadOnCheckin="d1830c55-1a1c-40dc-a79c-e76082cb0faf">
     <option name="myUploadOnCheckinName" value="nami_spider" />
   </component>
 </project>
