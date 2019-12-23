@@ -196,7 +196,7 @@ class GetPlayerTeamCoachInfo(object):
                 season_id = 2019
                 self.get_player_info(season_id)
                 self.get_coach_info(season_id)
-                self.get_team_info(season_id)
+                # self.get_team_info(season_id)
             except:
                 logger.error(traceback.format_exc())
                 dingding_alter(traceback.format_exc())
