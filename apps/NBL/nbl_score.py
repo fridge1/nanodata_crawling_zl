@@ -3,6 +3,11 @@ import aiohttp
 import json
 from apps.NBL.tools import safe_get
 import time
+from common.libs.log import LogMgr
+
+
+# 设置日志
+logger = LogMgr.get('time_test')
 
 
 class GetScores(object):
@@ -11,9 +16,9 @@ class GetScores(object):
         conn = aiohttp.TCPConnector(verify_ssl=False)
         async with ClientSession(connector=conn) as session:
             try:
-                print('请求前。。。',time.localtime())
+                logger.info('请求前。。。',time.localtime())
                 async with session.get(url) as response:
-                    print('请求后。。。',time.localtime())
+                    logger.info('请求后。。。',time.localtime())
                     if response.status == 200:
                         response = await response.text()
                         player_stat = json.loads(response)
