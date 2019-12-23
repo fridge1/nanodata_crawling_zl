@@ -75,6 +75,7 @@ class GetMatchInfo(object):
                         match
                     )
                     logger.info(match)
+                    break
                 else:
                     box_api_dict = json.loads(box_api_res.text)
                     key_list = list(box_api_dict['ByQuarter'][0].keys())[1:]
@@ -111,6 +112,7 @@ class GetMatchInfo(object):
                             match
                         )
                         logger.info(match)
+                        break
                     else:
                         status_id = 1
                         match['sport_id'] = sport_id
@@ -165,9 +167,9 @@ class GetMatchInfo(object):
                         gamecode_urls = round_res_tree.xpath(
                             '//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                         for gamecode in gamecode_urls:
+                            print(gamecode)
                             code = re.findall(r'gamecode=(.*?)&', gamecode)[0]
-                            threading.Thread(target=self.match_end,
-                                             args=(sport_id, season_id, typecode, round_num, season, code)).start()
+                            self.match_end(sport_id, season_id, typecode, round_num, season, code)
         except:
             dingding_alter(traceback.format_exc())
             logger.error(traceback.format_exc())
