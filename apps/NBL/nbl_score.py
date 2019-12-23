@@ -16,9 +16,9 @@ class GetScores(object):
         conn = aiohttp.TCPConnector(verify_ssl=False)
         async with ClientSession(connector=conn) as session:
             try:
-                logger.info('请求前。。。',time.localtime())
+                logger.info('请求前。。。',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
                 async with session.get(url) as response:
-                    logger.info('请求后。。。',time.localtime())
+                    logger.info('请求后。。。',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
                     if response.status == 200:
                         response = await response.text()
                         player_stat = json.loads(response)
