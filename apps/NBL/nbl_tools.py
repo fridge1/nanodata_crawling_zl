@@ -38,7 +38,7 @@ words = {'game end': '比赛结束', 'period end': '赛节结束', 'rebound defe
          'turnover 24sec': '24秒违例', 'missed': '', 'foul': '犯规', '3pt floatingjumpshot': '3分空中漂移投篮','3pt turnaroundjumpshot':'3分转身跳投'}
 
 players_sql = get_nbl_nana_player_name_zh()
-players_update = {'hunter jack madden': '亨特·杰克·马登 ', 'tohi smith milner': '托希·史密斯·米尔纳','Lochlan Hutchison':'洛奇兰·胡奇森','Hunter-Jack Madden':'亨特-杰克·马登','X. Cooks':'泽维尔·库克'}
+players_update = {'hunter jack madden': '亨特·杰克·马登 ', 'tohi smith milner': '托希·史密斯·米尔纳','L.Hutchison':'洛奇兰·胡奇森','H.Madden':'亨特-杰克·马登','X.Cooks':'泽维尔·库克'}
 players = dict(list(players_sql.items()) + list(players_update.items()))
 
 
