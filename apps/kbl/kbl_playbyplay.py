@@ -35,7 +35,7 @@ class PbpBoxLive(object):
             home_team_code = res['home_team']
             player_list = []
             team_list = []
-            if 'end' not in res['live_text']['quarter']:
+            if res['live_text']['quarter'] == 'end':
                 logger.info('未开赛......%s' % game_id)
                 match_data_boxscore = {'match': {'id': int(match_id),
                                                  'basketball_items': {

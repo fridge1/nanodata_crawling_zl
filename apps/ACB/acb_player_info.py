@@ -22,21 +22,20 @@ def team_upsert(team_url):
     venue_info = {}
     team_res = requests.get('http://www.acb.com' + team_url, headers=headers)
     team_tree = tree_parse(team_res)
-    venue_url = 'http://www.acb.com' + team_tree.xpath('//ul[@class="roboto_bold"]/li[4]/a/@href')[0]
-    venue_info['id'] = venue_url.split('/')[-1]
-    venue_info['sport_id'] = 2
-    venue_res = requests.get(venue_url,headers=headers)
-    venue_tree = tree_parse(venue_res)
-    venue_info['name_en'] = venue_tree.xpath('//div[@class="tagtitularsolido roboto_bold mayusculas"]/text()')[0]
-    venue_info['city'] = venue_tree.xpath('//section[@class="datos_pabellon"]/div[@class="contenedora_informacion f-l-a-100"]//div[@class="datos"]/text()')[0]
-    capacity1 = venue_tree.xpath('//section[@class="datos_pabellon"]/div[@class="contenedora_informacion f-l-a-100"]//div[@class="datos"]/text()')[1]
-    venue_info['capacity'] = re.findall(r'\d+',capacity1.replace('.',''))[0]
-    BleagueAcbBasketballVenue.upsert(
-            session,
-            'id',
-            venue_info
-        )
-    print(venue_info)
+    # venue_url = 'http://www.acb.com' + team_tree.xpath('//ul[@class="roboto_bold"]/li[4]/a/@href')[0]
+    # venue_info['id'] = venue_url.split('/')[-1]
+    # venue_info['sport_id'] = 2
+    # venue_res = requests.get(venue_url,headers=headers)
+    # venue_tree = tree_parse(venue_res)
+    # venue_info['name_en'] = venue_tree.xpath('//div[@class="tagtitularsolido roboto_bold mayusculas"]/text()')[0]
+    # venue_info['city'] = venue_tree.xpath('//section[@class="datos_pabellon"]/div[@class="contenedora_informacion f-l-a-100"]//div[@class="datos"]/text()')[0]
+    # capacity1 = venue_tree.xpath('//section[@class="datos_pabellon"]/div[@class="contenedora_informacion f-l-a-100"]//div[@class="datos"]/text()')[1]
+    # venue_info['capacity'] = re.findall(r'\d+',capacity1.replace('.',''))[0]
+    # BleagueAcbBasketballVenue.upsert(
+    #         session,
+    #         'id',
+    #         venue_info
+    #     )
     # player_url_list = team_tree.xpath('//div[@class="grid_plantilla principal"]/article/div[@class="foto"]/a/@href')
     # for player_url in player_url_list:
     #     player_info['id'] = player_url.split('/')[-1].split('-')[0]
@@ -65,7 +64,7 @@ def team_upsert(team_url):
     #         'id',
     #         player_info
     #     )
-    #     print(player_info)
+    coach_url = team_tree.xpath('')
 
 
 def get_team_info():
