@@ -35,7 +35,7 @@ class GetMatchObj():
         season_id = season_id_dict[season]
         stage_id = season_id
         sport_id = 2
-        if 'end' not in url_api_res['live_text']['quarter']:
+        if url_api_res['line_up']['status'] == 0:
             home_team_id = url_api_res['home_team']
             away_team_id = url_api_res['away_team']
             status = 1
@@ -45,7 +45,7 @@ class GetMatchObj():
             away_half_score = 0
             home_scores = 0
             away_scores = 0
-        else:
+        elif url_api_res['live_text']['quarter'] == 'end':
             home_team_id = url_api_res['home_team']
             away_team_id = url_api_res['away_team']
             status = 10
@@ -63,6 +63,16 @@ class GetMatchObj():
                 away_scores.append(url_api_res['quarter_score'][away_team_id][key])
             home_scores = str(list(map(int, home_scores)))
             away_scores = str(list(map(int, away_scores)))
+        else:
+            home_team_id = url_api_res['home_team']
+            away_team_id = url_api_res['away_team']
+            status = 1
+            home_score = 0
+            away_score = 0
+            home_half_score = 0
+            away_half_score = 0
+            home_scores = 0
+            away_scores = 0
         data = {
             'key': key1,
             'sport_id': int(sport_id),

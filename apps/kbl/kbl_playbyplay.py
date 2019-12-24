@@ -35,7 +35,7 @@ class PbpBoxLive(object):
             home_team_code = res['home_team']
             player_list = []
             team_list = []
-            if res['live_text']['quarter'] == 'end':
+            if res['line_up']['status'] == 0:
                 logger.info('未开赛......%s' % game_id)
                 match_data_boxscore = {'match': {'id': int(match_id),
                                                  'basketball_items': {
@@ -230,7 +230,7 @@ class PbpBoxLive(object):
             res = requests.get(url, headers=self.headers).json()
             away_team_code = res['away_team']
             home_team_code = res['home_team']
-            if res['live_text']['quarter'] == 'end':
+            if res['line_up']['status'] == 0:
                 logger.info('未开赛......%s' % game_id)
             else:
                 first_id_list = []
