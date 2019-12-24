@@ -230,7 +230,7 @@ class PbpBoxLive(object):
             res = requests.get(url, headers=self.headers).json()
             away_team_code = res['away_team']
             home_team_code = res['home_team']
-            if 'end' not in res['line_up']['quarter']:
+            if 'end' not in res['live_text']['quarter']:
                 logger.info('未开赛......%s' % game_id)
             else:
                 first_id_list = []
