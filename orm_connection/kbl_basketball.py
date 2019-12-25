@@ -54,7 +54,7 @@ class BleagueNblBasketballTeam(BaseModel):
 
 
 # 球员表  -----2019所有b1b2的球队的现役球员已存
-class BleagueNblBasketballPlayer(BaseModel):
+class BleagueKblBasketballPlayer(BaseModel):
     __tablename__ = prefix + 'player'
 
     # id和外部表id

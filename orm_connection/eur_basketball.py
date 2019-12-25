@@ -9,7 +9,7 @@ prefix = 'eur_league_basketball_'
 
 
 # 球员表  -----2019所有b1b2的球队的现役球员已存
-class BleaguejpBasketballPlayer(BaseModel):
+class BleagueEurBasketballPlayer(BaseModel):
     __tablename__ = prefix + 'player'
 
     # id和外部表id

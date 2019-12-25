@@ -36,35 +36,34 @@ def team_upsert(team_url):
     #         'id',
     #         venue_info
     #     )
-    # player_url_list = team_tree.xpath('//div[@class="grid_plantilla principal"]/article/div[@class="foto"]/a/@href')
-    # for player_url in player_url_list:
-    #     player_info['id'] = player_url.split('/')[-1].split('-')[0]
-    #     player_res = requests.get('http://www.acb.com/jugador/temporada-a-temporada/id/%s' % player_info['id'], headers=headers)
-    #     print('http://www.acb.com/jugador/temporada-a-temporada/id/%s' % player_info['id'])
-    #     player_tree = tree_parse(player_res)
-    #     player_info['name_en'] = player_tree.xpath('//div[@class="datos_secundarios roboto_condensed"]/span/text()')[0]
-    #     player_info['short_name_en'] = \
-    #     player_tree.xpath('//div[@class="f-l-a-100 contenedora_datos_basicos"]/h1/text()')[0]
-    #     player_info['logo'] = 'http:' + player_tree.xpath('//div[@class="foto"]/img/@src')[0]
-    #     player_info['shirt_number'] = \
-    #     player_tree.xpath('//div[@class="datos_basicos dorsal roboto_condensed"]/span/text()')[0]
-    #     position = player_tree.xpath('//div[@class="datos_basicos posicion roboto_condensed"]/span/text()')[0]
-    #     player_info['position'] = position_dict[position]
-    #     height = player_tree.xpath('//div[@class="datos_basicos altura roboto_condensed"]/span/text()')[0]
-    #     player_info['height'] = float(height.replace(',','.').replace('m','').strip()) * 100
-    #     player_info['city'] = player_tree.xpath('//div[@class="datos_secundarios lugar_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
-    #     born_time = player_tree.xpath('//div[@class="datos_secundarios fecha_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
-    #     born = born_time.split(' ')[0]
-    #     player_info['birthday'],player_info['age'] = change_match_bjtime(born)
-    #     player_info['nationality'] = player_tree.xpath('//div[@class="datos_secundarios nacionalidad roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
-    #     player_info['team_id'] = int(team_url.split('/')[-1])
-    #     player_info['sport_id'] = 2
-    #     BleagueAcbBasketballPlayer.upsert(
-    #         session,
-    #         'id',
-    #         player_info
-    #     )
-    coach_url = team_tree.xpath('')
+    player_url_list = team_tree.xpath('//div[@class="grid_plantilla principal"]/article/div[@class="foto"]/a/@href')
+    for player_url in player_url_list:
+        player_info['id'] = player_url.split('/')[-1].split('-')[0]
+        player_res = requests.get('http://www.acb.com/jugador/temporada-a-temporada/id/%s' % player_info['id'], headers=headers)
+        print('http://www.acb.com/jugador/temporada-a-temporada/id/%s' % player_info['id'])
+        player_tree = tree_parse(player_res)
+        player_info['name_en'] = player_tree.xpath('//div[@class="datos_secundarios roboto_condensed"]/span/text()')[0]
+        player_info['short_name_en'] = \
+        player_tree.xpath('//div[@class="f-l-a-100 contenedora_datos_basicos"]/h1/text()')[0]
+        player_info['logo'] = 'http:' + player_tree.xpath('//div[@class="foto"]/img/@src')[0]
+        player_info['shirt_number'] = \
+        player_tree.xpath('//div[@class="datos_basicos dorsal roboto_condensed"]/span/text()')[0]
+        position = player_tree.xpath('//div[@class="datos_basicos posicion roboto_condensed"]/span/text()')[0]
+        player_info['position'] = position_dict[position]
+        height = player_tree.xpath('//div[@class="datos_basicos altura roboto_condensed"]/span/text()')[0]
+        player_info['height'] = float(height.replace(',','.').replace('m','').strip()) * 100
+        player_info['city'] = player_tree.xpath('//div[@class="datos_secundarios lugar_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
+        born_time = player_tree.xpath('//div[@class="datos_secundarios fecha_nacimiento roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
+        born = born_time.split(' ')[0]
+        player_info['birthday'],player_info['age'] = change_match_bjtime(born)
+        player_info['nationality'] = player_tree.xpath('//div[@class="datos_secundarios nacionalidad roboto_condensed"]/span[@class="roboto_condensed_bold"]/text()')[0]
+        player_info['team_id'] = int(team_url.split('/')[-1])
+        player_info['sport_id'] = 2
+        BleagueAcbBasketballPlayer.upsert(
+            session,
+            'id',
+            player_info
+        )
 
 
 def get_team_info():

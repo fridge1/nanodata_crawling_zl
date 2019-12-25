@@ -182,7 +182,7 @@ class GetPlayerTeamCoachInfo(object):
                     'team_id': player['team_id'],
                 }
                 spx_dev_session = MysqlSvr.get('spider_zl')
-                BleaguejpBasketballPlayer.upsert(
+                BleagueEurBasketballPlayer.upsert(
                     spx_dev_session,
                     'key',
                     data

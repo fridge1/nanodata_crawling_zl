@@ -123,8 +123,8 @@ def get_team_name_id(team_name):
 def get_player_name_id(player_name):
     try:
         spx_dev_session = MysqlSvr.get('spider_zl')
-        return spx_dev_session.query(BleagueNblBasketballPlayer).filter(
-            BleagueNblBasketballPlayer.name_en == player_name).all()[0].id
+        return spx_dev_session.query(BleagueKblBasketballPlayer).filter(
+            BleagueKblBasketballPlayer.name_en == player_name).all()[0].id
     except:
         return 0
 
@@ -145,7 +145,7 @@ def get_match_id_end():
 
 def get_player_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    id_list = spx_dev_session.query(BleagueNblBasketballPlayer).all()
+    id_list = spx_dev_session.query(BleagueKblBasketballPlayer).all()
     list1 = []
     for player_info in id_list:
         list1.append(player_info.id)
@@ -161,7 +161,7 @@ def upsert_player_id(id, name_en, team_id, shirt_number, position):
         'shirt_number': int(shirt_number),
         'position': str(position),
     }
-    _, row = BleagueNblBasketballPlayer.upsert(
+    _, row = BleagueKblBasketballPlayer.upsert(
         spx_dev_session,
         'id',
         data

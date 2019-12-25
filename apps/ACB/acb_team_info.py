@@ -25,6 +25,10 @@ def team_upsert(team_url):
     except:
         team_info['name_en'] = ''
     try:
+        team_info['short_name_en'] = team_tree.xpath('//div[@class="datos"]/h1/text()')[0]
+    except:
+        team_info['short_name_en'] = ''
+    try:
         team_info['logo'] = 'http://www.acb.com' + team_tree.xpath('//div[@class="logo borde_club"]/img/@src')[0]
     except:
         team_info['logo'] = ''

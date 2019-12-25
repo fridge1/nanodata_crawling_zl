@@ -133,7 +133,7 @@ class EurLeagueSpider_boxscore(object):
                                     'position': player['position'],
                                 }
                                 spx_dev_session = MysqlSvr.get('spider_zl')
-                                BleaguejpBasketballPlayer.upsert(
+                                BleagueEurBasketballPlayer.upsert(
                                     spx_dev_session,
                                     'key',
                                     data

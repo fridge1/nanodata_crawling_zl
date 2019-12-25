@@ -65,7 +65,7 @@ for team_info_url in team_url_list:
         player['position'] = player_tree.xpath('//span[@class="position"]/text()')[0]
         player['team_id'] = team_id
         spx_dev_session = MysqlSvr.get('spider_zl')
-        BleagueNblBasketballPlayer.upsert(
+        BleagueKblBasketballPlayer.upsert(
             spx_dev_session,
             'id',
             player

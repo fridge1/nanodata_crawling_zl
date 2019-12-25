@@ -127,7 +127,7 @@ class EurLeagueSpider_playbyplay(object):
                                                 'position': player['position'],
                                             }
                                             spx_dev_session = MysqlSvr.get('spider_zl')
-                                            _, row = BleaguejpBasketballPlayer.upsert(
+                                            _, row = BleagueEurBasketballPlayer.upsert(
                                                 spx_dev_session,
                                                 'key',
                                                 data

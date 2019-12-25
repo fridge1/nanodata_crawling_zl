@@ -1,8 +1,8 @@
 import json
 import threading
 import traceback
-from apps.NBL.nbl_tools import translate
-from apps.NBL.tools import *
+from apps.ACB.abc_translate import translate
+from apps.ACB.tools import *
 from apps.send_error_msg import dingding_alter
 from common.libs.log import LogMgr
 from orm_connection.orm_session import MysqlSvr
@@ -13,8 +13,8 @@ logger = LogMgr.get('acb_basketball_pbp_box_live')
 
 class pbp_box(object):
     def __init__(self):
-        self.team_id_get = {'RETABET BILBAO BASKET':1,'SAN PABLO BURGOS':2}
-        self.get_match_id_start = get_match_id_start()
+        self.team_id_get = get_team_id()
+        self.session = MysqlSvr.get('spider_zl')
         self.get_player_id = get_player_id()
         self.session = MysqlSvr.get('spider_zl')
 
@@ -45,7 +45,7 @@ class pbp_box(object):
                         try:
                             BkMatchTeamStats = {}
                             BkMatchTeamStats['belong'] = int(key)
-                            BkMatchTeamStats['team_id'] = self.team_id_get[str(pbp_dict['tm'][key]['name'])]
+                            BkMatchTeamStats['team_id'] = self.team_id_get[str(pbp_dict['tm'][key]['name']).lower().strip()]
                             BkMatchTeamStats['team_name'] = safe_get(pbp_dict,'tm.%s.name' % key)
                             BkMatchTeamStats['goals'] = safe_get(pbp_dict,'tm.%s.tot_sFieldGoalsMade' % key)
                             BkMatchTeamStats['field'] = safe_get(pbp_dict,'tm.%s.tot_sFieldGoalsAttempted' % key)
@@ -71,8 +71,20 @@ class pbp_box(object):
                                 player['belong'] = int(key)
                                 player_name = pbp_dict['tm'][key]['pl'][player_key]['internationalFirstName'] + ' ' + \
                                               pbp_dict['tm'][key]['pl'][player_key]['internationalFamilyName']
-                                player['player_id'] = int(self.get_player_id[player_name])
                                 player['player_name'] = player_name
+                                if player_name.lower() in self.get_player_id.keys():
+                                    player['player_id'] = int(self.get_player_id[player_name.lower()])
+                                else:
+                                    player_upsert = {}
+                                    player_upsert['name_en'] = player_name
+                                    try:
+                                        player_upsert['logo'] = pbp_dict['tm'][key]['pl'][player_key]['photoS']
+                                    except:
+                                        player_upsert['logo'] = ''
+                                    player_upsert['shirt_number'] = pbp_dict['tm'][key]['pl'][player_key]['shirtNumber']
+                                    player_upsert['position'] = pbp_dict['tm'][key]['pl'][player_key]['playingPosition']
+                                    player_upsert['short_name_en'] = pbp_dict['tm'][key]['pl'][player_key]['name']
+                                    player['player_id'] = get_player_id_upsert(player_upsert)
                                 try:
                                     minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
                                     minute = minutes.split(':')[0]
@@ -236,7 +248,6 @@ class pbp_box(object):
                                                              'items': player_stats_list},
                                                          'team_stat': {'items': team_stats_list}
                                                      }}}
-                    print(json.dumps(match_data_boxscore))
                     data_queue.put(match_data_boxscore)
                     logger.info('球员技术统计推送完成... %s' % str(match_id))
                     match_data_playbyplay = {'match': {'id': int(match_id),
@@ -250,6 +261,7 @@ class pbp_box(object):
                     logger.info('球员技术文字直播推送完成... %s' % str(match_id))
                     try:
                         if playbyplay_list[-1]['text'] == '比赛结束':
+                            logger.info('比赛结束')
                             break
                         else:
                             time.sleep(5)

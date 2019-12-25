@@ -1240,7 +1240,7 @@ def get_player_id_upsert(player_key):
     player_data = {
         'key': player_key,
     }
-    _, row = BleaguejpBasketballPlayer.upsert(
+    _, row = BleagueEurBasketballPlayer.upsert(
         spx_dev_session,
         'key',
         player_data
@@ -1250,7 +1250,7 @@ def get_player_id_upsert(player_key):
 
 def get_eur_nana_player_id():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
+    rows = spx_dev_session.query(BleagueEurBasketballPlayer).all()
     data_dict = {row.key: row.id for row in rows}
     return data_dict
 
@@ -1276,7 +1276,7 @@ def get_player_position_upsert(player_key):
     player_data = {
         'key': player_key,
     }
-    _, row = BleaguejpBasketballPlayer.upsert(
+    _, row = BleagueEurBasketballPlayer.upsert(
         spx_dev_session,
         'key',
         player_data
@@ -1330,7 +1330,7 @@ def get_team_id_name(team_key):
 
 def get_player_id_key():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
+    rows = spx_dev_session.query(BleagueEurBasketballPlayer).all()
     data_dict = {row.key.strip(): row.id for row in rows}
     return data_dict
 
@@ -1346,7 +1346,7 @@ def get_match_id():
 
 def get_player_shirt_number():
     spx_dev_session = MysqlSvr.get('spider_zl')
-    rows = spx_dev_session.query(BleaguejpBasketballPlayer).all()
+    rows = spx_dev_session.query(BleagueEurBasketballPlayer).all()
     data_dict = {row.key.strip(): row.shirt_number for row in rows}
     return data_dict
 
