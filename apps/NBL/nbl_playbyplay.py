@@ -1,7 +1,8 @@
 import json
 import threading
 import traceback
-
+from orm_connection.orm_session import MysqlSvr
+from orm_connection.orm_tableStruct_basketball import BleagueNblBasketballPlayer
 from apps.NBL.nbl_tools import translate
 from apps.NBL.tools import *
 from apps.send_error_msg import dingding_alter
@@ -69,7 +70,10 @@ class pbp_box(object):
                                 player['belong'] = int(key)
                                 player_name = pbp_dict['tm'][key]['pl'][player_key]['internationalFirstName'] + ' ' + \
                                               pbp_dict['tm'][key]['pl'][player_key]['internationalFamilyName']
-                                player['player_id'] = int(self.get_player_id[player_name.lower()])
+                                if player_name.lower() in self.get_player_id.keys():
+                                    player['player_id'] = int(self.get_player_id[player_name.lower()])
+                                else:
+                                    player['player_id'] = 0
                                 player['player_name'] = player_name
                                 try:
                                     minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']

@@ -83,3 +83,8 @@ def get_acb_nana_player_name_zh():
     data_dict = {row.short_name_en: row.name_zh for row in rows}
     return data_dict
 
+def get_player_id_position_update():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueAcbBasketballPlayer).all()
+    data_dict = {row.short_name_en.lower(): (row.id, row.position) for row in rows}
+    return data_dict

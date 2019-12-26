@@ -1,5 +1,7 @@
 import requests
-from apps.ACB.tools import tree_parse, change_bjtime, get_venue_id,get_team_id
+from apps.ACB.tools import tree_parse, change_bjtime, get_venue_id, get_team_id, safe_get
+from orm_connection.orm_session import MysqlSvr
+from orm_connection.acb_basketball import BleagueAcbBasketballMatch
 
 
 class GetMatchInfo(object):
@@ -97,7 +99,7 @@ class GetMatchInfo(object):
                                    '18756': '/partido/estadisticas/id/18756', '18757': '/partido/estadisticas/id/18757',
                                    '18758': '/partido/estadisticas/id/18758', '18759': '/partido/estadisticas/id/18759',
                                    '18760': '/partido/estadisticas/id/18760', '18761': '/partido/estadisticas/id/18761',
-                                   '18762': 'http://www.acb.com/partido/estadisticas/id/18762', '18763': '/partido/estadisticas/id/18763',
+                                   '18762': '/partido/estadisticas/id/18762', '18763': '/partido/estadisticas/id/18763',
                                    '18764': '/partido/previa/id/18764', '18765': '/partido/previa/id/18765',
                                    '18766': '/partido/previa/id/18766', '18767': '/partido/previa/id/18767',
                                    '18768': '/partido/previa/id/18768', '18769': '/partido/previa/id/18769',
@@ -190,20 +192,33 @@ class GetMatchInfo(object):
                                    '18942': '/partido/previa/id/18942', '18943': '/partido/previa/id/18943'}
         self.get_venue_id = get_venue_id()
         self.get_team_id = get_team_id()
+        self.session = MysqlSvr.get('spider_zl')
 
     def get_match_info(self):
         match_api_id_list = []
+        match_api_id_team_dict = {}
         headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
         }
         match_url = 'http://jv.acb.com/historico.php?jornada=%s'
         for jornada in range(1, 26):
             match_res = requests.get(match_url % jornada, headers=headers)
+            print(match_url % jornada)
             match_tree = tree_parse(match_res)
-            match_api_ids = match_tree.xpath('//div[@class="partidos"]/div/@id')
+            match_api_ids = match_tree.xpath('//div[@class="partidos"]/div')
             for match_api_id in match_api_ids:
-                id = match_api_id.split('-')[-1]
+                par_id = match_api_id.xpath('./@id')[0]
+                id = par_id.split('-')[-1]
                 if id:
+                    home_name = match_api_id.xpath(
+                        './div[@class="fila_superior borde_azul_inferior"]/div[@class="nombre_equipo borde_azul_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()|./div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo borde_gris_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()')[
+                        0]
+                    away_name = match_api_id.xpath(
+                        './div[@class="fila_superior borde_azul_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()|./div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()')[
+                        0]
+                    home_team_id = self.get_team_id[home_name.lower().strip()]
+                    away_team_id = self.get_team_id[away_name.lower().strip()]
+                    match_api_id_team_dict[id] = (home_team_id, away_team_id)
                     match_api_id_list.append(id)
         match_api_id_list.sort()
         for index in range(len(match_api_id_list)):
@@ -216,19 +231,67 @@ class GetMatchInfo(object):
             time = time_info[0].xpath('string(.)').split('-')[1]
             match_info_dict['match_time'] = change_bjtime(date.strip() + ' ' + time.strip())
             match_info_dict['id'] = match_api_id_list[index]
+            match_info_dict['sport_id'] = 2
             venue_city = time_info[0].xpath('string(.)').split('-')[-1].strip()
             match_info_dict['venue_id'] = self.get_venue_id[venue_city]
             match_info_url = 'https://www.fibalivestats.com/data/%s/data.json' % match_api_id_list[index]
             match_res = requests.get(match_info_url, headers=headers)
+            print(match_info_url)
             if match_res.status_code == 200:
                 match_info = match_res.json()
+                match_info_dict['status_id'] = 10
                 home_name = match_info['tm']['1']['name']
                 away_name = match_info['tm']['2']['name']
                 match_info_dict['home_team_id'] = self.get_team_id[home_name.lower().strip()]
                 match_info_dict['away_team_id'] = self.get_team_id[away_name.lower().strip()]
-                print(match_info_dict['home_team_id'],match_info_dict['away_team_id'])
+                match_info_dict['home_score'] = safe_get(match_info, 'tm.1.tot_sPoints')
+                match_info_dict['away_score'] = safe_get(match_info, 'tm.2.tot_sPoints')
+                match_info_dict['home_half_score'] = safe_get(match_info, 'tm.1.p1_score') + safe_get(match_info,
+                                                                                                      'tm.1.p2_score')
+                match_info_dict['away_half_score'] = safe_get(match_info, 'tm.2.p1_score') + safe_get(match_info,
+                                                                                                      'tm.2.p2_score')
+                home_p1_score = safe_get(match_info, 'tm.1.p1_score')
+                home_p2_score = safe_get(match_info, 'tm.1.p2_score')
+                home_p3_score = safe_get(match_info, 'tm.1.p3_score')
+                home_p4_score = safe_get(match_info, 'tm.1.p4_score')
+                if match_info_dict['home_score'] != home_p1_score + home_p2_score + home_p3_score + home_p4_score:
+                    home_p5_score = safe_get(match_info, 'tm.1.ot_score')
+                    match_info_dict['home_scores'] = str([home_p1_score, home_p2_score, home_p3_score, home_p4_score,
+                                                      home_p5_score,
+                                                      match_info_dict['home_score']])
+                else:
+                    match_info_dict['home_scores'] = str([home_p1_score, home_p2_score, home_p3_score, home_p4_score,
+                                                      match_info_dict['home_score']])
+                away_p1_score = safe_get(match_info, 'tm.2.p1_score')
+                away_p2_score = safe_get(match_info, 'tm.2.p2_score')
+                away_p3_score = safe_get(match_info, 'tm.2.p3_score')
+                away_p4_score = safe_get(match_info, 'tm.2.p4_score')
+                if match_info_dict['away_score'] != away_p1_score + away_p2_score + away_p3_score + away_p4_score:
+                    away_p5_score = safe_get(match_info, 'tm.2.ot_score')
+                    match_info_dict['away_scores'] = str([away_p1_score, away_p2_score, away_p3_score, away_p4_score,
+                                                      away_p5_score,
+                                                      match_info_dict['away_score']])
+                else:
+                    match_info_dict['away_scores'] = str([away_p1_score, away_p2_score, away_p3_score, away_p4_score,
+                                                      match_info_dict['away_score']])
+                print(match_info_dict)
             else:
-                pass
+                match_info_dict['home_team_id'] = match_api_id_team_dict[match_api_id_list[index]][0]
+                match_info_dict['away_team_id'] = match_api_id_team_dict[match_api_id_list[index]][1]
+                match_info_dict['home_score'] = 0
+                match_info_dict['away_score'] = 0
+                match_info_dict['home_scores'] = 0
+                match_info_dict['away_scores'] = 0
+                match_info_dict['home_half_score'] = 0
+                match_info_dict['away_half_score'] = 0
+                match_info_dict['status_id'] = 1
+                print(match_info_dict)
+            BleagueAcbBasketballMatch.upsert(
+                self.session,
+                'id',
+                match_info_dict
+            )
+
 
 if __name__ == '__main__':
     GetMatchInfo().get_match_info()
