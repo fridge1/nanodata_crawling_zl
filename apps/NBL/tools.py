@@ -143,3 +143,13 @@ def safe_get(obj, key, default=0):
             return _get(_obj.get(_keys[0]), _keys[1:])
 
     return _get(obj, keys)
+
+
+def get_player_id_upsert(player_upsert):
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    _, row = BleagueNblBasketballPlayer.upsert(
+        spx_dev_session,
+        'name_en',
+        player_upsert
+    )
+    return row.id

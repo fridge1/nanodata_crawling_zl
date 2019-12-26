@@ -73,7 +73,16 @@ class pbp_box(object):
                                 if player_name.lower() in self.get_player_id.keys():
                                     player['player_id'] = int(self.get_player_id[player_name.lower()])
                                 else:
-                                    player['player_id'] = 0
+                                    player_upsert = {}
+                                    player_upsert['name_en'] = player_name
+                                    try:
+                                        player_upsert['logo'] = pbp_dict['tm'][key]['pl'][player_key]['photoS']
+                                    except:
+                                        player_upsert['logo'] = ''
+                                    player_upsert['shirt_number'] = pbp_dict['tm'][key]['pl'][player_key]['shirtNumber']
+                                    player_upsert['position'] = pbp_dict['tm'][key]['pl'][player_key]['playingPosition']
+                                    player_upsert['short_name_en'] = pbp_dict['tm'][key]['pl'][player_key]['name']
+                                    player['player_id'] = get_player_id_upsert(player_upsert)
                                 player['player_name'] = player_name
                                 try:
                                     minutes = pbp_dict['tm'][key]['pl'][player_key]['sMinutes']
