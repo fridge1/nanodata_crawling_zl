@@ -120,7 +120,7 @@ class BleagueAcbBasketballManager(BaseModel):
     nationality = Column(String(50), nullable=False, server_default='', default='', comment='国籍')
     trainer_licence = Column(String(50), nullable=False, server_default='', default='', comment='教练执照')
     preferred_formation = Column(String(50), nullable=False, server_default='', default='', comment='习惯的阵型')
-    assistant = Column(String(255), nullable=False, server_default='', default='', comment='助教')
+    type = Column(Integer, nullable=False, server_default='0', default='', comment='是否为主教')
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
