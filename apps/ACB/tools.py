@@ -3,7 +3,7 @@ from lxml import etree
 import datetime, time
 from datetime import date
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.acb_basketball import BleagueAcbBasketballPlayer,BleagueAcbBasketballVenue,BleagueAcbBasketballTeam
+from orm_connection.acb_basketball import BleagueAcbBasketballPlayer,BleagueAcbBasketballVenue,BleagueAcbBasketballTeam,BleagueAcbBasketballMatch
 
 
 def tree_parse(res):
@@ -87,4 +87,15 @@ def get_player_id_position_update():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueAcbBasketballPlayer).all()
     data_dict = {row.short_name_en.lower(): (row.id, row.position) for row in rows}
+    return data_dict
+
+
+def get_match_id_start():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    b = time.strftime("%Y-%m-%d 23:59:59", time.localtime())
+    bj_time2 = datetime.datetime.strptime(b, '%Y-%m-%d %H:%M:%S')
+    timeStamp1 = int(time.mktime(bj_time2.timetuple()))
+    rows = spx_dev_session.query(BleagueAcbBasketballMatch).filter(BleagueAcbBasketballMatch.status_id == 1,
+                                                                   BleagueAcbBasketballMatch.match_time <= timeStamp1).all()
+    data_dict = {row.key: row.id for row in rows}
     return data_dict

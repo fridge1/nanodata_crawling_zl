@@ -17,6 +17,7 @@ class pbp_box(object):
         self.session = MysqlSvr.get('spider_zl')
         self.get_player_id = get_player_id()
         self.session = MysqlSvr.get('spider_zl')
+        self.get_match_id_start = get_match_id_start()
 
     def pbp_box_live(self, data_queue, match_id):
         while True:
@@ -276,8 +277,7 @@ class pbp_box(object):
 
     def get_match_id(self, data_queue):
         try:
-            # for key, value in self.get_match_id_start.items():
-            for value in [1466206]:
+            for key, value in self.get_match_id_start.items():
                 threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
         except:
             dingding_alter(traceback.format_exc())

@@ -304,10 +304,13 @@ class EurLeagueSpider_playbyplay(object):
                                                        }}}
                     data_queue.put(match_data_playbyplay)
                     logger.info('文字直播推送完成。。。 %s' % str(gamecode))
-                    if playbyplay_list[-1]['text'] == '比赛结束':
-                        break
+                    if playbyplay_list:
+                        if playbyplay_list[-1]['text'] == '比赛结束':
+                            break
+                        else:
+                            logger.info('继续获取比赛数据。。。')
                     else:
-                        logger.info('继续获取比赛数据。。。')
+                        logger.info('继续获取比赛数据playbyplay_list')
             except:
                 dingding_alter(traceback.format_exc())
                 logger.error(traceback.format_exc())

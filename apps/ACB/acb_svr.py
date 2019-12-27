@@ -5,7 +5,6 @@ import traceback
 import threading
 
 from stan.aio.client import Client as STAN
-import os
 from apps.ACB.acb_playbyplay import pbp_box
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb

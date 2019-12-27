@@ -73,7 +73,6 @@ class KblBasketballFeedSvr(object):
 
     async def pub_time_data(self, topic, match_data):
         self.cnt += 1
-        # print('aaaa')
         data_pb = dict2pb(match_pb2.FibaMatchRes, match_data)
         res = {
             'code': match_pb2.SID_FIBAMATCH_RES,
