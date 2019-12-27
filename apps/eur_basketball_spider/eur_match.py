@@ -85,10 +85,16 @@ class GetMatchInfo(object):
                         away_scores.append(box_api_dict['ByQuarter'][1][key])
                     home_half_score = box_api_dict['EndOfQuarter'][0]['Quarter2']
                     away_half_score = box_api_dict['EndOfQuarter'][1]['Quarter2']
-                    home_score = box_api_dict['EndOfQuarter'][0][key_list[-1]]
-                    away_score = box_api_dict['EndOfQuarter'][1][key_list[-1]]
+                    home_score = box_api_dict['Stats'][0]['totr']['Points']
+                    away_score = box_api_dict['Stats'][1]['totr']['Points']
                     if box_api_dict['Live'] == False:
                         status_id = 10
+                        if int(home_score) != sum(home_scores):
+                            ot_score = int(home_score) - sum(home_scores)
+                            home_scores.append(ot_score)
+                        if int(away_score) != sum(away_scores):
+                            ot_score = int(away_score) - sum(away_scores)
+                            away_scores.append(ot_score)
                         match['sport_id'] = sport_id
                         match['season_id'] = season_id
                         match['home_team_id'] = home_team_id
@@ -166,7 +172,6 @@ class GetMatchInfo(object):
                         gamecode_urls = round_res_tree.xpath(
                             '//div[@class="game played"]/a/@href|//div[@class="game "]/a/@href')
                         for gamecode in gamecode_urls:
-                            print(gamecode)
                             code = re.findall(r'gamecode=(.*?)&', gamecode)[0]
                             self.match_end(sport_id, season_id, typecode, round_num, season, code)
         except:
