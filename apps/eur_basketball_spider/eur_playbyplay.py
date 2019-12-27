@@ -164,7 +164,7 @@ class EurLeagueSpider_playbyplay(object):
                                     belong = 2
                                 else:
                                     belong = 0
-                                if playbyplay_info['PLAYTYPE'] in list(localtion_info_dict.keys()):
+                                try:
                                     if '2FGM' in playbyplay_info['PLAYTYPE']:
                                         coordinate = localtion_info_dict[playbyplay_info['NUMBEROFPLAY']]
                                         if coordinate[2] in away_team:
@@ -266,7 +266,7 @@ class EurLeagueSpider_playbyplay(object):
                                         score_value = 0
                                         local_x = -1
                                         local_y = -1
-                                else:
+                                except:
                                     shooting_play = 0
                                     scoring_play = 0
                                     score_value = 0
