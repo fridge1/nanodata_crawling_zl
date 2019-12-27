@@ -250,6 +250,7 @@ class pbp_box(object):
                                                          'team_stat': {'items': team_stats_list}
                                                      }}}
                     data_queue.put(match_data_boxscore)
+                    print(json.dumps(match_data_boxscore))
                     logger.info('球员技术统计推送完成... %s' % str(match_id))
                     match_data_playbyplay = {'match': {'id': int(match_id),
                                                        'basketball_items': {
@@ -257,7 +258,6 @@ class pbp_box(object):
                                                                'period': period_total,
                                                                'items': playbyplay_list}
                                                        }}}
-                    print(json.dumps(match_data_playbyplay))
                     data_queue.put(match_data_playbyplay)
                     logger.info('球员技术文字直播推送完成... %s' % str(match_id))
                     try:

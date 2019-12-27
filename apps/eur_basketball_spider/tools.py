@@ -1366,6 +1366,3 @@ def safe_get(obj, key, default=0):
 
     return _get(obj, keys)
 
-
-a = [1,2,4,5]
-print(sum(a))
