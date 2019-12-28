@@ -97,5 +97,5 @@ def get_match_id_start():
     timeStamp1 = int(time.mktime(bj_time2.timetuple()))
     rows = spx_dev_session.query(BleagueAcbBasketballMatch).filter(BleagueAcbBasketballMatch.status_id == 1,
                                                                    BleagueAcbBasketballMatch.match_time <= timeStamp1).all()
-    data_dict = {row.key: row.id for row in rows}
+    data_dict = {row.open_id: row.id for row in rows}
     return data_dict
