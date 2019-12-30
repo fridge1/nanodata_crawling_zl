@@ -15,7 +15,7 @@ def start_acb_basketball_client(opts):
 
 
 def acb_basketball_match(opts):
-    GetMatchInfo().get_match_info()
+    GetMatchInfo().run()
 
 
 acb_basketball_actions = {

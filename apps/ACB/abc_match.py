@@ -3,6 +3,9 @@ from apps.ACB.tools import tree_parse, change_bjtime, get_venue_id, get_team_id,
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.acb_basketball import BleagueAcbBasketballMatch
 from common.libs.log import LogMgr
+import time
+import traceback
+from apps.send_error_msg import dingding_alter
 
 logger = LogMgr.get('acb_match')
 
@@ -293,5 +296,15 @@ class GetMatchInfo(object):
                 match_info_dict
             )
             logger.info(match_info_dict)
+
+
+
+    def run(self):
+        try:
+            while True:
+                self.get_match_info()
+                time.sleep(43200)
+        except:
+            dingding_alter(traceback.format_exc())
 
 
