@@ -1,6 +1,7 @@
 import asyncio
 from apps.ACB.acb_client import AcbBasketballFeedClient
 from apps.ACB.acb_svr import AcbBasketballFeedSvr
+from apps.ACB.abc_match import GetMatchInfo
 
 
 
@@ -13,7 +14,8 @@ def start_acb_basketball_client(opts):
     topic = 'acb.bk.live'
     asyncio.run(AcbBasketballFeedClient().start(topic))
 
-
+def acb_basketball_match(opts):
+    GetMatchInfo().get_match_info()
 
 
 

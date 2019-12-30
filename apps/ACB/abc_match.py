@@ -274,7 +274,6 @@ class GetMatchInfo(object):
                 else:
                     match_info_dict['away_scores'] = str([away_p1_score, away_p2_score, away_p3_score, away_p4_score,
                                                       match_info_dict['away_score']])
-                print(match_info_dict)
             else:
                 match_info_dict['home_team_id'] = match_api_id_team_dict[match_api_id_list[index]][0]
                 match_info_dict['away_team_id'] = match_api_id_team_dict[match_api_id_list[index]][1]
@@ -285,7 +284,6 @@ class GetMatchInfo(object):
                 match_info_dict['home_half_score'] = 0
                 match_info_dict['away_half_score'] = 0
                 match_info_dict['status_id'] = 1
-                print(match_info_dict)
             BleagueAcbBasketballMatch.upsert(
                 self.session,
                 'id',
@@ -293,5 +291,4 @@ class GetMatchInfo(object):
             )
 
 
-if __name__ == '__main__':
-    GetMatchInfo().get_match_info()
+
