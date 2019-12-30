@@ -76,6 +76,8 @@ class pbp_box(object):
                                 player['player_name'] = player_name
                                 if player_name.lower() in self.get_player_id.keys():
                                     player['player_id'] = int(self.get_player_id[player_name.lower()])
+                                elif player_name.lower() in self.get_player_id_short.keys():
+                                    player['player_id'] = int(self.get_player_id_short[player_name.lower()])
                                 else:
                                     player_upsert = {}
                                     player_upsert['name_en'] = player_name
@@ -154,8 +156,8 @@ class pbp_box(object):
                                 location_y = (abs(round(actionNumber_shot_dict[actionNumber][1]) - 100) * 0.01 * 70)
                             location_x = (round(actionNumber_shot_dict[actionNumber][0]) * 0.01 * 50) - 1
                         except:
-                            location_x = 0
-                            location_y = 0
+                            location_x = -1
+                            location_y = -1
                         try:
                             player_name = pbp_info['firstName'] + ' ' + pbp_info['familyName']
                         except:
