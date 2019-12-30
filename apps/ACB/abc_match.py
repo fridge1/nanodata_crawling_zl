@@ -2,6 +2,9 @@ import requests
 from apps.ACB.tools import tree_parse, change_bjtime, get_venue_id, get_team_id, safe_get
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.acb_basketball import BleagueAcbBasketballMatch
+from common.libs.log import LogMgr
+
+logger = LogMgr.get('acb_match')
 
 
 class GetMatchInfo(object):
@@ -289,6 +292,6 @@ class GetMatchInfo(object):
                 'id',
                 match_info_dict
             )
-
+            logger.info(match_info_dict)
 
 
