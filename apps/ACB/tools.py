@@ -25,11 +25,18 @@ def change_match_bjtime(time_date):
     return timeStamp, age
 
 
-def get_player_id():
+def get_player_id_short():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueAcbBasketballPlayer).all()
     data_dict = {row.short_name_en.lower(): row.id for row in rows}
     return data_dict
+
+def get_player_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueAcbBasketballPlayer).all()
+    data_dict = {row.name_en.lower(): row.id for row in rows}
+    return data_dict
+
 
 
 def change_bjtime(date):

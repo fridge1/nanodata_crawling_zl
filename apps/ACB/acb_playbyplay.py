@@ -15,6 +15,7 @@ class pbp_box(object):
     def __init__(self):
         self.team_id_get = get_team_id()
         self.session = MysqlSvr.get('spider_zl')
+        self.get_player_id_short = get_player_id_short()
         self.get_player_id = get_player_id()
         self.session = MysqlSvr.get('spider_zl')
         self.get_match_id_start = get_match_id_start()
@@ -159,9 +160,11 @@ class pbp_box(object):
                             player_name = pbp_info['firstName'] + ' ' + pbp_info['familyName']
                         except:
                             player_name = ''
-                        try:
+                        if player_name.lower() in self.get_player_id:
                             player_ids = int(self.get_player_id[player_name.lower()])
-                        except:
+                        elif player_name.lower() in self.get_player_id_short:
+                            player_ids = int(self.get_player_id_short[player_name.lower()])
+                        else:
                             player_ids = 0
                         period_time = pbp_info['gt']
                         if player_name:
@@ -265,7 +268,7 @@ class pbp_box(object):
                             logger.info('比赛结束')
                             break
                         else:
-                            logger.info('休息5s再次请求....')
+                            logger.info('再次获取数据....')
                     except:
                         logger.info('未找到赛节状态。。。')
             except:
@@ -275,7 +278,8 @@ class pbp_box(object):
 
     def get_match_id(self, data_queue):
         try:
-            for key, value in self.get_match_id_start.items():
+            # for key, value in self.get_match_id_start.items():
+            for value in [1474339]:
                 threading.Thread(target=pbp_box().pbp_box_live, args=(data_queue, value)).start()
         except:
             dingding_alter(traceback.format_exc())
