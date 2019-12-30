@@ -1,6 +1,6 @@
 import re
 
-from apps.ACB.tools import get_acb_nana_player_name_zh
+from apps.ACB.tools import get_acb_player_name_en,get_acb_player_name_short
 
 words = {'game end': '比赛结束', 'period end': '赛节结束', 'rebound defensive': '防守篮板', '2pt layup missed': '2分上篮不中',
          'steal ': '抢断',
@@ -37,9 +37,10 @@ words = {'game end': '比赛结束', 'period end': '赛节结束', 'rebound defe
          '2pt stepbackjumpshot': '2分后撤步跳投命中', '3pt fadeaway': '3分后仰跳投', '3pt pullupjumpshot': '3分急停跳投',
          'turnover 24sec': '24秒违例', 'missed': '', 'foul': '犯规', '3pt floatingjumpshot': '3分空中漂移投篮','3pt turnaroundjumpshot':'3分转身跳投'}
 
-players_sql = get_acb_nana_player_name_zh()
+players_sql_name_en = get_acb_player_name_en()
+players_sql_short_name = get_acb_player_name_short()
 players_update = {}
-players = dict(list(players_sql.items()) + list(players_update.items()))
+players = dict(list(players_sql_name_en.items()) + list(players_sql_short_name.items()) + list(players_update.items()))
 
 
 def translate(text):

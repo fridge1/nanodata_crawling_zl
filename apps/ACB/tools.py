@@ -84,10 +84,16 @@ def get_player_id_upsert(player_upsert):
     )
     return row.id
 
-def get_acb_nana_player_name_zh():
+def get_acb_player_name_short():
     spx_dev_session = MysqlSvr.get('spider_zl')
     rows = spx_dev_session.query(BleagueAcbBasketballPlayer).all()
     data_dict = {row.short_name_en: row.name_zh for row in rows}
+    return data_dict
+
+def get_acb_player_name_en():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueAcbBasketballPlayer).all()
+    data_dict = {row.name_en: row.name_zh for row in rows}
     return data_dict
 
 def get_player_id_position_update():
