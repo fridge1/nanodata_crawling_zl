@@ -5,6 +5,7 @@ from google.protobuf.json_format import MessageToDict
 from stan.aio.client import Client as STAN
 from common.utils import NatsSvr
 from pb.nana.biz.sport import match_pb2
+import json
 
 
 def now():

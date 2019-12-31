@@ -1,12 +1,13 @@
 import asyncio
 import queue
 import time
+import threading
 from stan.aio.client import Client as STAN
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
 from pb.nana.biz.sport import match_pb2
-from apps.eur_basketball_spider.eur_send_score import get_score
+from apps.eur_basketball_spider.eur_send_score import GetEurScore
 from apps.eur_basketball_spider.tools import get_match_id_score
 
 def now():
@@ -33,17 +34,13 @@ class EurBasketballScore(object):
 
     async def start_feed(self):
         match_id_list = get_match_id_score()
+        for match_id in match_id_list:
+            threading.Thread(target=GetEurScore().get_score,args=(self.data_queue_svr, match_id)).start()
         while True:
-            coro = [asyncio.create_task(get_score(game_id)) for game_id in match_id_list]
-            data = await asyncio.gather(*coro)
-            for i in data:
-                if i != 0:
-                    logger.info(i)
-                    await self.pub_time_data(self.topic, i)
-                    logger.info('球队分数推送成功...')
-                else:
-                    logger.info('比赛未开赛。。。')
-            time.sleep(1)
+            data = self.data_queue_svr.get()
+            print('get_data+++++++')
+            await self.pub_time_data(self.topic, data)
+            await asyncio.sleep(0.1)
 
     async def pub_time_data(self, topic, match_data):
         data_pb = dict2pb(match_pb2.SportsMatchesRes, match_data).SerializeToString()
