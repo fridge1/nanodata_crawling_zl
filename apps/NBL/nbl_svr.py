@@ -45,7 +45,7 @@ class NblBasketballFeedSvr(object):
             data = self.data_queue_svr.get()
             print('get_data+++++++')
             await self.pub_time_data(self.topic, data)
-            time.sleep(2)
+            time.sleep(1)
 
 
     async def start_feed_rpc(self):

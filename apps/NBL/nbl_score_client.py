@@ -34,4 +34,5 @@ class NblBasketballScoreClient(object):
         match_pb.ParseFromString(msg.data)
         result = MessageToDict(
             match_pb, preserving_proto_field_name=True, including_default_value_fields=True)
-        print(result)
+        if result['site'] == 'nbl':
+            print(result)
