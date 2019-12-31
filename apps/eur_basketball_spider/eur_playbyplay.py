@@ -25,7 +25,7 @@ class EurLeagueSpider_playbyplay(object):
                 localtion_url = 'https://live.euroleague.net/api/Points?gamecode=%s&seasoncode=E2019&disp=' % str(
                     gamecode)
                 localtion_json_res = requests.get(localtion_url, headers=self.headers)
-                url = ' https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
+                url = 'https://live.euroleague.net/api/PlayByPlay?gamecode=%s&seasoncode=E2019&disp=' % str(gamecode)
                 playbyplay_json_res = requests.get(url, headers=self.headers)
                 logger.info(url)
                 if playbyplay_json_res.text == '':
@@ -149,8 +149,6 @@ class EurLeagueSpider_playbyplay(object):
                                     point_B = playbyplay['POINTS_B']
                                 else:
                                     playbyplay['POINTS_B'] = point_B
-                                playbyplay['score_info'] = str(playbyplay['POINTS_A']) + '-' + str(
-                                    playbyplay['POINTS_B'])
                                 if playbyplay_info['PLAYINFO'] and playbyplay_info['PLAYER']:
                                     name_zh = translate_player_name(playbyplay_info['PLAYER'])
                                     playbyplay['words_text'] = playbyplay_info['PLAYINFO']

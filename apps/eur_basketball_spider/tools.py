@@ -1366,3 +1366,12 @@ def safe_get(obj, key, default=0):
 
     return _get(obj, keys)
 
+def get_match_id_score():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    b = time.strftime("%Y-%m-%d 23:59:59", time.localtime())
+    bj_time2 = datetime.datetime.strptime(b, '%Y-%m-%d %H:%M:%S')
+    timeStamp1 = int(time.mktime(bj_time2.timetuple()))
+    rows = spx_dev_session.query(BleaguejpBasketballMatch).filter(BleaguejpBasketballMatch.status_id == 1,
+                                                                   BleaguejpBasketballMatch.match_time <= timeStamp1).all()
+    data_list = [row.id for row in rows]
+    return data_list

@@ -1,51 +1,53 @@
 import asyncio
 import queue
 import time
-import traceback
 from stan.aio.client import Client as STAN
-import threading
-
-from apps.eur_basketball_spider.eur_send_score import match_end
-from common.utils import NatsSvr
-from pb.nana.biz.japan_ball import match_pb2
-from common.libs.pbjson import dict2pb
 from common.libs.log import LogMgr
-
-logger = LogMgr.get('eur_basketball_score_svr')
-
+from common.libs.pbjson import dict2pb
+from common.utils import NatsSvr
+from pb.nana.biz.sport import match_pb2
+from apps.eur_basketball_spider.eur_send_score import get_score
+from apps.eur_basketball_spider.tools import get_match_id_score
 
 def now():
     return int(time.time() * 1000)
 
 
-class BeitaiCbaScroeFeedSvr(object):
+# 设置日志
+logger = LogMgr.get('EurBasketball_score_svr')
+
+
+class EurBasketballScore(object):
     data = dict()
     topic = ''
     cnt = 0
 
     def __init__(self):
+        self.data_queue_svr = queue.Queue()
         self.nc = STAN()
-        self.cln = 1
-        self.data_queue = queue.Queue()
 
     async def start(self, topic):
         self.topic = topic
         self.nc = await NatsSvr.get_stan('hub.nats')
         await self.start_feed()
-        await self.match_data()
-
-    def match_data(self):
-        match_end(self.data_queue)  # 跟新 问题
 
     async def start_feed(self):
-        t = threading.Thread(target=self.match_data, args=())
-        t.setDaemon(True)
-        t.start()
+        match_id_list = get_match_id_score()
         while True:
-            data = self.data_queue.get()
-            await self.pub_match_data(self.topic, data)
+            coro = [asyncio.create_task(get_score(game_id)) for game_id in match_id_list]
+            data = await asyncio.gather(*coro)
+            for i in data:
+                if i != 0:
+                    logger.info(i)
+                    await self.pub_time_data(self.topic, i)
+                    logger.info('球队分数推送成功...')
+                else:
+                    logger.info('比赛未开赛。。。')
+            time.sleep(1)
 
-    async def pub_match_data(self, topic, match):
-        data_pb = dict2pb(match_pb2.SportsMatchesRes, match).SerializeToString()
+    async def pub_time_data(self, topic, match_data):
+        data_pb = dict2pb(match_pb2.SportsMatchesRes, match_data).SerializeToString()
         print(data_pb)
         await self.nc.publish(topic, data_pb)
+
+
