@@ -39,6 +39,7 @@ class KblBasketballFeedSvr(object):
     async def start_feed(self):
         match_id_dict = get_match_id_start()
         first_id_dict = await PbpBoxLive().get_first_id_list(list(match_id_dict.keys()))
+        print(first_id_dict)
         while True:
             match_id_dict = get_match_id_start()
             coro = [asyncio.create_task(PbpBoxLive().kbl_playbyplay(key, values, first_id_dict)) for key, values in
