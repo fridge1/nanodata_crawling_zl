@@ -775,15 +775,6 @@ class BleagueBasketballGameText(BaseModel):
     round_num = Column(Integer, nullable=False, server_default='0', default=0, comment='第几轮')  # 轮次  第几轮
     team_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='当前队伍id') #1代表主队  2代表客队
     match_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='比赛id')  #比赛的id
-    # 字段
-    # name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文名称')
-    # name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
-    # name_zht = Column(String(255), nullable=False, server_default='', default='', comment='繁体名称')
-    # group = Column(Integer, nullable=True, server_default='0', default=0, comment='分组')
-    # conference = Column(String(255), nullable=False, server_default='', default='', comment='分区名称')
-
-    # scope = Column(Integer, default=0, comment='统计范围 1-赛季 2-预选赛 3-小组赛 4-季前赛 5-常规赛 6-淘汰赛(季后赛)')
-    # order = Column(Integer, nullable=True, server_default='0', default=0, comment='排序')
     words_text = Column(String(255), nullable=False, server_default='', default='', comment='文字直播内容')
     time_info = Column(String(255), nullable=False, server_default='', default='', comment='文字直播时间标示')
     score_info = Column(String(255), nullable=False, server_default='', default='', comment='当前比分消息')
