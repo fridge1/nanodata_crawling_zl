@@ -27,12 +27,8 @@ class TennisPlayer(BaseModel):
     weight = Column(Integer, nullable=False, server_default='0', default=0, comment='体重')
     height = Column(Integer, nullable=False, server_default='0', default=0, comment='身高')
     plays = Column(Integer, nullable=False, server_default='0', default=0, comment='擅长手 1左， 2右， 3双')
-    city = Column(String(50), nullable=False, server_default='', default='', comment='出生地')
     city_id = Column(Integer, index=True, nullable=True, comment='出生地id')
     nationality = Column(String(50), nullable=False, server_default='', default='', comment='国籍')
-    position = Column(String(5), nullable=False, server_default='', default='', comment='位置')
-    detailed_positions = Column(String(255), nullable=False, server_default='', default='', comment='详细位置')
-    drafted = Column(Text, nullable=True, default='', comment='选秀信息')
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
