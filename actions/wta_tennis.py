@@ -12,17 +12,11 @@ def wta_tennis_single_rank(opt):
     GetSingleRankInfo().run()
 
 
-def wta_tennis_player_city(opt):
-    GetPlayerInfo().get_city()
 
 
-def wta_tennis_player_info(opt):
-    GetPlayerInfo().get_player_info()
 
 
 wta_tennis_actions = {
     'wta_tennis_double_rank': wta_tennis_double_rank,
     'wta_tennis_single_rank': wta_tennis_single_rank,
-    'wta_tennis_player_city': wta_tennis_player_city,
-    'wta_tennis_player_info': wta_tennis_player_info,
 }
