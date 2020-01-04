@@ -3,6 +3,10 @@ from orm_connection.tennis import TennisPlayerInfoSingleRank,TennisPlayerInfoDou
 import requests
 from lxml import etree
 import unicodedata
+import datetime
+import time
+from datetime import date
+
 
 
 def get_en_name(data):
@@ -13,7 +17,7 @@ def get_single_player_id():
     rows = session.query(TennisPlayerInfoSingleRank).all()
     single_player_id_name = {}
     for row in rows:
-        single_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').split('-')).replace('--','-')
+        single_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-').split('-')).replace('--','-')
     return single_player_id_name
 
 
@@ -22,7 +26,7 @@ def get_double_player_id():
     rows = session.query(TennisPlayerInfoDoubleRank).all()
     double_player_id_name = {}
     for row in rows:
-        double_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').split('-')).replace('--','-')
+        double_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-').split('-')).replace('--','-')
     return double_player_id_name
 
 def tree_parse(res):
@@ -30,3 +34,19 @@ def tree_parse(res):
     html_doc = res.content.decode(enconding[0])
     tree = etree.HTML(html_doc)
     return tree
+
+
+def time_stamp(time_date):
+    if time_date != 'N/A':
+        time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d')
+        timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d')
+        timeArray1 = datetime.datetime.strptime(timeArray, '%Y-%m-%d')
+        bj_time = (timeArray1 + datetime.timedelta()).strftime("%Y-%m-%d")
+        bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d')
+        timeStamp = int(time.mktime(bj_time1.timetuple()))
+        today = date.today()
+        age = today.year - time_format.year - ((today.month, today.day) < (time_format.month, time_format.day))
+        return timeStamp, age
+    else:
+        return 0, 0
+

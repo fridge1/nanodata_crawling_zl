@@ -1,6 +1,6 @@
 import requests
 import json
-from apps.tennis_WTA.tools import get_single_player_id,get_double_player_id,tree_parse
+from apps.tennis_WTA.tools import get_single_player_id,get_double_player_id,tree_parse,time_stamp
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisCity
 import re
@@ -14,6 +14,10 @@ class GetPlayerInfo(object):
         self.session = MysqlSvr.get('spider_zl')
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
+        }
+        self.plays_dict = {
+            'Right-Handed': 2,
+            'Left-Handed': 1,
         }
 
 
@@ -63,7 +67,14 @@ class GetPlayerInfo(object):
             height_cm = ''.join(re.findall('\d+',height_m))
             player_info['height'] = height_cm
             player_info['nationality'] = res_tree.xpath('//div[@class="player-header-info__nationalityCode"]/text()')[0].strip()
-            player_info['nationality'] = res_tree.xpath('//div[@class="player-header-info__nationalityCode"]/text()')[0].strip()
+            player_info['gender'] = 2
+            player_info['name_en'] = 2
+            birthday = res_tree.xpath('//div[@class="player-header-info__detail-stat js-player-header-info__age"]/@data-dob')[0]
+            player_info['birthday'],player_info['age'] = time_stamp(birthday)
+            player_info['birthday'] = time_stamp(birthday)
+
+
+
 
 
 if __name__ == '__main__':
