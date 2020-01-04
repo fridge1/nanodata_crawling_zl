@@ -8,6 +8,23 @@ import time
 from datetime import date
 
 
+def replace_text(text):
+    text_start = text
+    words = [' ','í','á','é','ñ','\'']
+    # word = {
+    #     ' ':'-',
+    #     'í':'-',
+    #     'á':'-',
+    #     'é':'-',
+    #     'ñ':'-',
+    #     '\'':'-',
+    # }
+    text_end = ''
+    for key in words:
+        print(key)
+        text_end = text_start.replace(key,'-')
+        print(text_end)
+    return text_end
 
 def get_en_name(data):
     return str(unicodedata.normalize('NFKD', data).encode('ascii', 'ignore'), encoding='utf-8')
@@ -17,7 +34,9 @@ def get_single_player_id():
     rows = session.query(TennisPlayerInfoSingleRank).all()
     single_player_id_name = {}
     for row in rows:
-        single_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-').split('-')).replace('--','-')
+
+        single_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-')
+                                                        .replace('ñ','-').split('-')).replace('--','-')
     return single_player_id_name
 
 
@@ -26,7 +45,8 @@ def get_double_player_id():
     rows = session.query(TennisPlayerInfoDoubleRank).all()
     double_player_id_name = {}
     for row in rows:
-        double_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-').split('-')).replace('--','-')
+        double_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-')
+                                                        .replace('ñ','-').split('-')).replace('--','-')
     return double_player_id_name
 
 def tree_parse(res):
@@ -50,3 +70,5 @@ def time_stamp(time_date):
     else:
         return 0, 0
 
+a = 'garbiñe-muguruza'
+print(replace_text(a))

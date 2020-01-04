@@ -68,7 +68,8 @@ class GetPlayerInfo(object):
             player_info['height'] = height_cm
             player_info['nationality'] = res_tree.xpath('//div[@class="player-header-info__nationalityCode"]/text()')[0].strip()
             player_info['gender'] = 2
-            player_info['name_en'] = 2
+            name_en = res_tree.xpath('//h1[@class="player-header-info__name"]')
+            player_info['name_en'] = name_en[0].xpath('string(.)')
             birthday = res_tree.xpath('//div[@class="player-header-info__detail-stat js-player-header-info__age"]/@data-dob')[0]
             player_info['birthday'],player_info['age'] = time_stamp(birthday)
             player_info['birthday'] = time_stamp(birthday)
