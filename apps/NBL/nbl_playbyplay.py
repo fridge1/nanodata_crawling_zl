@@ -262,7 +262,7 @@ class pbp_box(object):
                             break
                         else:
                             time.sleep(3)
-                            logger.info('休息5s再次请求....')
+                            logger.info('休息3s再次请求....')
                     except:
                         time.sleep(3)
                         logger.info('未找到赛节状态。。。')
