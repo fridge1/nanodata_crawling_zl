@@ -64,8 +64,12 @@ class GetPlayerInfo(object):
             player_info['id'] = key
             player_info['sport_id'] = 3
             height_m = res_tree.xpath('//div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()
-            height_cm = int(''.join(re.findall('\d+',height_m)))
-            player_info['height'] = height_cm
+            height_m = re.findall('\d+',height_m)
+            if height_m:
+                height_cm = ''.join(height_m)
+            else:
+                height_cm = 0
+            player_info['height'] = int(height_cm)
             player_info['nationality'] = res_tree.xpath('//div[@class="player-header-info__nationalityCode"]/text()')[0].strip()
             player_info['gender'] = 2
             name_en = res_tree.xpath('//h1[@class="player-header-info__name"]')
