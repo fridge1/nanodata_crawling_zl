@@ -95,11 +95,11 @@ class GetPlayerInfo(object):
             else:
                 player_info['city_id'] = 0
             print(player_info)
-            # TennisPlayer.upsert(
-            #     self.session,
-            #     'id',
-            #     player_info
-            # )
+            TennisPlayer.upsert(
+                self.session,
+                'id',
+                player_info
+            )
 
 
 

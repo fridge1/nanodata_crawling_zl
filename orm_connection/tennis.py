@@ -17,7 +17,6 @@ class TennisPlayer(BaseModel):
     manager_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='教练id')
     name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文名称')
     name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
-    name_j = Column(String(255), nullable=False, server_default='', default='', comment='日文名称')
     short_name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文简称')
     short_name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文简称')
     short_name_zht = Column(String(255), nullable=False, server_default='', default='', comment='繁体简称')
