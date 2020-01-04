@@ -87,7 +87,11 @@ class GetPlayerInfo(object):
                 birthday = 'N/A'
             player_info['birthday'],player_info['age'] = time_stamp(birthday)
             player_info['plays'] = self.plays_dict[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__handed"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
-            player_info['city_id'] = self.city_id[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__birthplace"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
+            city_name = res_tree.xpath('//div[@class="player-header-info__detail player-header-info__birthplace"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()
+            if city_name in list(self.city_id.keys()):
+                player_info['city_id'] = self.city_id[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__birthplace"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
+            else:
+
             print(player_info)
             # TennisPlayer.upsert(
             #     self.session,
