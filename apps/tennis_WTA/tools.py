@@ -16,7 +16,7 @@ def replace_text(text):
             list1.append(i)
         else:
             list1.append('-')
-    a = '-'.join((''.join(list1)).split('-'))
+    a = '-'.join((''.join(list1)).split('-')).replace('--','-')
     return a
 
 def get_en_name(data):
