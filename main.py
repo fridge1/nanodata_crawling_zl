@@ -3,6 +3,7 @@ from actions.eur_basketball import eur_basketball_actions
 from actions.nbl_basketball import nbl_basketball_actions
 from actions.kbl_basketball import kbl_basketball_actions
 from actions.acb_basketball import acb_basketball_actions
+from actions.wta_tennis import wta_tennis_actions
 from apps.app import AppCtx
 
 patch_all()
@@ -17,6 +18,7 @@ group_actions = {
     'nbl_basketball_actions' : nbl_basketball_actions,
     'kbl_basketball_actions' : kbl_basketball_actions,
     'acb_basketball_actions' : acb_basketball_actions,
+    'wta_tennis_actions' : wta_tennis_actions,
 }
 
 if __name__ == '__main__':

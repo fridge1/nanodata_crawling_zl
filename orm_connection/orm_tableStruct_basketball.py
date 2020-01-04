@@ -890,3 +890,23 @@ class Xmlchangekey(BaseModel):
     zh_rHK = Column(String(100), nullable=False, default='', comment='zh_rHK')
     zh_rTW = Column(String(100), nullable=False, default='', comment='zh_rTW')
     zu = Column(String(100), nullable=False, default='', comment='zu')
+
+
+
+class BleagueAcbBasketballReferee(BaseModel):
+    __tablename__ = prefix + 'referee'
+
+    # id和外部表id
+    id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(100), nullable=False, server_default='', default='', index=True)
+    # 字段
+    name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文名称')
+    name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
+    name_zht = Column(String(255), nullable=False, server_default='', default='', comment='繁体名称')
+    logo = Column(String(255), nullable=False, server_default='', default='', comment='logo')
+    age = Column(Integer, nullable=False, server_default='0', default=0, comment='年龄')
+    birthday = Column(Integer, nullable=False, server_default='0', default=0, comment='生日')
+    matchs = Column(Integer, nullable=False, server_default='0', default=0, comment='执法场次')
+    # 通用字段
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
