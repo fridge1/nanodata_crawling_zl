@@ -1,7 +1,7 @@
 import asyncio
 from apps.tennis_WTA.wta_double_rank import GetRankInfo
 from apps.tennis_WTA.wta_single_rank import GetSingleRankInfo
-from apps.tennis_WTA.wta_player_info import GetPlayerInfo
+# from apps.tennis_WTA.wta_player_info import GetPlayerInfo
 
 
 def wta_tennis_double_rank(opt):
