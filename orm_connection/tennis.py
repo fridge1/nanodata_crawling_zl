@@ -29,7 +29,6 @@ class TennisPlayer(BaseModel):
     plays = Column(Integer, nullable=False, server_default='0', default=0, comment='擅长手 1左， 2右， 3双')
     city_id = Column(Integer, index=True, nullable=True, comment='出生地id')
     nationality = Column(String(50), nullable=False, server_default='', default='', comment='国籍')
-    deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
