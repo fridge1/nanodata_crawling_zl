@@ -73,7 +73,7 @@ class GetPlayerInfo(object):
             player_info['nationality'] = res_tree.xpath('//div[@class="player-header-info__nationalityCode"]/text()')[0].strip()
             player_info['gender'] = 2
             name_en = res_tree.xpath('//h1[@class="player-header-info__name"]')
-            player_info['name_en'] = str(name_en[0].xpath('string(.)'))
+            player_info['name_en'] = str(name_en[0].xpath('string(.)')).strip()
             try:
                 birthday = res_tree.xpath('//div[@class="player-header-info__detail-stat js-player-header-info__age"]/@data-dob')[0]
             except:
