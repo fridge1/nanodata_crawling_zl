@@ -61,8 +61,10 @@ class GetPlayerInfo(object):
             player_info = {}
             if key in self.single_dict.keys():
                 res = requests.get(url % (key,self.single_dict[key]),headers=self.headers)
+                print(url % (key,self.single_dict[key]))
             else:
                 res = requests.get(url % (key, self.double_dict[key]), headers=self.headers)
+                print(url % (key, self.double_dict[key]))
             res_tree = tree_parse(res)
             player_info['id'] = key
             player_info['sport_id'] = 3
