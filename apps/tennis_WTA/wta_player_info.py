@@ -80,11 +80,12 @@ class GetPlayerInfo(object):
                 birthday = 'N/A'
             player_info['birthday'],player_info['age'] = time_stamp(birthday)
             player_info['plays'] = self.city_id[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__handed"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
-            TennisPlayer.upsert(
-                self.session,
-                'id',
-                player_info
-            )
             print(player_info)
+            # TennisPlayer.upsert(
+            #     self.session,
+            #     'id',
+            #     player_info
+            # )
+
 
 
