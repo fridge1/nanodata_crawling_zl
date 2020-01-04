@@ -1,6 +1,6 @@
 import requests
 import json
-from apps.tennis_WTA.tools import get_single_player_id,get_double_player_id,tree_parse,time_stamp,get_city_id
+from apps.tennis_WTA.tools import *
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisCity,TennisPlayer
 import re
@@ -18,8 +18,11 @@ class GetPlayerInfo(object):
         self.plays_dict = {
             'Right-Handed': 2,
             'Left-Handed': 1,
+            'N/A' : 0,
         }
         self.city_id = get_city_id()
+        self.single_name_dict = get_player_single_name()
+        self.double_name_dict = get_player_double_name()
 
 
     def set_id(self):
@@ -72,14 +75,19 @@ class GetPlayerInfo(object):
             player_info['height'] = int(height_cm)
             player_info['nationality'] = res_tree.xpath('//div[@class="player-header-info__nationalityCode"]/text()')[0].strip()
             player_info['gender'] = 2
-            name_en = res_tree.xpath('//h1[@class="player-header-info__name"]')
-            player_info['name_en'] = str(name_en[0].xpath('string(.)')).strip()
+            if key in list(self.single_name_dict):
+                player_info['name_en'] = self.single_name_dict[key]
+            elif key in list(self.double_name_dict):
+                player_info['name_en'] = self.double_name_dict[key]
+            else:
+                player_info['name_en'] = ''
             try:
                 birthday = res_tree.xpath('//div[@class="player-header-info__detail-stat js-player-header-info__age"]/@data-dob')[0]
             except:
                 birthday = 'N/A'
             player_info['birthday'],player_info['age'] = time_stamp(birthday)
-            player_info['plays'] = self.city_id[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__handed"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
+            player_info['plays'] = self.plays_dict[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__handed"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
+            player_info['city_id'] = self.city_id[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__birthplace"]/div[@class="player-header-info__detail-stat--small"]/text()')[0].strip()]
             print(player_info)
             # TennisPlayer.upsert(
             #     self.session,
