@@ -49,7 +49,6 @@ class GetPlayerInfo(object):
                 city_info
             )
 
-            print(city_info)
 
 
     def get_player_info(self):
@@ -85,6 +84,3 @@ class GetPlayerInfo(object):
             print(player_info)
 
 
-
-if __name__ == '__main__':
-    GetPlayerInfo().get_player_info()
