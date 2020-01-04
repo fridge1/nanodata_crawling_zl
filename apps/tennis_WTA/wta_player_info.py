@@ -1,8 +1,8 @@
 import requests
 import json
-from apps.tennis_WTA.tools import get_single_player_id,get_double_player_id,tree_parse,time_stamp
+from apps.tennis_WTA.tools import get_single_player_id,get_double_player_id,tree_parse,time_stamp,get_city_id
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisCity
+from orm_connection.tennis import TennisCity,TennisPlayer
 import re
 
 
@@ -19,6 +19,7 @@ class GetPlayerInfo(object):
             'Right-Handed': 2,
             'Left-Handed': 1,
         }
+        self.city_id = get_city_id()
 
 
     def set_id(self):
@@ -70,13 +71,20 @@ class GetPlayerInfo(object):
             player_info['gender'] = 2
             name_en = res_tree.xpath('//h1[@class="player-header-info__name"]')
             player_info['name_en'] = name_en[0].xpath('string(.)')
-            birthday = res_tree.xpath('//div[@class="player-header-info__detail-stat js-player-header-info__age"]/@data-dob')[0]
+            try:
+                birthday = res_tree.xpath('//div[@class="player-header-info__detail-stat js-player-header-info__age"]/@data-dob')[0]
+            except:
+                birthday = 'N/A'
             player_info['birthday'],player_info['age'] = time_stamp(birthday)
-            player_info['birthday'] = time_stamp(birthday)
-
-
+            player_info['plays'] = self.city_id[res_tree.xpath('//div[@class="player-header-info__detail player-header-info__handed"]/div[@class="player-header-info__detail-stat--small"]/text()')[0]]
+            TennisPlayer.upsert(
+                self.session,
+                'id',
+                player_info
+            )
+            print(player_info)
 
 
 
 if __name__ == '__main__':
-    GetPlayerInfo().get_city()
+    GetPlayerInfo().get_player_info()

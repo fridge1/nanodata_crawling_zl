@@ -1,5 +1,6 @@
+# coding:utf-8
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisPlayerInfoSingleRank,TennisPlayerInfoDoubleRank
+from orm_connection.tennis import TennisPlayerInfoSingleRank,TennisPlayerInfoDoubleRank,TennisCity
 import requests
 from lxml import etree
 import unicodedata
@@ -9,22 +10,14 @@ from datetime import date
 
 
 def replace_text(text):
-    text_start = text
-    words = [' ','í','á','é','ñ','\'']
-    # word = {
-    #     ' ':'-',
-    #     'í':'-',
-    #     'á':'-',
-    #     'é':'-',
-    #     'ñ':'-',
-    #     '\'':'-',
-    # }
-    text_end = ''
-    for key in words:
-        print(key)
-        text_end = text_start.replace(key,'-')
-        print(text_end)
-    return text_end
+    list1 = []
+    for i in text.lower():
+        if 97 <= ord(i) <= 122 or 65 <= ord(i) <= 90:
+            list1.append(i)
+        else:
+            list1.append('-')
+    a = '-'.join((''.join(list1)).split('-'))
+    return a
 
 def get_en_name(data):
     return str(unicodedata.normalize('NFKD', data).encode('ascii', 'ignore'), encoding='utf-8')
@@ -34,9 +27,7 @@ def get_single_player_id():
     rows = session.query(TennisPlayerInfoSingleRank).all()
     single_player_id_name = {}
     for row in rows:
-
-        single_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-')
-                                                        .replace('ñ','-').split('-')).replace('--','-')
+        single_player_id_name[row.player_id] = replace_text(row.name_en)
     return single_player_id_name
 
 
@@ -45,8 +36,7 @@ def get_double_player_id():
     rows = session.query(TennisPlayerInfoDoubleRank).all()
     double_player_id_name = {}
     for row in rows:
-        double_player_id_name[row.player_id] = '-'.join(row.name_en.lower().replace(' ','-').replace('í','-').replace('á','-').replace('é','-').replace('\'','-')
-                                                        .replace('ñ','-').split('-')).replace('--','-')
+        double_player_id_name[row.player_id] = replace_text(row.name_en)
     return double_player_id_name
 
 def tree_parse(res):
@@ -70,5 +60,11 @@ def time_stamp(time_date):
     else:
         return 0, 0
 
-a = 'garbiñe-muguruza'
-print(replace_text(a))
+
+def get_city_id():
+    session = MysqlSvr.get('spider_zl')
+    rows = session.query(TennisCity).all()
+    city_id_dict = {}
+    for row in rows:
+        city_id_dict[row.name_en] = row.id
+    return city_id_dict
