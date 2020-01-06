@@ -108,9 +108,9 @@ def get_country_id():
 def upsert_city(city_name):
     session = MysqlSvr.get('spider_zl')
     data = {
-        'name_en', city_name
+        'name_en': city_name
     }
-    row = TennisCity.upsert(
+    _, row = TennisCity.upsert(
         session,
         'name_en',
         data
@@ -120,9 +120,9 @@ def upsert_city(city_name):
 def upsert_country(country_name):
     session = MysqlSvr.get('spider_zl')
     data = {
-        'name_en', country_name
+        'name_en': country_name
     }
-    row = TennisCountry.upsert(
+    _, row = TennisCountry.upsert(
         session,
         'name_en',
         data
