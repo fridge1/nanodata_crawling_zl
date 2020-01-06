@@ -1,6 +1,6 @@
 # coding:utf-8
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisPlayerInfoSingleRank,TennisPlayerInfoDoubleRank,TennisCity
+from orm_connection.tennis import TennisPlayerInfoSingleRank,TennisPlayerInfoDoubleRank,TennisCity,TennisCountry
 import requests
 from lxml import etree
 import unicodedata
@@ -85,3 +85,46 @@ def get_player_double_name():
     for row in rows:
         double_player_id_name[row.player_id] = row.name_en
     return double_player_id_name
+
+
+def competition_time_stamp(time_date):
+    time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d')
+    timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d')
+    timeArray1 = datetime.datetime.strptime(timeArray, '%Y-%m-%d')
+    bj_time = (timeArray1 + datetime.timedelta()).strftime("%Y-%m-%d")
+    bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d')
+    timeStamp = int(time.mktime(bj_time1.timetuple()))
+    return timeStamp
+
+
+def get_country_id():
+    session = MysqlSvr.get('spider_zl')
+    rows = session.query(TennisCountry).all()
+    country_id_dict = {}
+    for row in rows:
+        country_id_dict[row.name_en] = row.id
+    return country_id_dict
+
+def upsert_city(city_name):
+    session = MysqlSvr.get('spider_zl')
+    data = {
+        'name_en', city_name
+    }
+    _, row = TennisCity.upsert(
+        session,
+        'name_en',
+        data
+    )
+    return row.id
+
+def upsert_country(country_name):
+    session = MysqlSvr.get('spider_zl')
+    data = {
+        'name_en', country_name
+    }
+    _, row = TennisCountry.upsert(
+        session,
+        'name_en',
+        data
+    )
+    return row.id

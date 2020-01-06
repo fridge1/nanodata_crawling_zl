@@ -92,9 +92,16 @@ class TennisCompetition(BaseModel):
     name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
     surface = Column(Integer, nullable=False, server_default='0', default=0,
                      comment='1硬地场，2红土场，3草地场，4泥土沙地场，5合成塑胶场，6地毯球场')
+    level = Column(String(255), nullable=False, server_default='', default='', comment='赛事等级')
     start_time = Column(Integer, nullable=False, server_default='0', default=0, comment='赛事的开始时间')
     end_time = Column(Integer, nullable=False, server_default='0', default=0, comment='赛事的结束时间')
     city_id = Column(Integer, index=True, nullable=True, comment='城市id')
+    inOutdoor = Column(Integer, index=True, nullable=True, comment='1室内，2室外')
+    country_id = Column(Integer, index=True, nullable=True, comment='国家id')
+    prizeMoney = Column(Integer, index=True, nullable=True, comment='赛事奖金')
+    prizeMoneyCurrency = Column(Integer, index=True, nullable=True, comment='1美')
+    singlesDrawSize = Column(Integer, index=True, nullable=True, comment='单打参赛人数')
+    doublesDrawSize = Column(Integer, index=True, nullable=True, comment='双打参赛人数')
     has_player_stats = Column(SmallInteger, nullable=False, server_default='0', default=0, comment='是否有球员统计')
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
@@ -107,6 +114,7 @@ class TennisCity(BaseModel):
     key = Column(String(100), nullable=False, server_default='', default='', index=True)
     name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文名称')
     name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
+    country_id = Column(Integer, nullable=False, server_default='0', default=0, comment='国家id')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
@@ -195,6 +203,21 @@ class TennisPlayerInfoSingleRank(BaseModel):
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+
+class TennisCountry(BaseModel):
+    __tablename__ = prefix + 'country'
+    id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(100), nullable=False, server_default='', default='', index=True)
+    name_en = Column(String(50), nullable=False, server_default='', default='', comment='英文名称')
+    name_zh = Column(String(50), nullable=False, server_default='', default='', comment='中文名称')
+    name_zht = Column(String(50), nullable=False, server_default='', default='', comment='繁体名称')
+    logo= Column(String(50), nullable=False, server_default='', default='', comment='')
+    deleted = Column(Integer, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
 
 
 
