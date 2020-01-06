@@ -66,8 +66,8 @@ class GetCompetitionInfo(object):
 
 
     def run(self):
-        for year in range(2010,2020):
-            self.competition_info(str(year))
+        # for year in range(2010,2020):
+        self.competition_info(str(2020))
 
 
 
