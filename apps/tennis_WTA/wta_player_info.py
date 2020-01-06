@@ -139,7 +139,7 @@ class GetPlayerInfo(object):
             else:
                 player_career['double_win'] = 0
                 player_career['double_lost'] = 0
-            if len(single_win_lost) == 6:
+            if len(single_win_lost) == 4:
                 player_career['single_win'] = single_win_lost[2]
                 player_career['single_lost'] = single_win_lost[3]
             else:
