@@ -38,7 +38,7 @@ class GetCompetitionInfo(object):
             competition_info['singlesDrawSize'] = info['singlesDrawSize']
             competition_info['doublesDrawSize'] = info['doublesDrawSize']
             competition_info['prizeMoney'] = info['prizeMoney']
-            competition_info['sport_id'] = 2
+            competition_info['sport_id'] = 3
             competition_info['name_en'] = info['title']
             competition_info['start_time'] = competition_time_stamp(info['startDate'])
             competition_info['end_time'] = competition_time_stamp(info['endDate'])
