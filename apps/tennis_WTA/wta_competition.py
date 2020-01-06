@@ -47,6 +47,7 @@ class GetCompetitionInfo(object):
             competition_info['inOutdoor'] = self.door_dict[info['inOutdoor']]
             city_name = info['city']
             print(city_name)
+            print(type(city_name))
             country_name = info['country']
             if city_name in list(self.city_id.keys()):
                 competition_info['city_id'] = self.city_id[city_name]
