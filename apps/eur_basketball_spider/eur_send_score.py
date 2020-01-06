@@ -77,6 +77,8 @@ class GetEurScore(object):
         playbyplay = {}
         keys = list(text.keys())
         period = 0
+        status_id = 0
+        match_time = 0
         for key in keys[6:]:
             period += 1
             if text[key]:

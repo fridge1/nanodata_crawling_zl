@@ -8,7 +8,7 @@ engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjej
 prefix = 'wta_tennis_'
 
 
-# 球员表
+
 class TennisPlayer(BaseModel):
     __tablename__ = prefix + 'player'
     id = Column(Integer, primary_key=True, comment='id')
@@ -134,7 +134,7 @@ class TennisReferee(BaseModel):
 
 class TennisPlayerSingleRank(BaseModel):
     __tablename__ = prefix + 'single_rank'
-    id = Column(Integer, primary_key=True)  # id
+    id = Column(Integer, primary_key=True)
     key = Column(String(25), nullable=False, server_default='', default='', index=True)
     season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
     sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
@@ -151,7 +151,7 @@ class TennisPlayerSingleRank(BaseModel):
 
 class TennisPlayerDoubleRank(BaseModel):
     __tablename__ = prefix + 'double_rank'
-    id = Column(Integer, primary_key=True)  # id
+    id = Column(Integer, primary_key=True)
     key = Column(String(25), nullable=False, server_default='', default='', index=True)
     season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
     sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
@@ -168,7 +168,7 @@ class TennisPlayerDoubleRank(BaseModel):
 
 class TennisPlayerInfoDoubleRank(BaseModel):
     __tablename__ = prefix + 'double_player_rank'
-    id = Column(Integer, primary_key=True)  # id
+    id = Column(Integer, primary_key=True)
     key = Column(String(25), nullable=False, server_default='', default='', index=True)
     season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
     sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
@@ -239,6 +239,16 @@ class TennisPlayerCareer(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+
+class TennisChampionship(BaseModel):
+    __tablename__ = prefix + 'championship'
+    id = Column(Integer, primary_key=True)
+    key = Column(String(25), nullable=False, server_default='', default='', index=True)
+    season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
+    sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
+    competition_id =  Column(Integer, nullable=False, server_default='0', default=0, comment='赛事id')
+    player_id = Column(Integer, index=True, nullable=False, comment='球员id')
+    type = Column(Integer, index=True, nullable=False, comment='单双打类型 1单打，2双打')
 
 
 BaseModel.metadata.create_all(engine)
