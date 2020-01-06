@@ -119,7 +119,7 @@ class GetPlayerInfo(object):
             single_win_lost = res_tree.xpath('//span[@class="js-player-header-stat-count-up"]/@data-single')
             player_career['player_id'] = key
             player_career['sport_id'] = 3
-            if single_data_list:
+            if len(single_data_list) == 6:
                 player_career['single_titles'] = single_data_list[4]
                 player_career['single_high'] = single_data_list[3]
                 player_career['prize_money'] = single_data_list[5]
@@ -127,19 +127,19 @@ class GetPlayerInfo(object):
                 player_career['single_titles'] = 0
                 player_career['single_high'] = 0
                 player_career['prize_money'] = 0
-            if double_data_list:
+            if len(double_data_list) == 6:
                 player_career['double_titles'] = double_data_list[4]
                 player_career['double_high'] = double_data_list[3]
             else:
                 player_career['double_titles'] = 0
                 player_career['double_high'] = 0
-            if double_win_lost:
+            if len(double_win_lost) == 6:
                 player_career['double_win'] = double_win_lost[2]
                 player_career['double_lost'] = double_win_lost[3]
             else:
                 player_career['double_win'] = 0
                 player_career['double_lost'] = 0
-            if single_win_lost:
+            if len(single_win_lost) == 6:
                 player_career['single_win'] = single_win_lost[2]
                 player_career['single_lost'] = single_win_lost[3]
             else:
