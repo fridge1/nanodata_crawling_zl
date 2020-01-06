@@ -110,7 +110,7 @@ def upsert_city(city_name):
     data = {
         'name_en', city_name
     }
-    _, row = TennisCity.upsert(
+    row = TennisCity.upsert(
         session,
         'name_en',
         data
@@ -122,7 +122,7 @@ def upsert_country(country_name):
     data = {
         'name_en', country_name
     }
-    _, row = TennisCountry.upsert(
+    row = TennisCountry.upsert(
         session,
         'name_en',
         data
