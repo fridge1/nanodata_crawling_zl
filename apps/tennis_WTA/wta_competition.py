@@ -50,9 +50,9 @@ class GetCompetitionInfo(object):
             print(type(city_name))
             country_name = info['country']
             if city_name in list(self.city_id.keys()):
-                competition_info['city_id'] = self.city_id[city_name]
+                competition_info['city_id'] = self.city_id[str(city_name)]
             else:
-                competition_info['city_id'] = upsert_city(city_name)
+                competition_info['city_id'] = upsert_city(str(city_name))
             if country_name in list(self.country_id.keys()):
                 competition_info['country_id'] = self.country_id[country_name]
             else:
