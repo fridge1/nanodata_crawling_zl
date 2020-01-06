@@ -219,6 +219,26 @@ class TennisCountry(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+class TennisPlayerCareer(BaseModel):
+    __tablename__ = prefix + 'player_career'
+    id = Column(Integer, primary_key=True)  # id
+    key = Column(String(25), nullable=False, server_default='', default='', index=True)
+    sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
+    single_titles = Column(Integer, nullable=False, server_default='0', default=0, comment='单打获得冠军的次数')
+    double_titles = Column(Integer, nullable=False, server_default='0', default=0, comment='双打获得冠军的次数')
+    double_high = Column(Integer, nullable=False, server_default='0', default=0, comment='双打获得最高名次')
+    single_win = Column(Integer, nullable=False, server_default='0', default=0, comment='单打所赢次数')
+    double_win = Column(Integer, nullable=False, server_default='0', default=0, comment='双打所赢次数')
+    single_lost = Column(Integer, nullable=False, server_default='0', default=0, comment='单打所输次数')
+    double_lost = Column(Integer, nullable=False, server_default='0', default=0, comment='双打打所输次数')
+    single_high = Column(Integer, nullable=False, server_default='0', default=0, comment='单打获得最高名次')
+    prize_money = Column(Integer, nullable=False, server_default='0', default=0, comment='生涯所获奖金')
+    player_id = Column(Integer, index=True, nullable=False, comment='球员id')
+    deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
 
 
 BaseModel.metadata.create_all(engine)

@@ -18,6 +18,9 @@ def wta_tennis_player_info(opt):
 def wta_tennis_competition_info(opt):
     GetCompetitionInfo().run()
 
+def wta_tennis_player_career_info(opt):
+    GetPlayerInfo().get_player_career()
+
 
 
 
@@ -26,4 +29,5 @@ wta_tennis_actions = {
     'wta_tennis_single_rank': wta_tennis_single_rank,
     'wta_tennis_player_info': wta_tennis_player_info,
     'wta_tennis_competition_info': wta_tennis_competition_info,
+    'wta_tennis_player_career_info': wta_tennis_player_career_info,
 }

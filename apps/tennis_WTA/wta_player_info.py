@@ -2,7 +2,7 @@ import requests
 import json
 from apps.tennis_WTA.tools import *
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisCity,TennisPlayer
+from orm_connection.tennis import TennisCity,TennisPlayer,TennisPlayerCareer
 import re
 
 
@@ -101,5 +101,37 @@ class GetPlayerInfo(object):
                 player_info
             )
 
-
+    def get_player_career(self):
+        url = 'https://www.wtatennis.com/players/%s/%s'
+        total_key = self.set_id()
+        for key in total_key:
+            player_career = {}
+            if key in self.single_dict.keys():
+                res = requests.get(url % (key,self.single_dict[key]),headers=self.headers)
+                print(url % (key,self.single_dict[key]))
+            else:
+                res = requests.get(url % (key, self.double_dict[key]), headers=self.headers)
+                print(url % (key, self.double_dict[key]))
+            res_tree = tree_parse(res)
+            single_data_list = res_tree.xpath('//div[@class="player-header-stats__value js-player-header-stat-count-up"]/@data-single')
+            double_data_list = res_tree.xpath('//div[@class="player-header-stats__value js-player-header-stat-count-up"]/@data-double')
+            double_win_lost = res_tree.xpath('//span[@class="js-player-header-stat-count-up"]/@data-double')
+            single_win_lost = res_tree.xpath('//span[@class="js-player-header-stat-count-up"]/@data-single')
+            player_career['player_id'] = key
+            player_career['sport_id'] = 3
+            player_career['single_titles'] = single_data_list[4]
+            player_career['double_titles'] = double_data_list[4]
+            player_career['double_high'] = double_data_list[3]
+            player_career['single_high'] = single_data_list[3]
+            player_career['prize_money'] = single_data_list[5]
+            player_career['single_win'] = single_win_lost[2]
+            player_career['single_lost'] = single_win_lost[3]
+            player_career['double_win'] = double_win_lost[2]
+            player_career['double_lost'] = double_win_lost[3]
+            TennisPlayerCareer.upsert(
+                self.session,
+                'player_id',
+                player_career
+            )
+            print(player_career)
 
