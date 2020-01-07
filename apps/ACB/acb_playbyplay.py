@@ -34,7 +34,7 @@ class pbp_box(object):
                     time.sleep(10)
                 else:
                     pbp_dict = json.loads(pbp_res.text)
-                    if pbp_dict['inOT'] != 0:
+                    if pbp_dict['inOT'] == 0:
                         period_total = pbp_dict['period']
                     else:
                         period_total = pbp_dict['period'] + 4
