@@ -41,8 +41,8 @@ class GetSinglePlayerStat(object):
             player_stat['second_return_points_won'] = stat_info['stats']['second_return_percent']
             player_stat['break_point_converted'] = stat_info['stats']['breakpoint_converted_percent']
             player_stat['break_points_lost'] = stat_info['stats']['Break_Points_Lost']
-            player_stat['retrun_games_win'] = stat_info['stats']['return_games_won_percent']
-            player_stat['retrun_games_played'] = stat_info['stats']['Return_Games_Played']
+            player_stat['return_games_win'] = stat_info['stats']['return_games_won_percent']
+            player_stat['return_games_played'] = stat_info['stats']['Return_Games_Played']
             player_stat['break_points_faced'] = stat_info['stats']['Break_Points_Faced']
             player_stat['total_points_win'] = stat_info['stats']['MatchCount']
             TennisSinglePlayerStat.upsert(
