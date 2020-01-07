@@ -27,6 +27,9 @@ class GetSinglePlayerStat(object):
             player_stat['season_id'] = year
             player_stat['sport_id'] = 3
             player_stat['player_id'] = player_id
+            if 'stats' not in stat_info.keys():
+                print(stat_info)
+                exit()
             player_stat['aces'] = stat_info['stats']['Aces']
             player_stat['double_faults'] = stat_info['stats']['Double_Faults']
             player_stat['service_points_win'] = stat_info['stats']['service_points_won_percent']
@@ -50,7 +53,7 @@ class GetSinglePlayerStat(object):
                 'key',
                 player_stat
             )
-            print(player_stat)
+            # print(player_stat)
         else:
             print('该球员没有该赛季的技术统计。。。')
 
