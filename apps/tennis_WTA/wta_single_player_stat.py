@@ -1,7 +1,7 @@
 import requests
 import json
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisSinglePlayerStat
+from orm_connection.tennis import TennisSinglePlayerStatBySeason
 from apps.tennis_WTA.tools import get_player_double_name,get_player_single_name
 
 
@@ -48,7 +48,7 @@ class GetSinglePlayerStat(object):
             player_stat['return_games_played'] = stat_info['stats']['Return_Games_Played']
             player_stat['break_points_faced'] = stat_info['stats']['Break_Points_Faced']
             player_stat['match_count'] = stat_info['stats']['MatchCount']
-            TennisSinglePlayerStat.upsert(
+            TennisSinglePlayerStatBySeason.upsert(
                 self.session,
                 'key',
                 player_stat
