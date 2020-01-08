@@ -13,7 +13,7 @@ class GetTable(object):
     def season_type_url(self):
         total_type_urls = []
         for season_id in range(2016, 2020):
-            res = requests.get('https://www.euroleague.net/main/standings?seasoncode=%s' % season_id,
+            res = requests.get('https://www.euroleague.net/main/standings?seasoncode=E%s' % season_id,
                                headers=self.headers)
             res_tree = tree_parse(res)
             type_urls = res_tree.xpath('//div[@class="styled-select"][2]/select/option/@value')
