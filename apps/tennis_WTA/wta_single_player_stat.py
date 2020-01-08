@@ -3,6 +3,10 @@ import json
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisSinglePlayerStatBySeason
 from apps.tennis_WTA.tools import get_player_double_name,get_player_single_name
+from apps.send_error_msg import dingding_alter
+from common.libs.log import LogMgr
+
+logger = LogMgr.get('wta_tennis_player_season_stat')
 
 
 class GetSinglePlayerStat(object):
@@ -51,11 +55,11 @@ class GetSinglePlayerStat(object):
                     'key',
                     player_stat
                 )
-                print(player_stat)
+                logger.info(player_stat)
             else:
-                print(stat_info)
+                logger.info(stat_info)
         else:
-            print('该球员没有该赛季的技术统计。。。')
+            logger.info('该球员没有该赛季的技术统计。。。%s,%s' % (player_id,year))
 
 
     def run(self):
