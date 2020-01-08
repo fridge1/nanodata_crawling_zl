@@ -47,8 +47,8 @@ class GetTable(object):
             res = requests.get('https://www.euroleague.net' + round_url, headers=self.headers)
             res_tree = tree_parse(res)
             match_url = res_tree.xpath('//ul[@class="rounds-list"]/li/a/@href')[-1]
-
             res = requests.get('https://www.euroleague.net'+match_url,headers=self.headers)
+            print('https://www.euroleague.net'+match_url)
             res_tree = tree_parse(res)
             table_row_infos = res_tree.xpath('//tbody/tr')
             for table_row_info in table_row_infos:
