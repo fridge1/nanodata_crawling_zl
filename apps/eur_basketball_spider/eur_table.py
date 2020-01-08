@@ -42,7 +42,7 @@ class GetTable(object):
                 typecode = re.findall(r'phasetypecode=(.*?)\+',match_url)[0]
                 season_id = re.findall(r'seasoncode=E(.*?)',match_url)[0]
                 if 'RS' or 'TS' in typecode:
-                    stage_name_zh = '欧篮联%s-%s赛季常规赛' % (str(season_id), str(season_id + 1))
+                    stage_name_zh = '欧篮联%s-%s赛季常规赛' % (str(season_id), str(int(season_id) + 1))
                 else:
-                    stage_name_zh = '欧篮联%s-%s赛季季后赛' % (str(season_id), str(season_id + 1))
+                    stage_name_zh = '欧篮联%s-%s赛季季后赛' % (str(season_id), str(int(season_id) + 1))
                 print(typecode,season_id)
