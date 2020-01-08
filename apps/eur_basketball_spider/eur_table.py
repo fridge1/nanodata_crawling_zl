@@ -70,10 +70,10 @@ class GetTable(object):
                 detail['won_rate'] = int(detail['win']/(detail['win']+detail['lost']) * 100)
                 win_pts = int(table_row_info.xpath('./td[4]/text()')[0].strip())
                 lost_pts = int(table_row_info.xpath('./td[5]/text()')[0].strip())
-                detail['points_avg'] = win_pts / (detail['win'] + detail['lost'])
-                detail['points_against_avg'] = lost_pts / (detail['win'] + detail['lost'])
+                detail['points_avg'] = round(win_pts / (detail['win'] + detail['lost']))
+                detail['points_against_avg'] = round(lost_pts / (detail['win'] + detail['lost']))
                 diff_avg_score = int(table_row_info.xpath('./td[6]/text()')[0].strip())
-                detail['diff_avg'] = diff_avg_score / (detail['win'] + detail['lost'])
+                detail['diff_avg'] = round(diff_avg_score / (detail['win'] + detail['lost']))
                 table_info['detail'] = str(detail)
                 BleagueNblBasketballTableRow.upsert(
                     self.session,
