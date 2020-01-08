@@ -66,14 +66,14 @@ class GetTable(object):
                 table_info['table_id'] = self.table_id[table_name_zh]
                 table_info['key'] = str(season_id) + str(table_info['team_id'])
                 detail = {}
-                detail['win'] = int(table_row_info.xpath('./td[2]/a/@href')[0].strip())
-                detail['lost'] = int(table_row_info.xpath('./td[3]/a/@href')[0].strip())
+                detail['win'] = int(table_row_info.xpath('./td[2]/text()')[0].strip())
+                detail['lost'] = int(table_row_info.xpath('./td[3]/text()')[0].strip())
                 detail['won_rate'] = int(detail['win']/(detail['win']+detail['lost']) * 100)
-                win_pts = int(table_row_info.xpath('./td[4]/a/@href')[0].strip())
-                lost_pts = int(table_row_info.xpath('./td[5]/a/@href')[0].strip())
+                win_pts = int(table_row_info.xpath('./td[4]/text()')[0].strip())
+                lost_pts = int(table_row_info.xpath('./td[5]/text()')[0].strip())
                 detail['points_avg'] = win_pts / (detail['win'] + detail['lost'])
                 detail['points_against_avg'] = lost_pts / (detail['win'] + detail['lost'])
-                diff_avg_score = int(table_row_info.xpath('./td[6]/a/@href')[0].strip())
+                diff_avg_score = int(table_row_info.xpath('./td[6]/text()')[0].strip())
                 detail['diff_avg'] = diff_avg_score / (detail['win'] + detail['lost'])
                 table_info['detail'] = str(detail)
                 BleagueNblBasketballTableRow.upsert(
