@@ -40,7 +40,7 @@ class GetTable(object):
                 res = requests.get('https://www.euroleague.net'+match_url,headers=self.headers)
                 res_tree = tree_parse(res)
                 typecode = re.findall(r'phasetypecode=(.*?)\+',match_url)[0]
-                season_id = re.findall(r'seasoncode=E(.*?)',match_url)[0]
+                season_id = re.findall(r'\d+',match_url)[-1]
                 # if 'RS' or 'TS' in typecode:
                 #     stage_name_zh = '欧篮联%s-%s赛季常规赛' % (str(season_id), str(int(season_id) + 1))
                 # else:
