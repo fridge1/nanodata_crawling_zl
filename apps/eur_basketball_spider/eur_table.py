@@ -40,7 +40,7 @@ class GetTable(object):
     def match_url(self):
         total_round_urls = self.round_url()
         for round_url in total_round_urls:
-            res = requests.get(round_url,headers=self.headers)
+            res = requests.get('https://www.euroleague.net'+round_url,headers=self.headers)
             res_tree = tree_parse(res)
             match_urls = res_tree.xpath('//ul[@class="rounds-list"]/li/a/@href')
             print(match_urls)
