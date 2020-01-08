@@ -6,6 +6,7 @@ from apps.eur_basketball_spider.eur_match import GetMatchInfo
 from apps.eur_basketball_spider.eur_spider import GetPlayerTeamCoachInfo
 from apps.eur_basketball_spider.eur_player_stat import GetPlayerStat
 from apps.eur_basketball_spider.eur_score_svr import EurBasketballScore
+from apps.eur_basketball_spider.eur_table import GetTable
 
 servers = ["nats://hub.nats.namincs.com:4222"]
 user = 'nana'
@@ -41,6 +42,10 @@ def eur_player_stat_info(opts):
 def eur_team_stat_info(opt):
     eur_team_stat.team_stat_run()
 
+def eur_table_info_url(opt):
+    GetTable().match_url()
+
+
 
 
 
@@ -52,4 +57,5 @@ eur_basketball_actions = {
     'eur_player_stat_info': eur_player_stat_info,
     'eur_team_stat_info': eur_team_stat_info,
     'start_eur_basketball_score_svr': start_eur_basketball_score_svr,
+    'eur_table_info_url': eur_table_info_url,
 }
