@@ -58,7 +58,6 @@ class GetTable(object):
                 table_info['sport_id'] = 2
                 table_name_zh = str(season_id)+'-'+str(int(season_id) + 1)+'赛季积分榜'
                 rank_name = table_row_info.xpath('./td[1]/a/text()')[0].strip().split('.')
-                table_info['name_en'] = rank_name[1]
                 table_info['position'] = rank_name[0]
                 team_url = table_row_info.xpath('./td[1]/a/@href')[0]
                 team_key = re.findall(r'clubcode=(.*?)&',team_url)[0]
