@@ -1,12 +1,11 @@
-from sqlalchemy import Integer, Column, String, SmallInteger, TIMESTAMP, text, Text, create_engine,Float
+from sqlalchemy import Integer, Column, String, SmallInteger, TIMESTAMP, text, Text, create_engine, Float
 from orm_connection.orm_base import *
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
-
+engine = create_engine(
+    'mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
 
 prefix = 'wta_tennis_'
-
 
 
 class TennisPlayer(BaseModel):
@@ -42,29 +41,6 @@ class TennisManager(BaseModel):
     name_zh = Column(String(50), nullable=False, server_default='', default='', comment='中文名称')
     short_name_en = Column(String(50), nullable=False, server_default='', default='', comment='英文简称')
     short_name_zh = Column(String(50), nullable=False, server_default='', default='', comment='中文简称')
-    updated_at = Column(TIMESTAMP, index=True, nullable=False,
-                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
-
-
-class TennisMatch(BaseModel):
-    __tablename__ = prefix + 'match'
-    id = Column(Integer, primary_key=True, comment='id')
-    open_id = Column(Integer, nullable=False, server_default='0', default=0, comment='雷速关联字段')
-    key = Column(String(25), nullable=False, server_default='', default='', index=True)
-    sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')
-    competition_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='赛事id')
-    season_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='赛季id')
-    referee_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='裁判id')
-    match_time = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='比赛时间')
-    status_id = Column(Integer, nullable=False, server_default='0', default=0, comment='状态id 1未开赛，10比赛结束')
-    match_num = Column(Integer, nullable=False, server_default='0', default=0, comment='第几场')
-    player_id_home = Column(Integer, nullable=False, server_default='0', default=0, comment='参赛球员id')
-    player_id_away = Column(Integer, nullable=False, server_default='0', default=0, comment='参赛球员id')
-    home_scores = Column(String(255), nullable=False, default='', comment='主队详细比分')
-    away_scores = Column(String(255), nullable=False, default='', comment='客队详细比分')
-    type = Column(Integer, nullable=False, server_default='0', default=0, comment='单打1，双打2，混双3')
-    elimination_type = Column(Integer, nullable=False, server_default='0', default=0, comment='1 64进32，2 32进16，3 16进8，4 8进4，5 4进2，6 决赛')
-    deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
@@ -129,7 +105,8 @@ class TennisReferee(BaseModel):
     age = Column(Integer, nullable=False, server_default='0', default=0, comment='年龄')
     birthday = Column(Integer, nullable=False, server_default='0', default=0, comment='生日')
     matchs = Column(Integer, nullable=False, server_default='0', default=0, comment='执法场次')
-    updated_at = Column(TIMESTAMP, index=True, nullable=False, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
 class TennisPlayerSingleRank(BaseModel):
@@ -149,6 +126,7 @@ class TennisPlayerSingleRank(BaseModel):
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
+
 class TennisPlayerDoubleRank(BaseModel):
     __tablename__ = prefix + 'double_rank'
     id = Column(Integer, primary_key=True)
@@ -165,6 +143,7 @@ class TennisPlayerDoubleRank(BaseModel):
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
 
 class TennisPlayerInfoDoubleRank(BaseModel):
     __tablename__ = prefix + 'double_player_rank'
@@ -184,6 +163,7 @@ class TennisPlayerInfoDoubleRank(BaseModel):
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
 
 class TennisPlayerInfoSingleRank(BaseModel):
     __tablename__ = prefix + 'single_player_rank'
@@ -205,7 +185,6 @@ class TennisPlayerInfoSingleRank(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
-
 class TennisCountry(BaseModel):
     __tablename__ = prefix + 'country'
     id = Column(Integer, primary_key=True, comment='id')
@@ -213,7 +192,7 @@ class TennisCountry(BaseModel):
     name_en = Column(String(50), nullable=False, server_default='', default='', comment='英文名称')
     name_zh = Column(String(50), nullable=False, server_default='', default='', comment='中文名称')
     name_zht = Column(String(50), nullable=False, server_default='', default='', comment='繁体名称')
-    logo= Column(String(50), nullable=False, server_default='', default='', comment='')
+    logo = Column(String(50), nullable=False, server_default='', default='', comment='')
     deleted = Column(Integer, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
@@ -239,17 +218,15 @@ class TennisPlayerCareer(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
-
 class TennisChampionship(BaseModel):
     __tablename__ = prefix + 'championship'
     id = Column(Integer, primary_key=True)
     key = Column(String(25), nullable=False, server_default='', default='', index=True)
     season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
     sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
-    competition_id =  Column(Integer, nullable=False, server_default='0', default=0, comment='赛事id')
+    competition_id = Column(Integer, nullable=False, server_default='0', default=0, comment='赛事id')
     player_id = Column(Integer, index=True, nullable=False, comment='球员id')
     type = Column(Integer, index=True, nullable=False, comment='单双打类型 1单打，2双打')
-
 
 
 class TennisSinglePlayerStatBySeason(BaseModel):
@@ -317,6 +294,34 @@ class TennisSinglePlayerCareer(BaseModel):
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
+
+class TennisMatch(BaseModel):
+    __tablename__ = prefix + 'match'
+    id = Column(Integer, primary_key=True, comment='id')
+    sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')
+    competition_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='赛事id')
+    season_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='赛季id')
+    home_team_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='主队id')
+    away_team_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='客队id')
+    first_serve = Column(SmallInteger, nullable=False, server_default='0', default=0, comment='发球方')
+    match_time = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='比赛时间')
+    status_id = Column(Integer, nullable=False, server_default='0', default=0, comment='状态id')
+    round_num = Column(Integer, nullable=False, server_default='0', default=0, comment='第几轮')
+    group_num = Column(Integer, nullable=False, server_default='0', default=0, comment='第几组')
+    home_score = Column(Integer, nullable=False, server_default='0', default=0, comment='主队比分')
+    away_score = Column(Integer, nullable=False, server_default='0', default=0, comment='客队比分')
+    home_player_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='主队球员id')
+    away_player_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='客队球员id')
+    home_player_score = Column(String(255), nullable=False, server_default='', default='', comment='主队球员比分')
+    away_player_score = Column(String(255), nullable=False, server_default='', default='', comment='客队球员比分')
+    type = Column(Integer, nullable=False, server_default='0', default=0, comment='单打1，双打2，混双3')
+    elimination_type = Column(Integer, nullable=False, server_default='0', default=0,
+                              comment='1 64进32，2 32进16，3 16进8，4 8进4，5 4进2，6 决赛')
+    surface = Column(Integer, nullable=False, server_default='0', default=0,
+                     comment='1硬地场，2红土场，3草地场，4泥土沙地场，5合成塑胶场，6地毯球场')
+    deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
 BaseModel.metadata.create_all(engine)
