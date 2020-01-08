@@ -1375,3 +1375,10 @@ def get_match_id_score():
                                                                    BleaguejpBasketballMatch.match_time <= timeStamp1).all()
     data_list = [row.id for row in rows]
     return data_list
+
+
+def table_id():
+    spx_dev_session = MysqlSvr.get('spider_zl')
+    rows = spx_dev_session.query(BleagueEurBasketballTable).all()
+    data_dict = {row.name_zh: row.id for row in rows}
+    return data_dict

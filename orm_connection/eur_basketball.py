@@ -4,6 +4,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from orm_connection.orm_base import *
 
 
+
+engine = create_engine('mysql+pymysql://spider_zl:0EDbIRtu4JPGdiQnu3kvXxiOMDMjejow@rm-bp1ov656aj80p2ie8uo.mysql.rds.aliyuncs.com/spider_zl')
+
 prefix = 'eur_league_basketball_'
 
 
@@ -348,3 +351,52 @@ class BleaguejpBasketballTeamStats(BaseModel):
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
+
+class BleagueEurBasketballTable(BaseModel):
+    __tablename__ = prefix + 'table'
+
+    # id和外部表id
+    id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(25), nullable=False, server_default='', default='', index=True)
+    sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')
+    season_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='赛季id')
+    stage_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='阶段id')
+
+    # 字段
+    name_en = Column(String(255), nullable=False, server_default='', default='', comment='英文名称')
+    name_zh = Column(String(255), nullable=False, server_default='', default='', comment='中文名称')
+    name_zht = Column(String(255), nullable=False, server_default='', default='', comment='繁体名称')
+    # group = Column(Integer, nullable=True, server_default='0', default=0, comment='分组')
+    conference = Column(String(255), nullable=False, server_default='', default='', comment='分区名称')
+
+    scope = Column(Integer, default=0, comment='统计范围 1-赛季 2-预选赛 3-小组赛 4-季前赛 5-常规赛 6-淘汰赛(季后赛)')
+    order = Column(Integer, nullable=True, server_default='0', default=0, comment='排序')
+
+    # 通用字段
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+class BleagueNblBasketballTableRow(BaseModel):
+    __tablename__ = prefix + 'table_row'
+
+    # id和外部表id
+    id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(25), nullable=False, server_default='', default='', index=True)
+    sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')
+    season_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='赛季id')
+    team_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='球队id')
+    table_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='积分榜id')
+    promotion_id = Column(Integer, index=True, nullable=True, server_default='0', default=0, comment='升降级id')
+
+    position = Column(Integer, nullable=False, server_default='0', default=0, comment='排名')
+    order = Column(Integer, nullable=True, server_default='0', default=0, comment='排序,手动排名')
+    is_live = Column(Integer, nullable=True, server_default='0', default=0, comment='是否实时')
+
+    detail = Column(Text, nullable=True, default='', comment='详细数据')
+    updated_at = Column(TIMESTAMP, index=True, nullable=False,
+                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+
+
+
+BaseModel.metadata.create_all(engine)
