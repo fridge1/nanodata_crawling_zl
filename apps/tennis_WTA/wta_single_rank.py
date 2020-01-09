@@ -1,11 +1,8 @@
-import aiohttp
-import asyncio
 import requests
-import threading
-from aiohttp import ClientSession
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisPlayerInfoSingleRank
 import json
+from apps.tennis_WTA.get_monday_date import GetMondayDate
 from common.libs.log import LogMgr
 
 logger = LogMgr.get('wta_tennis_single_rank')
@@ -22,8 +19,9 @@ class GetSingleRankInfo(object):
 
 
 
-    def get_double_rank(self,page):
-        url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=2019-12-30&nationality=' % page
+    def get_double_rank(self,page,date):
+        url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
+        print(url)
         response = requests.get(url,headers=self.headers)
         if response.text == '':
             logger.info('没有排名数据。。。')
@@ -32,6 +30,7 @@ class GetSingleRankInfo(object):
             for info in rank_info:
                 player_info = {}
                 player_info['player_id'] = info['player']['id']
+                player_info['key'] = str(date) + str(player_info['player_id'])
                 player_info['sport_id'] = 3
                 player_info['name_en'] = info['player']['fullName']
                 player_info['ranking'] = info['ranking']
@@ -48,13 +47,15 @@ class GetSingleRankInfo(object):
                     player_info['promotion_type'] = 2
                 TennisPlayerInfoSingleRank.upsert(
                     self.session,
-                    'player_id',
+                    'key',
                     player_info
                 )
                 logger.info(player_info)
 
     def run(self):
-        for page in range(14):
-            self.get_double_rank(page)
+        monday_date_list = GetMondayDate().run(2020)
+        for date in monday_date_list:
+            for page in range(14):
+                self.get_double_rank(page,date)
 
 

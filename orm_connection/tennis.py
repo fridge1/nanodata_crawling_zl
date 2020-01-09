@@ -298,6 +298,7 @@ class TennisSinglePlayerCareer(BaseModel):
 class TennisMatch(BaseModel):
     __tablename__ = prefix + 'match'
     id = Column(Integer, primary_key=True, comment='id')
+    key = Column(String(25), nullable=False, server_default='', default='', index=True)
     sport_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='球类id')
     competition_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='赛事id')
     season_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='赛季id')
@@ -310,13 +311,14 @@ class TennisMatch(BaseModel):
     group_num = Column(Integer, nullable=False, server_default='0', default=0, comment='第几组')
     home_score = Column(Integer, nullable=False, server_default='0', default=0, comment='主队比分')
     away_score = Column(Integer, nullable=False, server_default='0', default=0, comment='客队比分')
-    home_player_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='主队球员id')
-    away_player_id = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='客队球员id')
+    home_player_id = Column(String(255), nullable=False, server_default='', default='', comment='主队球员id')
+    away_player_id = Column(String(255), nullable=False, server_default='', default='', comment='主队球员id')
     home_player_score = Column(String(255), nullable=False, server_default='', default='', comment='主队球员比分')
     away_player_score = Column(String(255), nullable=False, server_default='', default='', comment='客队球员比分')
     type = Column(Integer, nullable=False, server_default='0', default=0, comment='单打1，双打2，混双3')
     elimination_type = Column(Integer, nullable=False, server_default='0', default=0,
                               comment='1 64进32，2 32进16，3 16进8，4 8进4，5 4进2，6 决赛')
+    abandon_type = Column(Integer, nullable=False, server_default='0', default=0, comment='正常0，比赛中途退出1，比赛前退出2')
     surface = Column(Integer, nullable=False, server_default='0', default=0,
                      comment='1硬地场，2红土场，3草地场，4泥土沙地场，5合成塑胶场，6地毯球场')
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')

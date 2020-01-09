@@ -41,7 +41,7 @@ def get_double_player_id():
 
 def tree_parse(res):
     enconding = requests.utils.get_encodings_from_content(res.text)
-    html_doc = res.content.decode(enconding[0])
+    html_doc = res.content.decode()
     tree = etree.HTML(html_doc)
     return tree
 
@@ -128,3 +128,28 @@ def upsert_country(country_name):
         data
     )
     return row.id
+
+
+def safe_get(obj, key, default=0):
+    keys = key.split('.')
+
+    def _get(_obj, _keys):
+        if not _obj or not _keys or not isinstance(_obj, dict):
+            return default
+
+        if len(_keys) == 1:
+            return _obj.get(_keys[0], default)
+        else:
+            return _get(_obj.get(_keys[0]), _keys[1:])
+
+    return _get(obj, keys)
+
+
+def change_match_bjtime(time_date):
+    time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d %H:%M:%S')
+    timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d %H:%M:%S')
+    timeArray1 = datetime.datetime.strptime(timeArray, '%Y-%m-%d %H:%M:%S')
+    bj_time = (timeArray1 + datetime.timedelta()).strftime("%Y-%m-%d %H:%M:%S")
+    bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d %H:%M:%S')
+    timeStamp = int(time.mktime(bj_time1.timetuple()))
+    return timeStamp
