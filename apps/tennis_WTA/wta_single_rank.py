@@ -23,6 +23,7 @@ class GetSingleRankInfo(object):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
         print(url)
         response = requests.get(url,headers=self.headers)
+        print(response.text)
         if response.text == '':
             logger.info('没有排名数据。。。')
         else:
