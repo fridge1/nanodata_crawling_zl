@@ -24,36 +24,39 @@ class GetSingleRankInfo(object):
     def get_double_rank(self,page,date):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
         print(url)
-        response = requests.get(url,headers=self.headers,proxies=self.proxy)
+        response = requests.get(url,headers=self.headers)
         print(response.text)
         if response.text == '':
             logger.info('没有排名数据。。。')
         else:
             rank_info = json.loads(response.text)
-            for info in rank_info:
-                player_info = {}
-                player_info['player_id'] = info['player']['id']
-                player_info['key'] = str(date) + str(player_info['player_id'])
-                player_info['sport_id'] = 3
-                player_info['name_en'] = info['player']['fullName']
-                player_info['ranking'] = info['ranking']
-                player_info['points'] = info['points']
-                player_info['scope_date'] = rank_match_bjtime(date)
-                player_info['stat_cycle'] = 7
-                player_info['promotion'] = info['movement']
-                player_info['season_id'] = 2019
-                if player_info['promotion'] > 0:
-                    player_info['promotion_type'] = 1
-                elif player_info['promotion'] == 0:
-                    player_info['promotion_type'] = 0
-                else:
-                    player_info['promotion_type'] = 2
-                TennisPlayerInfoSingleRank.upsert(
-                    self.session,
-                    'key',
-                    player_info
-                )
-                logger.info(player_info)
+            if 'player' in rank_info.keys():
+                for info in rank_info:
+                    player_info = {}
+                    player_info['player_id'] = info['player']['id']
+                    player_info['key'] = str(date) + str(player_info['player_id'])
+                    player_info['sport_id'] = 3
+                    player_info['name_en'] = info['player']['fullName']
+                    player_info['ranking'] = info['ranking']
+                    player_info['points'] = info['points']
+                    player_info['scope_date'] = rank_match_bjtime(date)
+                    player_info['stat_cycle'] = 7
+                    player_info['promotion'] = info['movement']
+                    player_info['season_id'] = 2019
+                    if player_info['promotion'] > 0:
+                        player_info['promotion_type'] = 1
+                    elif player_info['promotion'] == 0:
+                        player_info['promotion_type'] = 0
+                    else:
+                        player_info['promotion_type'] = 2
+                    TennisPlayerInfoSingleRank.upsert(
+                        self.session,
+                        'key',
+                        player_info
+                    )
+                    logger.info(player_info)
+            else:
+                logger.info('请求失败')
 
     def run(self):
         monday_date_list = GetMondayDate().run(2020)
