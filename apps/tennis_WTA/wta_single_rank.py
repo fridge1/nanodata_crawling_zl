@@ -26,7 +26,7 @@ class GetSingleRankInfo(object):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
         print(url)
         response = requests.get(url,headers=self.headers)
-        print(response.text)
+        logger.info(response.text)
         if response.text == '':
             logger.info('没有排名数据。。。')
         else:
@@ -43,7 +43,7 @@ class GetSingleRankInfo(object):
                     player_info['scope_date'] = rank_match_bjtime(date)
                     player_info['stat_cycle'] = 7
                     player_info['promotion'] = info['movement']
-                    player_info['season_id'] = 2019
+                    player_info['season_id'] = int(str(date)[:4])
                     if player_info['promotion'] > 0:
                         player_info['promotion_type'] = 1
                     elif player_info['promotion'] == 0:
