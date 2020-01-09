@@ -30,8 +30,8 @@ class GetSingleRankInfo(object):
             logger.info('没有排名数据。。。')
         else:
             rank_info = json.loads(response.text)
-            if 'player' in rank_info.keys():
-                for info in rank_info:
+            for info in rank_info:
+                if 'player' in info.keys():
                     player_info = {}
                     player_info['player_id'] = info['player']['id']
                     player_info['key'] = str(date) + str(player_info['player_id'])
@@ -55,8 +55,8 @@ class GetSingleRankInfo(object):
                         player_info
                     )
                     logger.info(player_info)
-            else:
-                logger.info('请求失败')
+                else:
+                    logger.info('请求失败')
 
     def run(self):
         monday_date_list = GetMondayDate().run(2020)
