@@ -7,6 +7,8 @@ import unicodedata
 import datetime
 import time
 from datetime import date
+import redis
+import random
 
 
 def replace_text(text):
@@ -153,3 +155,21 @@ def change_match_bjtime(time_date):
     bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d %H:%M:%S')
     timeStamp = int(time.mktime(bj_time1.timetuple()))
     return timeStamp
+
+
+def rank_match_bjtime(time_date):
+    time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d')
+    timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d')
+    timeArray1 = datetime.datetime.strptime(timeArray, '%Y-%m-%d')
+    bj_time = (timeArray1 + datetime.timedelta()).strftime("%Y-%m-%d")
+    bj_time1 = datetime.datetime.strptime(bj_time, '%Y-%m-%d')
+    timeStamp = int(time.mktime(bj_time1.timetuple()))
+    return timeStamp
+
+
+def get_proxy():
+    _redis_cli = redis.Redis(host='47.99.99.148', port=6379, decode_responses=True, password='zheng123666')
+    ip_list = str(_redis_cli.get('ips_pools')).split(';')
+    ip = random.choice(ip_list)
+    return {"http": ip, "https": ip}
+

@@ -1,6 +1,7 @@
 import requests
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisPlayerInfoSingleRank
+from apps.tennis_WTA.tools import rank_match_bjtime,get_proxy
 import json
 from apps.tennis_WTA.get_monday_date import GetMondayDate
 from common.libs.log import LogMgr
@@ -15,6 +16,7 @@ class GetSingleRankInfo(object):
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
         }
+        self.proxy = get_proxy()
 
 
 
@@ -22,7 +24,7 @@ class GetSingleRankInfo(object):
     def get_double_rank(self,page,date):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
         print(url)
-        response = requests.get(url,headers=self.headers)
+        response = requests.get(url,headers=self.headers,proxies=self.proxy)
         print(response.text)
         if response.text == '':
             logger.info('没有排名数据。。。')
@@ -36,7 +38,7 @@ class GetSingleRankInfo(object):
                 player_info['name_en'] = info['player']['fullName']
                 player_info['ranking'] = info['ranking']
                 player_info['points'] = info['points']
-                player_info['scope_date'] = 1577635200
+                player_info['scope_date'] = rank_match_bjtime(date)
                 player_info['stat_cycle'] = 7
                 player_info['promotion'] = info['movement']
                 player_info['season_id'] = 2019
