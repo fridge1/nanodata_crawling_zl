@@ -64,5 +64,5 @@ class GetSingleRankInfo(object):
         monday_date_list = GetMondayDate().run(2020)
         for date in monday_date_list:
             for page in range(16):
-                threading.Thread(target=self.get_double_rank,args=(date,page)).start()
+                self.get_double_rank(date,page)
 

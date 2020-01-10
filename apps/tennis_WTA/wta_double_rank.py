@@ -18,7 +18,7 @@ class GetRankInfo(object):
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
         }
 
-    def get_double_rank(self, page, date):
+    def get_double_rank(self, date, page):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankDoubles&sort=asc&name=&metric=DOUBLES&at=%s&nationality=' % (
         page, date)
         print(url)
@@ -60,6 +60,6 @@ class GetRankInfo(object):
         monday_date_list = GetMondayDate().run(2020)
         for date in monday_date_list:
             for page in range(16):
-                self.get_double_rank(page, date)
+                self.get_double_rank(date, page)
 
 
