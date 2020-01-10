@@ -25,7 +25,7 @@ class GetSingleRankInfo(object):
 
     def get_double_rank(self,page,date):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
-        print(url)
+        logger.info(url)
         response = requests.get(url,headers=self.headers)
         logger.info(response.text)
         if response.text == '':
