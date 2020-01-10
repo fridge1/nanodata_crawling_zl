@@ -19,7 +19,7 @@ class GetRankInfo(object):
         }
 
     def get_double_rank(self, page, date):
-        url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=DOUBLES&at=%s&nationality=' % (
+        url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankDoubles&sort=asc&name=&metric=DOUBLES&at=%s&nationality=' % (
         page, date)
         print(url)
         response = requests.get(url, headers=self.headers)
