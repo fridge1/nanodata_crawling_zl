@@ -318,7 +318,6 @@ class TennisMatch(BaseModel):
     type = Column(Integer, nullable=False, server_default='0', default=0, comment='单打1，双打2，混双3')
     elimination_type = Column(Integer, nullable=False, server_default='0', default=0,
                               comment='1 64进32，2 32进16，3 16进8，4 8进4，5 4进2，6 决赛')
-    abandon_type = Column(Integer, nullable=False, server_default='0', default=0, comment='正常0，比赛中途退出1，比赛前退出2')
     surface = Column(Integer, nullable=False, server_default='0', default=0,
                      comment='1硬地场，2红土场，3草地场，4泥土沙地场，5合成塑胶场，6地毯球场')
     deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
