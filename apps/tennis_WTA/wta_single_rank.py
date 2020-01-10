@@ -4,6 +4,7 @@ from orm_connection.tennis import TennisPlayerInfoSingleRank
 from apps.tennis_WTA.tools import rank_match_bjtime,get_proxy
 import json
 import traceback
+import threading
 from apps.tennis_WTA.get_monday_date import GetMondayDate
 from common.libs.log import LogMgr
 
@@ -63,6 +64,6 @@ class GetSingleRankInfo(object):
         monday_date_list = GetMondayDate().run(2020)
         for date in monday_date_list:
             for page in range(16):
-                self.get_double_rank(page,date)
+                threading.Thread(target=self.get_double_rank,args=(date,page)).start()
 
 
