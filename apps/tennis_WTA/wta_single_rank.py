@@ -23,7 +23,7 @@ class GetSingleRankInfo(object):
 
 
 
-    def get_double_rank(self,page,date):
+    async def get_double_rank(self,date,page):
         url = 'https://api.wtatennis.com/tennis/players/ranked?page=%s&pageSize=100&type=rankSingles&sort=asc&name=&metric=SINGLES&at=%s&nationality=' % (page,date)
         logger.info(url)
         response = requests.get(url,headers=self.headers)
@@ -65,5 +65,4 @@ class GetSingleRankInfo(object):
         for date in monday_date_list:
             for page in range(16):
                 threading.Thread(target=self.get_double_rank,args=(date,page)).start()
-
 
