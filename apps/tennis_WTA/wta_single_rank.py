@@ -51,12 +51,15 @@ class GetSingleRankInfo(object):
                         player_info['promotion_type'] = 0
                     else:
                         player_info['promotion_type'] = 2
-                    TennisPlayerInfoSingleRank.upsert(
-                        self.session,
-                        'key',
-                        player_info
-                    )
-                    logger.info(player_info)
+                    if player_info['ranking'] != 0:
+                        TennisPlayerInfoSingleRank.upsert(
+                            self.session,
+                            'key',
+                            player_info
+                        )
+                        logger.info(player_info)
+                    else:
+                        logger.info('排名不存在。。。')
             except:
                 logger.error(traceback.format_exc())
 
