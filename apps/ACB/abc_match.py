@@ -209,7 +209,7 @@ class GetMatchInfo(object):
         match_url = 'http://jv.acb.com/historico.php?jornada=%s'
         for jornada in range(1, 26):
             match_res = requests.get(match_url % jornada, headers=headers)
-            print(match_url % jornada)
+            logger.info(match_url % jornada)
             match_tree = tree_parse(match_res)
             match_api_ids = match_tree.xpath('//div[@class="partidos"]/div')
             for match_api_id in match_api_ids:
@@ -242,7 +242,7 @@ class GetMatchInfo(object):
             match_info_dict['venue_id'] = self.get_venue_id[venue_city]
             match_info_url = 'https://www.fibalivestats.com/data/%s/data.json' % match_api_id_list[index]
             match_res = requests.get(match_info_url, headers=headers)
-            print(match_info_url)
+            logger.info(match_info_url)
             if match_res.status_code == 200:
                 match_info = match_res.json()
                 match_info_dict['status_id'] = 10
@@ -306,5 +306,6 @@ class GetMatchInfo(object):
                 time.sleep(43200)
         except:
             dingding_alter(traceback.format_exc())
+            logger.error(traceback.format_exc())
 
 
