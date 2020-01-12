@@ -5,6 +5,13 @@ from apps.tennis_WTA.wta_player_info import GetPlayerInfo
 from apps.tennis_WTA.wta_competition import GetCompetitionInfo
 from apps.tennis_WTA.wta_single_player_stat import GetSinglePlayerStat
 from apps.tennis_WTA.wta_match_info import GetMatchInfo
+from apps.tennis_WTA.wta_update_data import WtaTennisFeedSvr
+from apps.tennis_WTA.wta_client_data import WtaTennisFeedClient
+
+
+def send_wta_tennis_rank(opt):
+    topic = 'wta.tennis.ranking'
+    asyncio.run(WtaTennisFeedSvr().start(topic=topic))
 
 
 def wta_tennis_double_rank(opt):
@@ -40,4 +47,5 @@ wta_tennis_actions = {
     'wta_tennis_player_career_info': wta_tennis_player_career_info,
     'wta_tennis_player_stat_info': wta_tennis_player_stat_info,
     'wta_tennis_player_match_info': wta_tennis_player_match_info,
+    'send_wta_tennis_rank': send_wta_tennis_rank,
 }

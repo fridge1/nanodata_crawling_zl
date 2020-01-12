@@ -32,13 +32,11 @@ player_schema = {
         {'name': 'birthplace', 'type': ["string", "null"]},
         {'name': 'country_id', 'type': ["int", "null"]},
         {'name': 'plays', 'type': ["int", "null"]},
-        {'name': 'backhand', 'type': ["int", "null"]},
-        {'name': 'residence', 'type': ["int", "null"]},
         {'name': 'prize_current', 'type': ["int", "null"]},
         {'name': 'prize_total', 'type': ["int", "null"]},
     ]
 }
-parsed_schema = parse_schema(ranking_schema)
+
 
 
 def single_rank_update():
@@ -54,6 +52,7 @@ def single_rank_update():
         info_dict['position_changed'] = row.promotion
         info_dict['pub_time'] = pub_time
         info_dict['type'] = 1
+
         records.append(info_dict)
     return records
 
@@ -76,6 +75,7 @@ def double_rank_update():
 
 
 def send_single_data():
+    parsed_schema = parse_schema(ranking_schema)
     records = single_rank_update()
     buffer = io.BytesIO()
     fastavro.writer(buffer, ranking_schema, records)
@@ -84,8 +84,26 @@ def send_single_data():
 
 
 def send_double_data():
+    parsed_schema = parse_schema(ranking_schema)
     records = double_rank_update()
     buffer = io.BytesIO()
     fastavro.writer(buffer, ranking_schema, records)
     ranking_data = buffer.getvalue()
     return ranking_data
+
+
+def player_info_update():
+    session = MysqlSvr.get('spider_zl')
+    rows = session.query(TennisPlayer).all()
+    records = []
+    for row in rows:
+        pub_time = competition_time_stamp(row.key[:10])
+        info_dict = {}
+        info_dict['player_id'] = row.player_id
+        info_dict['ranking'] = row.ranking
+        info_dict['points'] = row.points
+        info_dict['position_changed'] = row.promotion
+        info_dict['pub_time'] = pub_time
+        info_dict['type'] = 2
+        records.append(info_dict)
+    return records

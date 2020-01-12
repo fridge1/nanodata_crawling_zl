@@ -5,7 +5,7 @@ import traceback
 import threading
 
 from stan.aio.client import Client as STAN
-from apps.tennis_WTA.update_tennis_ranking import send_data
+from apps.tennis_WTA.update_tennis_ranking import send_single_data,send_double_data
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
@@ -23,7 +23,7 @@ def now():
 logger = LogMgr.get('WtaTennisFeed_svr')
 
 
-class AcbBasketballFeedSvr(object):
+class WtaTennisFeedSvr(object):
     data = dict()
     topic = ''
     cnt = 0
@@ -39,13 +39,18 @@ class AcbBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        data = send_data()
-        await self.nc.publish(self.topic, data)
+        single_data = send_single_data()
+        await self.nc.publish(self.topic, single_data)
+        print('单打排名推送完成。。。')
+        double_data = send_double_data()
+        await self.nc.publish(self.topic, double_data)
+        print('双打排名推送完成。。。')
 
 
     async def start_feed_rpc(self):
         rpc_topic = '%s.rpc' % self.topic
         await self.nc.subscribe(rpc_topic, cb=self.msg_handler, queue='rpc')
+
 
     # 消息处理
     async def msg_handler(self, msg):
