@@ -60,7 +60,7 @@ class GetRankInfo(object):
                 logger.error(traceback.format_exc())
 
     def run(self):
-        monday_date_list = GetMondayDate().run(2020)
+        monday_date_list = GetMondayDate().run(2021)
         for date in monday_date_list:
             for page in range(16):
                 self.get_double_rank(date, page)
