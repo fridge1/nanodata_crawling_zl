@@ -1,9 +1,10 @@
-import requests
-import json
 from apps.tennis_WTA.tools import *
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisCity,TennisPlayer,TennisPlayerCareer
 import re
+from common.libs.log import LogMgr
+
+logger = LogMgr.get('wta_tennis_player_info')
 
 
 
@@ -150,5 +151,5 @@ class GetPlayerInfo(object):
                 'player_id',
                 player_career
             )
-            print(player_career)
+            logger.info(player_career)
 
