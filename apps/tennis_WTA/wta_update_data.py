@@ -5,7 +5,7 @@ import traceback
 import threading
 
 from stan.aio.client import Client as STAN
-from apps.ACB.acb_playbyplay import pbp_box
+from apps.tennis_WTA.update_tennis_ranking import send_data
 from common.libs.log import LogMgr
 from common.libs.pbjson import dict2pb
 from common.utils import NatsSvr
@@ -20,7 +20,7 @@ def now():
 
 
 # 设置日志
-logger = LogMgr.get('AcbBasketballFeedSvr_feed_svr')
+logger = LogMgr.get('WtaTennisFeed_svr')
 
 
 class AcbBasketballFeedSvr(object):
@@ -39,11 +39,8 @@ class AcbBasketballFeedSvr(object):
         await self.start_feed()
 
     async def start_feed(self):
-        threading.Thread(target=pbp_box().get_match_id, args=(self.data_queue_svr,)).start()
-        while True:
-            data = self.data_queue_svr.get()
-            print('get_data+++++++')
-            await self.pub_time_data(self.topic, data)
+        data = send_data()
+        await self.nc.publish(self.topic, data)
 
 
     async def start_feed_rpc(self):

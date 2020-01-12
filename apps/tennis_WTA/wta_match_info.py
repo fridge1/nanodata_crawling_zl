@@ -19,7 +19,7 @@ class GetMatchInfo(object):
         self.status_id = {
             'F':12,
             'U':1,
-            'P':1,
+            'P':12,
             'M':1,
             'C':12,
             'W':1,
@@ -72,20 +72,20 @@ class GetMatchInfo(object):
                         away_player_score = []
                         for score_info in score_infos:
                             match_score = score_info.split('-')
-                            if '(' in match_score[0]:
-                                home_score = re.findall(r'\d+',match_score[0])
+                            if '(' in match_score[1]:
+                                home_score = re.findall(r'\d+',match_score[1])
                                 home_player_score += home_score
                             else:
                                 score = 0
-                                home_score = match_score[0]
+                                home_score = match_score[1]
                                 home_player_score.append(int(home_score))
                                 home_player_score.append(score)
-                            if '(' in match_score[1]:
-                                away_score = re.findall(r'\d+',match_score[1])
+                            if '(' in match_score[0]:
+                                away_score = re.findall(r'\d+',match_score[0])
                                 away_player_score += away_score
                             else:
                                 score = 0
-                                away_score = match_score[1]
+                                away_score = match_score[0]
                                 away_player_score.append(int(away_score))
                                 away_player_score.append(score)
                             match_info['home_player_score'] = str(home_player_score)
@@ -100,7 +100,7 @@ class GetMatchInfo(object):
                     continue
 
     def run(self):
-        for year in range(2016,2021):
+        for year in range(2017,2021):
             self.get_competition_season(year)
 
 
