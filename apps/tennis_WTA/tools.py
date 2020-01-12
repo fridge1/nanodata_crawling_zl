@@ -41,6 +41,8 @@ def get_double_player_id():
         double_player_id_name[row.player_id] = replace_text(row.name_en)
     return double_player_id_name
 
+
+
 def tree_parse(res):
     enconding = requests.utils.get_encodings_from_content(res.text)
     html_doc = res.content.decode()
