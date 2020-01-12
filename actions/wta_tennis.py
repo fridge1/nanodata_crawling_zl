@@ -6,7 +6,6 @@ from apps.tennis_WTA.wta_competition import GetCompetitionInfo
 from apps.tennis_WTA.wta_single_player_stat import GetSinglePlayerStat
 from apps.tennis_WTA.wta_match_info import GetMatchInfo
 from apps.tennis_WTA.wta_update_data import WtaTennisFeedSvr
-from apps.tennis_WTA.wta_client_data import WtaTennisFeedClient
 
 
 def send_wta_tennis_rank(opt):

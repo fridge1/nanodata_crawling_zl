@@ -173,3 +173,10 @@ def get_proxy():
     ip = random.choice(ip_list)
     return {"http": ip, "https": ip}
 
+
+
+def get_last_week_date(time_date):
+    time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d')
+    delta = datetime.timedelta(days=-7)
+    n_days = time_format + delta
+    return n_days.strftime('%Y-%m-%d')

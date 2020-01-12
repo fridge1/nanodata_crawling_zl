@@ -1,5 +1,5 @@
 import io
-from apps.tennis_WTA.tools import competition_time_stamp
+from apps.tennis_WTA.tools import competition_time_stamp,get_last_week_date
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisPlayerInfoDoubleRank, TennisPlayerInfoSingleRank, TennisPlayer
 import fastavro
@@ -42,6 +42,9 @@ player_schema = {
 def single_rank_update():
     session = MysqlSvr.get('spider_zl')
     rows = session.query(TennisPlayerInfoSingleRank).all()
+    key_points = {}
+    for row in rows:
+        key_points[row.key] = row.points
     records = []
     for row in rows:
         pub_time = competition_time_stamp(row.key[:10])
@@ -50,9 +53,14 @@ def single_rank_update():
         info_dict['ranking'] = row.ranking
         info_dict['points'] = row.points
         info_dict['position_changed'] = row.promotion
+        last_week = get_last_week_date(row.key[:10])
+        key = str(last_week) + str(row.player_id)
+        try:
+            info_dict['previous_points'] = key_points[key]
+        except:
+            info_dict['previous_points'] = 0
         info_dict['pub_time'] = pub_time
-        info_dict['type'] = 1
-
+        info_dict['type'] = 2
         records.append(info_dict)
     return records
 
@@ -60,6 +68,9 @@ def single_rank_update():
 def double_rank_update():
     session = MysqlSvr.get('spider_zl')
     rows = session.query(TennisPlayerInfoDoubleRank).all()
+    key_points = {}
+    for row in rows:
+        key_points[row.key] = row.points
     records = []
     for row in rows:
         pub_time = competition_time_stamp(row.key[:10])
@@ -68,6 +79,12 @@ def double_rank_update():
         info_dict['ranking'] = row.ranking
         info_dict['points'] = row.points
         info_dict['position_changed'] = row.promotion
+        last_week = get_last_week_date(row.key[:10])
+        key = str(last_week)+str(row.player_id)
+        try:
+            info_dict['previous_points'] = key_points[key]
+        except:
+            info_dict['previous_points'] = 0
         info_dict['pub_time'] = pub_time
         info_dict['type'] = 2
         records.append(info_dict)
