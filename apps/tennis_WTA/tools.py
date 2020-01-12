@@ -24,18 +24,18 @@ def replace_text(text):
 def get_en_name(data):
     return str(unicodedata.normalize('NFKD', data).encode('ascii', 'ignore'), encoding='utf-8')
 
-def get_single_player_id():
+def get_single_player_id(year):
     session = MysqlSvr.get('spider_zl')
-    rows = session.query(TennisPlayerInfoSingleRank).all()
+    rows = session.query(TennisPlayerInfoSingleRank).filter(TennisPlayerInfoSingleRank.season_id==year).all()
     single_player_id_name = {}
     for row in rows:
         single_player_id_name[row.player_id] = replace_text(row.name_en)
     return single_player_id_name
 
 
-def get_double_player_id():
+def get_double_player_id(year):
     session = MysqlSvr.get('spider_zl')
-    rows = session.query(TennisPlayerInfoDoubleRank).all()
+    rows = session.query(TennisPlayerInfoDoubleRank).filter(TennisPlayerInfoDoubleRank.season_id==year).all()
     double_player_id_name = {}
     for row in rows:
         double_player_id_name[row.player_id] = replace_text(row.name_en)
@@ -182,3 +182,17 @@ def get_last_week_date(time_date):
     delta = datetime.timedelta(days=-7)
     n_days = time_format + delta
     return n_days.strftime('%Y-%m-%d')
+
+
+def get_single_player_test():
+    session = MysqlSvr.get('spider_zl')
+    for row in TennisPlayerInfoSingleRank.inter(
+            session=session,
+            key='id',
+            per_page=1000
+    ):
+        single_player_id_name = {}
+        single_player_id_name[row.player_id] = replace_text(row.name_en)
+    print(single_player_id_name)
+
+get_single_player_test()

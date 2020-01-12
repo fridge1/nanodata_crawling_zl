@@ -42,7 +42,7 @@ class AcbBasketballFeedSvr(object):
         threading.Thread(target=pbp_box().get_match_id, args=(self.data_queue_svr,)).start()
         while True:
             data = self.data_queue_svr.get()
-            print('get_data+++++++')
+            logger.info('get_data+++++++')
             await self.pub_time_data(self.topic, data)
 
 
