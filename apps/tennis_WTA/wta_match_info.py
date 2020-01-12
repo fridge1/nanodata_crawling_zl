@@ -14,6 +14,7 @@ class GetMatchInfo(object):
             'Hard': 1,
             'Clay': 2,
             'Grass': 3,
+            'Carpet': 6,
         }
         self.status_id = {
             'F':12,
