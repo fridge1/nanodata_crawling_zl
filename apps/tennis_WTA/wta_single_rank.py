@@ -1,7 +1,7 @@
 import requests
 from orm_connection.orm_session import MysqlSvr
 from orm_connection.tennis import TennisPlayerInfoSingleRank
-from apps.tennis_WTA.tools import rank_match_bjtime,get_proxy
+from apps.tennis_WTA.tools import rank_match_bjtime
 import json
 import traceback
 import threading
@@ -18,7 +18,6 @@ class GetSingleRankInfo(object):
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
         }
-        self.proxy = get_proxy()
 
 
 
