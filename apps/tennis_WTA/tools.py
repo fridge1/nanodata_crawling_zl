@@ -1,6 +1,7 @@
 # coding:utf-8
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisPlayerInfoSingleRank,TennisPlayerInfoDoubleRank,TennisCity,TennisCountry
+from orm_connection.tennis import TennisPlayerInfoSingleRank, TennisPlayerInfoDoubleRank, TennisCity, TennisCountry, \
+    TennisPlayer
 import requests
 from lxml import etree
 import unicodedata
@@ -18,29 +19,12 @@ def replace_text(text):
             list1.append(i)
         else:
             list1.append('-')
-    a = '-'.join((''.join(list1)).split('-')).replace('--','-')
+    a = '-'.join((''.join(list1)).split('-')).replace('--', '-')
     return a
+
 
 def get_en_name(data):
     return str(unicodedata.normalize('NFKD', data).encode('ascii', 'ignore'), encoding='utf-8')
-
-def get_single_player_id(year):
-    session = MysqlSvr.get('spider_zl')
-    rows = session.query(TennisPlayerInfoSingleRank).filter(TennisPlayerInfoSingleRank.season_id==year).all()
-    single_player_id_name = {}
-    for row in rows:
-        single_player_id_name[row.player_id] = replace_text(row.name_en)
-    return single_player_id_name
-
-
-def get_double_player_id(year):
-    session = MysqlSvr.get('spider_zl')
-    rows = session.query(TennisPlayerInfoDoubleRank).filter(TennisPlayerInfoDoubleRank.season_id==year).all()
-    double_player_id_name = {}
-    for row in rows:
-        double_player_id_name[row.player_id] = replace_text(row.name_en)
-    return double_player_id_name
-
 
 
 def tree_parse(res):
@@ -72,6 +56,7 @@ def get_city_id():
     for row in rows:
         city_id_dict[row.name_en] = row.id
     return city_id_dict
+
 
 def get_player_single_name():
     session = MysqlSvr.get('spider_zl')
@@ -109,6 +94,7 @@ def get_country_id():
         country_id_dict[row.name_en] = row.id
     return country_id_dict
 
+
 def upsert_city(city_name):
     session = MysqlSvr.get('spider_zl')
     data = {
@@ -120,6 +106,7 @@ def upsert_city(city_name):
         data
     )
     return row.id
+
 
 def upsert_country(country_name):
     session = MysqlSvr.get('spider_zl')
@@ -169,30 +156,8 @@ def rank_match_bjtime(time_date):
     return timeStamp
 
 
-def get_proxy():
-    _redis_cli = redis.Redis(host='47.99.99.148', port=6379, decode_responses=True, password='zheng123666')
-    ip_list = str(_redis_cli.get('ips_pools')).split(';')
-    ip = random.choice(ip_list)
-    return {"http": ip, "https": ip}
-
-
-
 def get_last_week_date(time_date):
     time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d')
     delta = datetime.timedelta(days=-7)
     n_days = time_format + delta
     return n_days.strftime('%Y-%m-%d')
-
-
-def get_single_player_test():
-    session = MysqlSvr.get('spider_zl')
-    for row in TennisPlayerInfoSingleRank.inter(
-            session=session,
-            key='id',
-            per_page=1000
-    ):
-        single_player_id_name = {}
-        single_player_id_name[row.player_id] = replace_text(row.name_en)
-    print(single_player_id_name)
-
-get_single_player_test()

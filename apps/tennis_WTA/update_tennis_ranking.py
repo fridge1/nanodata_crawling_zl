@@ -116,11 +116,14 @@ def player_info_update():
     for row in rows:
         pub_time = competition_time_stamp(row.key[:10])
         info_dict = {}
-        info_dict['player_id'] = row.player_id
-        info_dict['ranking'] = row.ranking
-        info_dict['points'] = row.points
-        info_dict['position_changed'] = row.promotion
-        info_dict['pub_time'] = pub_time
-        info_dict['type'] = 2
+        info_dict['id'] = row.id
+        info_dict['name'] = row.name_en
+        info_dict['birthday'] = row.birthday
+        info_dict['weight'] = row.weight
+        info_dict['height'] = row.height
+        info_dict['country_id'] = 1
+        info_dict['plays'] = row.plays
+        info_dict['prize_total'] = row.height
+        info_dict['height'] = row.height
         records.append(info_dict)
     return records
