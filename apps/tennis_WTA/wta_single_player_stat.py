@@ -1,9 +1,8 @@
 import requests
 import json
+import traceback
 from orm_connection.orm_session import MysqlSvr
-from orm_connection.tennis import TennisSinglePlayerStatBySeason
-from apps.tennis_WTA.tools import get_player_double_name,get_player_single_name
-from apps.send_error_msg import dingding_alter
+from orm_connection.tennis import TennisSinglePlayerStatBySeason,TennisPlayerInfoDoubleRank,TennisPlayerInfoSingleRank
 from common.libs.log import LogMgr
 
 logger = LogMgr.get('wta_tennis_player_season_stat')
@@ -15,15 +14,13 @@ class GetSinglePlayerStat(object):
         self.headers = {
             'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
         }
-        self.single_name_dict = get_player_single_name()
-        self.double_name_dict = get_player_double_name()
 
 
 
     def get_player_stat(self,player_id,year):
         player_stat = {}
         url = 'https://api.wtatennis.com/tennis/players/%s/year/%s' % (player_id,year)
-        print(url)
+        logger.info(url)
         res = requests.get(url,headers=self.headers)
         if res.text:
             stat_info = json.loads(res.text)
@@ -62,11 +59,34 @@ class GetSinglePlayerStat(object):
             logger.info('该球员没有该赛季的技术统计。。。%s,%s' % (player_id,year))
 
 
-    def run(self):
-        player_id_list = list(set(list(self.single_name_dict.keys()) + list(self.double_name_dict.keys())))
-        for player_id in player_id_list:
+    def get_double_player(self):
+        session = MysqlSvr.get('spider_zl')
+        for row in TennisPlayerInfoDoubleRank.inter(
+                session=session,
+                key='id',
+                per_page=1000
+        ):
             for year in range(2010,2020):
-                self.get_player_stat(player_id,year)
+                try:
+                    self.get_player_stat(row.player_id, year)
+                except:
+                    logger.error(traceback.format_exc())
+                    continue
+
+
+    def get_single_player(self):
+        session = MysqlSvr.get('spider_zl')
+        for row in TennisPlayerInfoSingleRank.inter(
+                session=session,
+                key='id',
+                per_page=1000
+        ):
+            for year in range(2010,2020):
+                try:
+                    self.get_player_stat(row.player_id,year)
+                except:
+                    logger.error(traceback.format_exc())
+                    continue
 
 
 

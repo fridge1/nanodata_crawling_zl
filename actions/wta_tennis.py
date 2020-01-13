@@ -33,7 +33,8 @@ def wta_tennis_competition_info(opt):
 
 
 def wta_tennis_player_stat_info(opt):
-    GetSinglePlayerStat().run()
+    GetSinglePlayerStat().get_double_player()
+    GetSinglePlayerStat().get_single_player()
 
 
 def wta_tennis_player_match_info(opt):

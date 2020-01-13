@@ -58,24 +58,6 @@ def get_city_id():
     return city_id_dict
 
 
-def get_player_single_name():
-    session = MysqlSvr.get('spider_zl')
-    rows = session.query(TennisPlayerInfoSingleRank).all()
-    single_player_id_name = {}
-    for row in rows:
-        single_player_id_name[row.player_id] = row.name_en
-    return single_player_id_name
-
-
-def get_player_double_name():
-    session = MysqlSvr.get('spider_zl')
-    rows = session.query(TennisPlayerInfoDoubleRank).all()
-    double_player_id_name = {}
-    for row in rows:
-        double_player_id_name[row.player_id] = row.name_en
-    return double_player_id_name
-
-
 def competition_time_stamp(time_date):
     time_format = datetime.datetime.strptime(time_date, '%Y-%m-%d')
     timeArray = datetime.datetime.strftime(time_format, '%Y-%m-%d')

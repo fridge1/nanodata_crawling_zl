@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, String, SmallInteger, TIMESTAMP, text, Text, create_engine, Float
+from sqlalchemy import Integer, Column, String, SmallInteger, TIMESTAMP, text, create_engine, Float
 from orm_connection.orm_base import *
 from sqlalchemy.orm import sessionmaker
 
@@ -105,42 +105,6 @@ class TennisReferee(BaseModel):
     age = Column(Integer, nullable=False, server_default='0', default=0, comment='年龄')
     birthday = Column(Integer, nullable=False, server_default='0', default=0, comment='生日')
     matchs = Column(Integer, nullable=False, server_default='0', default=0, comment='执法场次')
-    updated_at = Column(TIMESTAMP, index=True, nullable=False,
-                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
-
-
-class TennisPlayerSingleRank(BaseModel):
-    __tablename__ = prefix + 'single_rank'
-    id = Column(Integer, primary_key=True)
-    key = Column(String(25), nullable=False, server_default='', default='', index=True)
-    season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
-    sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
-    player_id = Column(Integer, index=True, nullable=False, comment='球员id')
-    ranking = Column(Integer, nullable=False, comment='', default=0)
-    points = Column(Integer, nullable=False, comment='', default=0)
-    stat_cycle = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='统计周期')
-    promotion = Column(Integer, nullable=False, server_default='0', default=0, comment='升降名次')
-    promotion_type = Column(Integer, nullable=False, server_default='0', default=0, comment='升降类型 0为不变，1为升，2为降')
-    scope_date = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='统计时间')
-    deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
-    updated_at = Column(TIMESTAMP, index=True, nullable=False,
-                        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
-
-
-class TennisPlayerDoubleRank(BaseModel):
-    __tablename__ = prefix + 'double_rank'
-    id = Column(Integer, primary_key=True)
-    key = Column(String(25), nullable=False, server_default='', default='', index=True)
-    season_id = Column(Integer, index=True, nullable=False, comment='赛季id')
-    sport_id = Column(Integer, nullable=False, server_default='0', default=0, comment='球类id')
-    player_id = Column(Integer, index=True, nullable=False, comment='球员id')
-    ranking = Column(Integer, nullable=False, comment='', default=0)
-    points = Column(Integer, nullable=False, comment='', default=0)
-    stat_cycle = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='统计周期')
-    promotion = Column(Integer, nullable=False, server_default='0', default=0, comment='升降名次')
-    promotion_type = Column(Integer, nullable=False, server_default='0', default=0, comment='升降类型 0为不变，1为升，2为降')
-    scope_date = Column(Integer, index=True, nullable=False, server_default='0', default=0, comment='统计时间')
-    deleted = Column(SmallInteger, nullable=False, server_default='0', default=0, index=True, comment='是否删除')
     updated_at = Column(TIMESTAMP, index=True, nullable=False,
                         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 

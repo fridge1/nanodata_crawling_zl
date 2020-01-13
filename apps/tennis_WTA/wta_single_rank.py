@@ -4,7 +4,6 @@ from orm_connection.tennis import TennisPlayerInfoSingleRank
 from apps.tennis_WTA.tools import rank_match_bjtime
 import json
 import traceback
-import threading
 from apps.tennis_WTA.get_monday_date import GetMondayDate
 from common.libs.log import LogMgr
 
