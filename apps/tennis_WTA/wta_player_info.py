@@ -73,7 +73,7 @@ class GetPlayerInfo(object):
                 0].strip()]
         else:
             player_info['city_id'] = 0
-        print(player_info)
+        logger.info(player_info)
         TennisPlayer.upsert(
             self.session,
             'id',
