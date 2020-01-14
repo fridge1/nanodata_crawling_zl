@@ -18,7 +18,7 @@ class GetMatchPlayerStat(object):
             competition_id = row.key[4:-5]
             match_id = row.key[-5:]
             player_ids = [row.home_player_id] + [row.away_player_id]
-            if season_id != 2017:
+            if int(season_id) != 2017:
                 self.get_player_stat(competition_id, season_id, match_id, row.id, player_ids)
             else:
                 self.no_match_stat(competition_id, season_id, match_id, row.id, player_ids)
@@ -53,7 +53,10 @@ class GetMatchPlayerStat(object):
                     match_total['return_games_played'] = infos[0]['servgamesplayedb']
                     match_total['first_return_points_won'] = infos[0]['pts1stservlostb'] / infos[0][
                         'ptsplayed1stservb'] * 100
-                    match_total['second_return_points_won'] = ((infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) - (infos[0]['ptstotwonservb'] - infos[0]['ptswon1stservb'])) / (infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) * 100
+                    if infos[0]['totservplayedb'] != infos[0]['ptsplayed1stservb']:
+                        match_total['second_return_points_won'] = ((infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) - (infos[0]['ptstotwonservb'] - infos[0]['ptswon1stservb'])) / (infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) * 100
+                    else:
+                        match_total['second_return_points_won'] = 0
                     if infos[0]['breakptsplayeda'] != 0:
                         match_total['break_point_converted'] = infos[0]['breakptsconva'] / infos[0][
                             'breakptsplayeda'] * 100
@@ -80,10 +83,10 @@ class GetMatchPlayerStat(object):
                     match_total['return_games_played'] = infos[0]['servgamesplayeda']
                     match_total['first_return_points_won'] = infos[0]['pts1stservlosta'] / infos[0][
                         'ptsplayed1stserva'] * 100
-                    match_total['second_return_points_won'] = ((infos[0]['totservplayedb'] - infos[0][
-                        'ptsplayed1stservb']) - (infos[0]['ptstotwonservb'] - infos[0]['ptswon1stservb'])) / (
-                                                                          infos[0]['totservplayedb'] - infos[0][
-                                                                      'ptsplayed1stservb']) * 100
+                    if infos[0]['totservplayedb'] != infos[0]['ptsplayed1stservb']:
+                        match_total['second_return_points_won'] = ((infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) - (infos[0]['ptstotwonservb'] - infos[0]['ptswon1stservb'])) / (infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) * 100
+                    else:
+                        match_total['second_return_points_won'] = 0
                     if infos[0]['breakptsplayedb'] != 0:
                         match_total['break_point_converted'] = infos[0]['breakptsconvb'] / infos[0][
                             'breakptsplayedb'] * 100
@@ -125,10 +128,10 @@ class GetMatchPlayerStat(object):
                         match_player_stat['return_games_played'] = info['servgamesplayedb']
                         match_player_stat['first_return_points_won'] = info['pts1stservlostb'] / info[
                             'ptsplayed1stservb'] * 100
-                        match_player_stat['second_return_points_won'] = ((info['totservplayedb'] - info[
-                            'ptsplayed1stservb']) - (info['ptstotwonservb'] - info['ptswon1stservb'])) / (
-                                                                                info['totservplayedb'] - info[
-                                                                            'ptsplayed1stservb']) * 100
+                        if info['totservplayedb'] != info['ptsplayed1stservb']:
+                            match_player_stat['second_return_points_won'] = ((info['totservplayedb'] - info['ptsplayed1stservb']) - (info['ptstotwonservb'] - info['ptswon1stservb'])) / (info['totservplayedb'] - info['ptsplayed1stservb']) * 100
+                        else:
+                            match_player_stat['second_return_points_won'] = 0
                         if info['breakptsplayeda'] != 0:
                             match_player_stat['break_point_converted'] = info['breakptsconva'] / info[
                                 'breakptsplayeda'] * 100
@@ -162,10 +165,10 @@ class GetMatchPlayerStat(object):
                         match_player_stat['return_games_played'] = info['servgamesplayeda']
                         match_player_stat['first_return_points_won'] = info['pts1stservlosta'] / info[
                             'ptsplayed1stserva'] * 100
-                        match_player_stat['second_return_points_won'] = ((info['totservplayedb'] - info[
-                            'ptsplayed1stservb']) - (info['ptstotwonservb'] - info['ptswon1stservb'])) / (
-                                                                                info['totservplayedb'] - info[
-                                                                            'ptsplayed1stservb']) * 100
+                        if info['totservplayedb'] != info['ptsplayed1stservb']:
+                            match_player_stat['second_return_points_won'] = ((info['totservplayedb'] - info['ptsplayed1stservb']) - (info['ptstotwonservb'] - info['ptswon1stservb'])) / (info['totservplayedb'] - info['ptsplayed1stservb']) * 100
+                        else:
+                            match_player_stat['second_return_points_won'] = 0
                         if info['breakptsplayedb'] != 0:
                             match_player_stat['break_point_converted'] = info['breakptsconvb'] / info[
                                 'breakptsplayedb'] * 100
@@ -217,10 +220,10 @@ class GetMatchPlayerStat(object):
                         match_player_stat['return_games_played'] = info['servgamesplayedb']
                         match_player_stat['first_return_points_won'] = info['pts1stservlostb'] / info[
                             'ptsplayed1stservb'] * 100
-                        match_player_stat['second_return_points_won'] = ((info['totservplayedb'] - info[
-                            'ptsplayed1stservb']) - (info['ptstotwonservb'] - info['ptswon1stservb'])) / (
-                                                                                info['totservplayedb'] - info[
-                                                                            'ptsplayed1stservb']) * 100
+                        if info['totservplayedb'] != info['ptsplayed1stservb']:
+                            match_player_stat['second_return_points_won'] = ((info['totservplayedb'] - info['ptsplayed1stservb']) - (info['ptstotwonservb'] - info['ptswon1stservb'])) / (info['totservplayedb'] - info['ptsplayed1stservb']) * 100
+                        else:
+                            match_player_stat['second_return_points_won'] = 0
                         if info['breakptsplayeda'] != 0:
                             match_player_stat['break_point_converted'] = info['breakptsconva'] / info[
                                 'breakptsplayeda'] * 100
