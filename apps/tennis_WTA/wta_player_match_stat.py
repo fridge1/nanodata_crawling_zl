@@ -43,7 +43,10 @@ class GetMatchPlayerStat(object):
                     match_total['first_serve'] = (infos[0]['ptsplayed1stserva'] / infos[0]['totservplayeda']) * 100
                     match_total['first_serve_win'] = (infos[0]['ptswon1stserva'] / infos[0]['ptsplayed1stserva']) * 100
                     match_total['second_serve_win'] = (infos[0]['ptstotwonserva'] - infos[0]['ptswon1stserva']) / (infos[0]['totservplayeda'] - infos[0]['ptsplayed1stserva']) * 100
-                    match_total['break_point_saved'] = infos[0]['breakptsconvb'] / infos[0]['breakptsplayedb'] * 100
+                    if infos[0]['breakptsplayedb'] != 0:
+                        match_total['break_point_saved'] = infos[0]['breakptsconvb'] / infos[0]['breakptsplayedb'] * 100
+                    else:
+                        match_total['break_point_saved'] = 0
                     match_total['service_games_win'] = infos[0]['ptstotwonserva'] / infos[0]['totservplayeda'] * 100
                     match_total['service_games_played'] = infos[0]['totservplayeda']
                     match_total['first_return_points_won'] = infos[0]['pts1stservlostb'] / infos[0]['ptsplayed1stservb'] * 100
@@ -63,7 +66,10 @@ class GetMatchPlayerStat(object):
                     match_total['first_serve_win'] = (infos[0]['ptswon1stservb'] / infos[0]['ptsplayed1stservb']) * 100
                     match_total['second_serve_win'] = (infos[0]['ptstotwonservb'] - infos[0]['ptswon1stservb']) / (
                                 infos[0]['totservplayedb'] - infos[0]['ptsplayed1stservb']) * 100
-                    match_total['break_point_saved'] = infos[0]['breakptsconva'] / infos[0]['breakptsplayeda'] * 100
+                    if infos[0]['breakptsplayeda'] != 0:
+                        match_total['break_point_saved'] = infos[0]['breakptsconva'] / infos[0]['breakptsplayeda'] * 100
+                    else:
+                        match_total['break_point_saved'] = 0
                     match_total['service_games_win'] = infos[0]['ptstotwonservb'] / infos[0]['totservplayedb'] * 100
                     match_total['service_games_played'] = infos[0]['totservplayedb']
                     match_total['first_return_points_won'] = infos[0]['pts1stservlosta'] / infos[0][
