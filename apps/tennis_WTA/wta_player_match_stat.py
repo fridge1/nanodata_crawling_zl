@@ -47,7 +47,10 @@ class GetMatchPlayerStat(object):
                     match_total['service_games_win'] = infos[0]['ptstotwonserva'] / infos[0]['totservplayeda'] * 100
                     match_total['service_games_played'] = infos[0]['totservplayeda']
                     match_total['first_return_points_won'] = infos[0]['pts1stservlostb'] / infos[0]['ptsplayed1stservb'] * 100
-                    match_total['break_point_converted'] = infos[0]['breakptsconva'] / infos[0]['breakptsplayeda'] * 100
+                    if infos[0]['breakptsplayeda'] != 0:
+                        match_total['break_point_converted'] = infos[0]['breakptsconva'] / infos[0]['breakptsplayeda'] * 100
+                    else:
+                        match_total['break_point_converted'] = 0
                 else:
                     match_total['key'] = str(id) + str(player_ids[index])
                     match_total['player_ids'] = player_ids[index]
@@ -65,7 +68,10 @@ class GetMatchPlayerStat(object):
                     match_total['service_games_played'] = infos[0]['totservplayedb']
                     match_total['first_return_points_won'] = infos[0]['pts1stservlosta'] / infos[0][
                         'ptsplayed1stserva'] * 100
-                    match_total['break_point_converted'] = infos[0]['breakptsconvb'] / infos[0]['breakptsplayedb'] * 100
+                    if infos[0]['breakptsplayedb'] != 0:
+                        match_total['break_point_converted'] = infos[0]['breakptsconvb'] / infos[0]['breakptsplayedb'] * 100
+                    else:
+                        match_total['break_point_converted'] = 0
                 TennisMatchTotalStat.upsert(
                     self.session,
                     'key',
