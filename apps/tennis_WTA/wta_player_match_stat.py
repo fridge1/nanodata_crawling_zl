@@ -18,7 +18,7 @@ class GetMatchPlayerStat(object):
             competition_id = row.key[4:-5]
             match_id = row.key[-5:]
             player_ids = [row.home_player_id] + [row.away_player_id]
-            if int(season_id) != 2017:
+            if 'R' not in match_id:
                 self.get_player_stat(competition_id, season_id, match_id, row.id, player_ids)
             else:
                 self.no_match_stat(competition_id, season_id, match_id, row.id, player_ids)
