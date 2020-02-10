@@ -211,17 +211,23 @@ class GetMatchInfo(object):
             match_res = requests.get(match_url % jornada, headers=headers)
             logger.info(match_url % jornada)
             match_tree = tree_parse(match_res)
-            match_api_ids = match_tree.xpath('//div[@class="partidos"]')
-            for match_api_id in match_api_ids:
-                par_id = match_api_id.xpath('./div/@id')[0]
+            par_ids = match_tree.xpath('//div[@class="partidos"]/div/@id')
+            home_names = match_tree.xpath(
+                '//div[@class="partidos"]/div[@class="partido borde_azul"]/div[@class="fila_superior borde_azul_inferior"]/div[@class="nombre_equipo borde_azul_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()|./div[@class="partido borde_gris"]/div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo borde_gris_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()')
+            away_names = match_tree.xpath(
+                '//div[@class="partidos"]/div[@class="partido borde_azul"]/div[@class="fila_superior borde_azul_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()|./div[@class="partido borde_gris"]/div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()')
+            for index in range(len(par_ids)):
+                par_id = par_ids[index]
                 id = par_id.split('-')[-1]
                 if id:
-                    # try:
-                    home_name = match_api_id.xpath('./div[@class="partido borde_azul"]/div[@class="fila_superior borde_azul_inferior"]/div[@class="nombre_equipo borde_azul_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()|./div[@class="partido borde_gris"]/div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo borde_gris_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()')[0]
-                    # home_name = match_api_id.xpath('./div[@class="partido borde_gris"]/div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo borde_gris_derecha clase_solo_ocultar_960 ellipsis mayuscula"]/text()')[0]
-                    away_name = match_api_id.xpath('./div[@class="partido borde_azul"]/div[@class="fila_superior borde_azul_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()|./div[@class="partido borde_gris"]/div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()')[0]
-                    # away_name = match_api_id.xpath('./div[@class="partido borde_gris"]/div[@class="fila_superior borde_gris_inferior"]/div[@class="nombre_equipo clase_solo_ocultar_960 ellipsis mayuscula"]/text()')[0]
-                    print(home_name,away_name)
+                    try:
+                        home_name = home_names[index]
+                    except:
+                        logger.info('没有信息')
+                    try:
+                        away_name = away_names[index]
+                    except:
+                        logger.info('没有信息')
                     home_team_id = self.get_team_id[home_name.lower().strip()]
                     away_team_id = self.get_team_id[away_name.lower().strip()]
                     match_api_id_team_dict[id] = (home_team_id, away_team_id)
@@ -237,6 +243,7 @@ class GetMatchInfo(object):
             date = time_info[0].xpath('string(.)').split('-')[0]
             time = time_info[0].xpath('string(.)').split('-')[1]
             match_info_dict['match_time'] = change_bjtime(date.strip() + ' ' + time.strip())
+            print(match_info_dict['match_time'])
             match_info_dict['id'] = match_api_id_list[index]
             match_info_dict['sport_id'] = 2
             venue_city = time_info[0].xpath('string(.)').split('-')[-1].strip()
